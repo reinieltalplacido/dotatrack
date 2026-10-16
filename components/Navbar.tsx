@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Search, Menu, X, ShieldAlert } from "lucide-react";
+import { Search, Menu, X, Activity, ShieldCheck } from "lucide-react";
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -21,76 +21,97 @@ export function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/[0.08] bg-[#090A0F]/85 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-white/[0.08] bg-[#08090C]/90 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        {/* Logo and Brand */}
-        <Link
-          href="/"
-          className="flex items-center gap-2.5 group transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 rounded-sm"
-          aria-label="DotaTrack Homepage"
-        >
-          {/* Stylized Dota 2 inspired emblem */}
-          <div className="relative flex h-8 w-8 items-center justify-center rounded bg-gradient-to-br from-rose-600 via-red-700 to-[#12080C] p-[1px] shadow-sm shadow-rose-950/40">
-            <div className="flex h-full w-full items-center justify-center rounded-[3px] bg-[#0D0E14]">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                className="h-4 w-4 text-rose-500 transition-colors group-hover:text-rose-400"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <polygon points="12 2 2 7 12 12 22 7 12 2" fill="currentColor" fillOpacity="0.2" />
-                <polyline points="2 17 12 22 22 17" />
-                <polyline points="2 12 12 17 22 12" />
-              </svg>
-            </div>
-            <div className="absolute inset-0 rounded bg-rose-500/20 blur-sm opacity-0 group-hover:opacity-100 transition-opacity" />
-          </div>
-
-          <div className="flex flex-col">
-            <span className="text-base font-bold tracking-tight text-white flex items-center">
-              Dota<span className="text-rose-500 font-extrabold ml-0.5">Track</span>
-            </span>
-            <span className="text-[10px] uppercase font-mono tracking-widest text-zinc-400 -mt-1 hidden sm:block">
-              Analytics
-            </span>
-          </div>
-        </Link>
-
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-8" aria-label="Main Navigation">
+        {/* Left: Brand Identity with Dota 2 Ancient Emblem */}
+        <div className="flex items-center gap-6">
           <Link
             href="/"
-            className="text-sm font-medium text-zinc-300 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 rounded px-1"
+            className="flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 rounded"
+            aria-label="DotaTrack - Esports Analytics"
           >
-            Home
+            {/* Chiseled Dota Aegis/Ancient Emblem */}
+            <div className="relative flex h-8 w-8 items-center justify-center rounded-sm bg-gradient-to-b from-rose-600 via-rose-700 to-[#12080C] p-[1px] shadow-sm shadow-rose-950/60">
+              <div className="flex h-full w-full items-center justify-center rounded-sm bg-[#0B0C12]">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  className="h-4 w-4 text-rose-500 transition-colors group-hover:text-rose-400"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <polygon points="12 2 2 7 12 12 22 7 12 2" fill="currentColor" fillOpacity="0.25" />
+                  <polyline points="2 17 12 22 22 17" />
+                  <polyline points="2 12 12 17 22 12" />
+                </svg>
+              </div>
+            </div>
+
+            <div className="flex flex-col">
+              <div className="flex items-center gap-1.5">
+                <span className="text-base font-extrabold tracking-tight text-white font-mono">
+                  DOTA<span className="text-rose-500">TRACK</span>
+                </span>
+                <span className="hidden sm:inline-block rounded-[3px] bg-white/[0.06] border border-white/[0.08] px-1.5 py-0.2 text-[9px] font-mono uppercase tracking-wider text-zinc-400">
+                  v7.37e
+                </span>
+              </div>
+            </div>
+          </Link>
+
+          {/* System Status Pill */}
+          <div className="hidden lg:flex items-center gap-2 border-l border-white/[0.08] pl-5 text-[11px] font-mono text-zinc-400">
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_#10B981]" />
+            <span>OPENDOTA API: <strong className="text-zinc-300 font-medium">READY</strong></span>
+          </div>
+        </div>
+
+        {/* Center: Desktop Navigation Links */}
+        <nav className="hidden md:flex items-center gap-7 text-xs font-semibold uppercase tracking-wider text-zinc-300" aria-label="Main Navigation">
+          <Link
+            href="/"
+            className="hover:text-white transition-colors py-1 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-rose-500 rounded"
+          >
+            Overview
           </Link>
           <a
-            href="#heroes"
-            className="text-sm font-medium text-zinc-400 hover:text-zinc-200 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 rounded px-1"
+            href="#live-preview"
+            className="hover:text-white transition-colors py-1 text-zinc-400 hover:text-zinc-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-rose-500 rounded"
           >
-            Heroes
+            Telemetry
+          </a>
+          <a
+            href="#heroes"
+            className="hover:text-white transition-colors py-1 text-zinc-400 hover:text-zinc-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-rose-500 rounded"
+          >
+            Hero Matrix
+          </a>
+          <a
+            href="#workflow"
+            className="hover:text-white transition-colors py-1 text-zinc-400 hover:text-zinc-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-rose-500 rounded"
+          >
+            Pipeline
           </a>
           <a
             href="#about"
-            className="text-sm font-medium text-zinc-400 hover:text-zinc-200 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 rounded px-1"
+            className="hover:text-white transition-colors py-1 text-zinc-400 hover:text-zinc-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-rose-500 rounded"
           >
             About
           </a>
         </nav>
 
-        {/* CTA Track Player Button */}
-        <div className="hidden md:flex items-center gap-4">
+        {/* Right CTA */}
+        <div className="hidden md:flex items-center gap-3">
           <a
             href="#search-section"
             onClick={scrollToSearch}
-            className="inline-flex items-center gap-2 rounded-md border border-rose-600/50 bg-gradient-to-b from-rose-600/90 to-rose-700 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-white shadow-sm shadow-rose-950/50 transition-all hover:border-rose-500 hover:from-rose-500 hover:to-rose-600 hover:shadow-rose-900/30 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-400"
+            className="group relative inline-flex items-center gap-2 rounded-sm border border-rose-500/60 bg-gradient-to-b from-rose-600 via-rose-600 to-rose-700 px-4 py-2 text-xs font-bold uppercase tracking-wider text-white shadow-[0_0_15px_-3px_rgba(225,29,72,0.4)] transition-all hover:border-rose-400 hover:from-rose-500 hover:to-rose-600 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-400"
           >
-            <Search className="h-3.5 w-3.5" aria-hidden="true" />
-            Track Player
+            <Search className="h-3.5 w-3.5 text-rose-200 group-hover:text-white transition-colors" aria-hidden="true" />
+            <span>Track Player</span>
           </a>
         </div>
 
@@ -99,50 +120,64 @@ export function Navbar() {
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="inline-flex items-center justify-center rounded-md p-2 text-zinc-400 hover:bg-zinc-800 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
+            className="inline-flex items-center justify-center rounded p-2 text-zinc-400 hover:bg-zinc-800 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
             aria-expanded={mobileMenuOpen}
             aria-label="Toggle navigation menu"
           >
             {mobileMenuOpen ? (
-              <X className="h-5 w-5" aria-hidden="true" />
+              <X className="h-5 w-5 text-white" aria-hidden="true" />
             ) : (
-              <Menu className="h-5 w-5" aria-hidden="true" />
+              <Menu className="h-5 w-5 text-zinc-300" aria-hidden="true" />
             )}
           </button>
         </div>
       </div>
 
-      {/* Mobile menu dropdown */}
+      {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-b border-white/[0.08] bg-[#0C0E14] px-4 pt-3 pb-5 space-y-3">
+        <div className="md:hidden border-b border-white/[0.08] bg-[#0D0E15] px-4 pt-3 pb-5 space-y-3">
           <Link
             href="/"
             onClick={() => setMobileMenuOpen(false)}
-            className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-zinc-800/60"
+            className="block rounded px-3 py-2 text-sm font-semibold text-white hover:bg-white/[0.05]"
           >
-            Home
+            Overview
           </Link>
+          <a
+            href="#live-preview"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block rounded px-3 py-2 text-sm font-semibold text-zinc-300 hover:bg-white/[0.05]"
+          >
+            Telemetry Preview
+          </a>
           <a
             href="#heroes"
             onClick={() => setMobileMenuOpen(false)}
-            className="block rounded-md px-3 py-2 text-base font-medium text-zinc-300 hover:bg-zinc-800/60 hover:text-white"
+            className="block rounded px-3 py-2 text-sm font-semibold text-zinc-300 hover:bg-white/[0.05]"
           >
-            Heroes
+            Hero Matrix
+          </a>
+          <a
+            href="#workflow"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block rounded px-3 py-2 text-sm font-semibold text-zinc-300 hover:bg-white/[0.05]"
+          >
+            Architecture Pipeline
           </a>
           <a
             href="#about"
             onClick={() => setMobileMenuOpen(false)}
-            className="block rounded-md px-3 py-2 text-base font-medium text-zinc-300 hover:bg-zinc-800/60 hover:text-white"
+            className="block rounded px-3 py-2 text-sm font-semibold text-zinc-300 hover:bg-white/[0.05]"
           >
-            About
+            About DotaTrack
           </a>
           <div className="pt-2">
             <a
               href="#search-section"
               onClick={scrollToSearch}
-              className="flex w-full items-center justify-center gap-2 rounded-md bg-rose-600 px-4 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-rose-500"
+              className="flex w-full items-center justify-center gap-2 rounded bg-rose-600 px-4 py-2.5 text-center text-xs font-bold uppercase tracking-wider text-white shadow-md hover:bg-rose-500"
             >
-              <Search className="h-4 w-4" aria-hidden="true" />
+              <Search className="h-3.5 w-3.5" aria-hidden="true" />
               Track Player
             </a>
           </div>
