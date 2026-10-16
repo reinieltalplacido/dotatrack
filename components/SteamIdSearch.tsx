@@ -1,18 +1,27 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Loader2, AlertCircle, CheckCircle2, ArrowRight, X, Terminal, Cpu } from "lucide-react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { Loader2, AlertCircle, CheckCircle2, ArrowRight, X, Terminal, ExternalLink } from "lucide-react";
 import { validateSteamId, ValidationResult } from "@/lib/validation";
+import { PlayerDashboardData } from "@/lib/opendota/types";
 
 interface SteamIdSearchProps {
   onSearchSubmit?: (result: ValidationResult) => void;
+  autoNavigate?: boolean;
 }
 
-export function SteamIdSearch({ onSearchSubmit }: SteamIdSearchProps) {
+export function SteamIdSearch({ onSearchSubmit, autoNavigate = true }: SteamIdSearchProps) {
+  const router = useRouter();
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState("QUERYING OPENDOTA...");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [searchStatus, setSearchStatus] = useState<ValidationResult | null>(null);
+  const [confirmedPlayer, setConfirmedPlayer] = useState<{
+    data: PlayerDashboardData;
+    validation: ValidationResult;
+  } | null>(null);
 
   // Notable Dota 2 Pro Player Public Account IDs
   const proPresets = [
@@ -22,28 +31,70 @@ export function SteamIdSearch({ onSearchSubmit }: SteamIdSearchProps) {
     { name: "Topson", id: "111620041", role: "Midlane" },
   ];
 
-  const handleSearch = async (e?: React.FormEvent) => {
+  const handleSearch = async (e?: React.FormEvent, directId?: string) => {
     if (e) e.preventDefault();
 
-    setErrorMessage(null);
-    setSearchStatus(null);
+    // Prevent duplicate submissions while a lookup is in progress
+    if (isLoading) return;
 
-    const validation = validateSteamId(inputValue);
+    setErrorMessage(null);
+    setConfirmedPlayer(null);
+
+    const queryTarget = (directId ?? inputValue).trim();
+    const validation = validateSteamId(queryTarget);
 
     if (!validation.isValid) {
       setErrorMessage(validation.errorMessage || "Please enter a valid Steam ID or Account ID.");
       return;
     }
 
+    const accountId = validation.steam32Id;
+    if (!accountId) {
+      setErrorMessage("Could not resolve a valid 32-bit Account ID from the provided input.");
+      return;
+    }
+
     setIsLoading(true);
+    setLoadingMessage("RESOLVING TELEMETRY...");
 
     try {
-      // Controlled validation flow - preparing for OpenDota API client integration in Phase 2
-      await new Promise((resolve) => setTimeout(resolve, 550));
-      setSearchStatus(validation);
       if (onSearchSubmit) {
         onSearchSubmit(validation);
       }
+
+      setLoadingMessage("FETCHING OPENDOTA DATA...");
+      const res = await fetch(`/api/players/${accountId}`, {
+        headers: { Accept: "application/json" },
+      });
+
+      const responseData = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        const errorText =
+          responseData?.error ||
+          (res.status === 404
+            ? `Player #${accountId} not found on OpenDota. Ensure the ID is correct and match history is public.`
+            : res.status === 429
+            ? "OpenDota rate limit exceeded. Please wait a few seconds before trying again."
+            : "Failed to load player telemetry. Please verify connection and retry.");
+        setErrorMessage(errorText);
+        return;
+      }
+
+      const playerData = responseData as PlayerDashboardData;
+
+      // Show confirmed state with real verified server data
+      setConfirmedPlayer({
+        data: playerData,
+        validation,
+      });
+
+      if (autoNavigate) {
+        setLoadingMessage("LOADING DASHBOARD...");
+        router.push(`/player/${accountId}`);
+      }
+    } catch {
+      setErrorMessage("Network error connecting to telemetry server. Please check your connection.");
     } finally {
       setIsLoading(false);
     }
@@ -52,13 +103,14 @@ export function SteamIdSearch({ onSearchSubmit }: SteamIdSearchProps) {
   const handleSelectPreset = (id: string) => {
     setInputValue(id);
     setErrorMessage(null);
-    setSearchStatus(null);
+    setConfirmedPlayer(null);
+    handleSearch(undefined, id);
   };
 
   const handleClear = () => {
     setInputValue("");
     setErrorMessage(null);
-    setSearchStatus(null);
+    setConfirmedPlayer(null);
   };
 
   return (
@@ -70,7 +122,7 @@ export function SteamIdSearch({ onSearchSubmit }: SteamIdSearchProps) {
             <Terminal className="h-3.5 w-3.5 text-rose-500" aria-hidden="true" />
             <span>Track Player Profile</span>
           </label>
-          {inputValue && (
+          {inputValue && !isLoading && (
             <button
               type="button"
               onClick={handleClear}
@@ -95,7 +147,7 @@ export function SteamIdSearch({ onSearchSubmit }: SteamIdSearchProps) {
                 onChange={(e) => {
                   setInputValue(e.target.value);
                   if (errorMessage) setErrorMessage(null);
-                  if (searchStatus) setSearchStatus(null);
+                  if (confirmedPlayer) setConfirmedPlayer(null);
                 }}
                 disabled={isLoading}
                 placeholder="Enter Steam Account ID or Profile URL..."
@@ -114,7 +166,7 @@ export function SteamIdSearch({ onSearchSubmit }: SteamIdSearchProps) {
               {isLoading ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin text-white" aria-hidden="true" />
-                  <span>PARSING...</span>
+                  <span>{loadingMessage}</span>
                 </>
               ) : (
                 <>
@@ -128,7 +180,7 @@ export function SteamIdSearch({ onSearchSubmit }: SteamIdSearchProps) {
 
         {/* Input Format Hint */}
         <p id="search-hint" className="text-[12px] text-zinc-400 text-left px-1">
-          Enter your 32-bit Dota 2 Account ID (e.g. <span className="font-mono text-zinc-300">87278757</span>), 64-bit Steam ID, or Steam profile URL.
+          Enter your 32-bit Dota 2 Account ID (e.g. <span className="font-mono text-zinc-300">70388657</span>), 64-bit Steam ID, or Steam profile URL.
         </p>
 
         {/* Error Notification */}
@@ -136,59 +188,87 @@ export function SteamIdSearch({ onSearchSubmit }: SteamIdSearchProps) {
           <div
             id="search-error"
             role="alert"
-            className="mt-1 flex items-start gap-2.5 rounded-sm border border-red-800/80 bg-red-950/50 p-3 text-xs text-red-200"
+            className="mt-1 flex items-start gap-2.5 rounded-sm border border-red-800/80 bg-red-950/50 p-3 text-xs text-red-200 shadow-lg"
           >
             <AlertCircle className="h-4 w-4 text-red-400 shrink-0 mt-0.5" aria-hidden="true" />
             <div className="flex-1 font-mono">
-              <strong className="text-red-300 uppercase">[SYNTAX_ERROR] </strong>
-              {errorMessage}
+              <strong className="text-red-300 uppercase">[TELEMETRY_ERROR] </strong>
+              <span>{errorMessage}</span>
             </div>
           </div>
         )}
 
-        {/* Verified Target Status Box */}
-        {searchStatus && (
+        {/* Verified Target Status Box - Only displayed after successful server response */}
+        {confirmedPlayer && (
           <div
             role="status"
-            className="mt-2 rounded-sm border border-rose-500/40 bg-[#12141F] p-4 text-left shadow-xl"
+            className="mt-2 rounded-sm border border-emerald-500/40 bg-[#0F151C] p-4 text-left shadow-2xl transition-all animate-in fade-in duration-200"
           >
             <div className="flex items-start gap-3.5">
-              <div className="rounded bg-rose-500/20 p-2 text-rose-400 border border-rose-500/30">
-                <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
+              <div className="relative h-12 w-12 rounded border border-emerald-500/40 overflow-hidden shrink-0 bg-zinc-900">
+                <Image
+                  src={confirmedPlayer.data.avatarUrl}
+                  alt={confirmedPlayer.data.personaname}
+                  width={48}
+                  height={48}
+                  className="object-cover"
+                  unoptimized
+                />
               </div>
-              <div className="flex-1">
+
+              <div className="flex-1 min-w-0">
                 <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/[0.08] pb-2">
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-mono font-bold text-zinc-400">TARGET:</span>
-                    <span className="font-mono text-sm font-bold text-rose-400">{searchStatus.cleanId}</span>
+                    <span className="font-mono text-sm font-bold text-emerald-400 truncate">
+                      {confirmedPlayer.data.personaname}
+                    </span>
+                    {confirmedPlayer.data.proName && (
+                      <span className="text-xs font-mono text-amber-400 font-semibold">
+                        [{confirmedPlayer.data.proName}]
+                      </span>
+                    )}
                   </div>
-                  <span className="rounded bg-zinc-900 px-2 py-0.5 text-[10px] font-mono uppercase text-zinc-300 border border-white/[0.08]">
-                    {searchStatus.type === "steam64"
-                      ? "64-bit Steam ID"
-                      : searchStatus.type === "steam32"
-                      ? "32-bit Account ID"
-                      : "Vanity Profile"}
+                  <span className="rounded bg-emerald-950/80 px-2 py-0.5 text-[10px] font-mono uppercase text-emerald-300 border border-emerald-800/50 flex items-center gap-1">
+                    <CheckCircle2 className="h-3 w-3" /> VERIFIED ON OPENDOTA
                   </span>
                 </div>
 
-                {searchStatus.steam32Id && searchStatus.type === "steam64" && (
-                  <div className="mt-2 text-xs font-mono text-zinc-400">
-                    Converted Dota 2 Account ID: <span className="text-zinc-200 font-bold">{searchStatus.steam32Id}</span>
+                <div className="mt-2 grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-mono text-zinc-300">
+                  <div>
+                    <span className="text-zinc-500 block text-[10px]">ACCOUNT ID</span>
+                    <span className="font-bold text-zinc-200">{confirmedPlayer.data.accountId}</span>
                   </div>
-                )}
-
-                <div className="mt-2 text-xs text-zinc-300 leading-relaxed">
-                  <span className="text-emerald-400 font-mono font-bold">✓ FORMAT VERIFIED:</span> Account ID is valid for Dota 2 matchmaking telemetry. Live match history ingestion via the OpenDota API is configured for the Phase 2 data release.
+                  <div>
+                    <span className="text-zinc-500 block text-[10px]">RANK TIER</span>
+                    <span className="font-bold text-rose-400">{confirmedPlayer.data.rankFormatted.name}</span>
+                  </div>
+                  <div>
+                    <span className="text-zinc-500 block text-[10px]">LIFETIME W/L</span>
+                    <span className="font-bold text-zinc-200">
+                      {confirmedPlayer.data.lifetime.wins} - {confirmedPlayer.data.lifetime.losses}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-zinc-500 block text-[10px]">WIN RATE</span>
+                    <span className="font-bold text-emerald-400">
+                      {confirmedPlayer.data.lifetime.winRate}%
+                    </span>
+                  </div>
                 </div>
 
                 <div className="mt-3 pt-2 border-t border-white/[0.06] flex items-center justify-between text-xs">
-                  <span className="text-zinc-400 font-mono text-[11px]">Ready for OpenDota payload sync</span>
+                  <span className="text-zinc-400 font-mono text-[11px] flex items-center gap-1.5">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    Synchronized telemetry. Redirecting to profile dashboard...
+                  </span>
                   <button
                     type="button"
-                    onClick={handleClear}
-                    className="font-mono text-rose-400 hover:text-rose-300 transition-colors uppercase font-bold text-[11px]"
+                    onClick={() => router.push(`/player/${confirmedPlayer.data.accountId}`)}
+                    className="font-mono text-rose-400 hover:text-rose-300 transition-colors uppercase font-bold text-[11px] flex items-center gap-1"
                   >
-                    [Query Another ID]
+                    <span>View Profile Now</span>
+                    <ExternalLink className="h-3 w-3" />
                   </button>
                 </div>
               </div>
@@ -203,8 +283,9 @@ export function SteamIdSearch({ onSearchSubmit }: SteamIdSearchProps) {
             <button
               key={pro.id}
               type="button"
+              disabled={isLoading}
               onClick={() => handleSelectPreset(pro.id)}
-              className="inline-flex items-center gap-1.5 rounded-sm border border-white/[0.08] bg-zinc-900/80 px-2.5 py-1 text-[11px] font-mono text-zinc-300 hover:border-rose-500/50 hover:bg-zinc-800 hover:text-white transition-all active:scale-95"
+              className="inline-flex items-center gap-1.5 rounded-sm border border-white/[0.08] bg-zinc-900/80 px-2.5 py-1 text-[11px] font-mono text-zinc-300 hover:border-rose-500/50 hover:bg-zinc-800 hover:text-white transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <span className="font-bold text-white">{pro.name}</span>
               <span className="text-zinc-400">({pro.role})</span>

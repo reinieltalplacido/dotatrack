@@ -18,6 +18,10 @@ export const metadata: Metadata = {
     "Track your Dota 2 match history, win rates, KDA, hero performance, and progression trends with high-precision analytics.",
   keywords: ["Dota 2", "Dota stats", "player tracker", "OpenDota", "match history", "winrate", "KDA", "esports analytics"],
   authors: [{ name: "DotaTrack Team" }],
+  icons: {
+    icon: "/dotatrack.png",
+    apple: "/dotatrack.png",
+  },
 };
 
 export default function RootLayout({
@@ -27,7 +31,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} dark scroll-smooth`}>
-      <body className="min-h-screen bg-[#090A0F] text-[#F1F3F7] antialiased selection:bg-rose-600 selection:text-white flex flex-col">
+      <body className="min-h-screen bg-[#090A0F] text-[#F1F3F7] antialiased selection:bg-rose-600 selection:text-white flex flex-col font-sans">
         {children}
       </body>
     </html>

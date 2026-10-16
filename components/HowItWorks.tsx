@@ -43,9 +43,6 @@ export function HowItWorks() {
               How DotaTrack Works
             </h2>
           </div>
-          <div className="text-xs font-mono text-zinc-400">
-            INTEGRATION: <span className="text-zinc-200 font-semibold">VALVE PUBLIC MATCH DATA</span>
-          </div>
         </div>
 
         {/* Steps Grid */}

@@ -1,4 +1,4 @@
-import { Target, Cpu, ShieldCheck, Terminal } from "lucide-react";
+import { Target, Cpu, ShieldCheck } from "lucide-react";
 
 export function AboutSection() {
   const pillars = [

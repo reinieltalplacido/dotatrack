@@ -1,4 +1,4 @@
-import { Swords, BarChart3, Sparkles, TrendingUp, Compass, ShieldAlert } from "lucide-react";
+import { Swords, BarChart3, Sparkles } from "lucide-react";
 
 export function FeatureHighlights() {
   const highlights = [
@@ -49,9 +49,6 @@ export function FeatureHighlights() {
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white font-mono">
               Designed for Competitive Dota 2 Players
             </h2>
-          </div>
-          <div className="text-xs font-mono text-zinc-400">
-            PARSING ENGINE: <span className="text-zinc-200 font-semibold">OPENDOTA V1 SPEC</span>
           </div>
         </div>
 
