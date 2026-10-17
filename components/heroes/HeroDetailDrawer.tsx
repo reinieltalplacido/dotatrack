@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
+import NextImage from "next/image";
 import Link from "next/link";
 import {
   X,
@@ -171,7 +171,7 @@ export function HeroDetailDrawer({
           <div className="flex flex-col sm:flex-row gap-5 items-start sm:items-center">
             {/* High-res Hero Artwork */}
             <div className="relative h-24 w-36 sm:h-28 sm:w-44 rounded-sm overflow-hidden border border-white/[0.15] shadow-lg flex-shrink-0 bg-black">
-              <Image
+              <NextImage
                 src={hero.img}
                 alt={hero.localized_name}
                 fill
@@ -435,7 +435,7 @@ export function HeroDetailDrawer({
                     >
                       <div className="flex items-center gap-2">
                         <div className="relative h-6 w-9 rounded overflow-hidden flex-shrink-0 bg-zinc-900">
-                          <Image
+                          <NextImage
                             src={m.opponentHero.img}
                             alt={m.opponentHero.localized_name}
                             fill
@@ -470,7 +470,7 @@ export function HeroDetailDrawer({
                     >
                       <div className="flex items-center gap-2">
                         <div className="relative h-6 w-9 rounded overflow-hidden flex-shrink-0 bg-zinc-900">
-                          <Image
+                          <NextImage
                             src={m.opponentHero.img}
                             alt={m.opponentHero.localized_name}
                             fill
@@ -544,7 +544,7 @@ export function HeroDetailDrawer({
                   className="flex items-center gap-2.5 p-2 rounded bg-black/40 border border-white/[0.04]"
                 >
                   <div className="relative h-7 w-9 rounded overflow-hidden flex-shrink-0 bg-zinc-900 border border-white/10">
-                    <Image
+                    <NextImage
                       src={item.img}
                       alt={item.name}
                       fill

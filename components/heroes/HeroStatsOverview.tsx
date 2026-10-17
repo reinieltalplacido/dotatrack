@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import NextImage from "next/image";
 import { Trophy, Flame, Layers, Radio } from "lucide-react";
 import { HeroOverviewMetrics } from "@/lib/opendota/hero-types";
 
@@ -65,7 +65,7 @@ export function HeroStatsOverview({ metrics, onSelectHero }: HeroStatsOverviewPr
         {strongestHero ? (
           <div className="flex items-center gap-3 mb-1">
             <div className="relative h-11 w-11 rounded-sm overflow-hidden border border-emerald-500/30 flex-shrink-0 bg-zinc-900">
-              <Image
+              <NextImage
                 src={strongestHero.img}
                 alt={strongestHero.localized_name}
                 fill
@@ -121,7 +121,7 @@ export function HeroStatsOverview({ metrics, onSelectHero }: HeroStatsOverviewPr
         {mostPickedHero ? (
           <div className="flex items-center gap-3 mb-1">
             <div className="relative h-11 w-11 rounded-sm overflow-hidden border border-rose-500/30 flex-shrink-0 bg-zinc-900">
-              <Image
+              <NextImage
                 src={mostPickedHero.img}
                 alt={mostPickedHero.localized_name}
                 fill

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import NextImage from "next/image";
 import { EnrichedHeroSummary, PrimaryAttrType } from "@/lib/opendota/hero-types";
 import { Check, Plus } from "lucide-react";
 
@@ -81,7 +81,7 @@ export function HeroCard({
     >
       {/* Hero Portrait Container with 16:9 ratio */}
       <div className="relative aspect-[16/9] w-full bg-zinc-950 overflow-hidden">
-        <Image
+        <NextImage
           src={imgSrc}
           alt={`Portrait of ${hero.localized_name}`}
           fill

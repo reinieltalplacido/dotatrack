@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import Image from "next/image";
+import NextImage from "next/image";
 import {
   HeroCompendiumPayload,
 } from "@/lib/opendota/hero-types";
@@ -427,7 +427,7 @@ export function HeroCompendium({ initialData }: HeroCompendiumProps) {
                     title={h.localized_name}
                     className="relative h-8 w-11 rounded-sm overflow-hidden border-2 border-black bg-zinc-900"
                   >
-                    <Image
+                    <NextImage
                       src={h.img}
                       alt={h.localized_name}
                       fill

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import NextImage from "next/image";
 import {
   EnrichedHeroSummary,
   PrimaryAttrType,
@@ -248,7 +248,7 @@ export function HeroMatrixComparison({
             {hoveredHero && (
               <div className="absolute bottom-4 left-4 z-40 p-3 rounded-sm bg-black/90 border border-white/20 backdrop-blur shadow-2xl flex items-center gap-3">
                 <div className="relative h-10 w-14 rounded overflow-hidden border border-white/10 flex-shrink-0">
-                  <Image
+                  <NextImage
                     src={hoveredHero.img}
                     alt={hoveredHero.localized_name}
                     fill
@@ -375,7 +375,7 @@ export function HeroMatrixComparison({
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             <div className="relative h-7 w-11 rounded overflow-hidden flex-shrink-0 bg-zinc-900 border border-white/10">
-                              <Image
+                              <NextImage
                                 src={hero.img}
                                 alt={hero.localized_name}
                                 fill
