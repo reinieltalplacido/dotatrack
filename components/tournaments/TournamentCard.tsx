@@ -12,10 +12,19 @@ export function TournamentCard({ tournament }: TournamentCardProps) {
   const isLive = tournament.status === "live";
   const isUpcoming = tournament.status === "upcoming";
 
+  const cleanTitle = tournament.name
+    .replace(/\s*[-–—:]?\s*(western europe|eastern europe|southeast asia|south america|north america|china|europe|cis|sea|weu|eeu|sa|na|cn)\s*(closed|open)?\s*qualif(ier)?(s)?\b/gi, "")
+    .replace(/\s*[-–—:]?\s*(closed|open)?\s*qualif(ier)?(s)?\b/gi, "")
+    .replace(/\s*qualifier(s)?/gi, "")
+    .replace(/\s*qualifs/gi, "")
+    .replace(/[-–—:]+$/, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
   return (
     <Link
       href={`/tournaments/${tournament.id}`}
-      aria-label={`View tournament ${tournament.name}`}
+      aria-label={`View tournament ${cleanTitle}`}
       className="group relative flex flex-col justify-between rounded-sm border border-white/[0.08] bg-[#0D0F18] p-5 transition-all duration-200 hover:border-rose-500/50 hover:bg-[#121422] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
     >
       <div>
@@ -47,7 +56,7 @@ export function TournamentCard({ tournament }: TournamentCardProps) {
 
         {/* Tournament Name */}
         <h3 className="font-mono text-base font-bold text-white group-hover:text-rose-400 transition-colors line-clamp-2 mb-2">
-          {tournament.name}
+          {cleanTitle}
         </h3>
 
         {/* Organizer & Region */}

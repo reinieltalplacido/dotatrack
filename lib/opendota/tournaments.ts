@@ -222,6 +222,22 @@ const PREMIER_METADATA: Record<string, PremierTournamentMeta> = {
 };
 
 /**
+ * Normalizes tournament names by removing qualifier labels so the main championship title is displayed.
+ * e.g., "DreamLeague Season 30 Qualifiers" -> "DreamLeague Season 30"
+ */
+export function normalizeTournamentName(rawName: string): string {
+  if (!rawName) return "Dota 2 Championship";
+  return rawName
+    .replace(/\s*[-–—:]?\s*(western europe|eastern europe|southeast asia|south america|north america|china|europe|cis|sea|weu|eeu|sa|na|cn)\s*(closed|open)?\s*qualif(ier)?(s)?\b/gi, "")
+    .replace(/\s*[-–—:]?\s*(closed|open)?\s*qualif(ier)?(s)?\b/gi, "")
+    .replace(/\s*qualifier(s)?/gi, "")
+    .replace(/\s*qualifs/gi, "")
+    .replace(/[-–—:]+$/, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/**
  * Finds enrichment metadata based on tournament title.
  */
 function getTournamentEnrichment(name: string): PremierTournamentMeta {
@@ -347,7 +363,10 @@ export async function fetchTournamentsList(): Promise<TournamentsCatalogPayload>
       status = "upcoming";
     }
 
+    const cleanName = normalizeTournamentName(l.name);
     const tier: TournamentTier =
+      enrichment.numericPrizePool >= 500000 ||
+      cleanName.toLowerCase().includes("dreamleague") ||
       l.tier === "premium"
         ? "premium"
         : l.tier === "amateur"
@@ -356,7 +375,7 @@ export async function fetchTournamentsList(): Promise<TournamentsCatalogPayload>
 
     return {
       id: l.leagueid,
-      name: l.name.trim(),
+      name: cleanName,
       tier,
       status,
       startDate: activity?.latestTime
@@ -373,7 +392,7 @@ export async function fetchTournamentsList(): Promise<TournamentsCatalogPayload>
       organizer: enrichment.organizer,
       officialWebsite: enrichment.officialWebsite,
       isFeatured: Boolean(enrichment.isFeatured && (status === "live" || status === "upcoming")),
-      description: `Official Valve Dota 2 esports circuit tournament for ${l.name}.`,
+      description: `Official Valve Dota 2 esports circuit tournament for ${cleanName}.`,
     };
   });
 
@@ -484,7 +503,7 @@ function processLiveAndProMatches(
     result.push({
       match_id: m.match_id,
       league_id: m.leagueid,
-      league_name: m.league_name || "Pro Circuit",
+      league_name: m.league_name ? normalizeTournamentName(m.league_name) : "Pro Circuit",
       is_live: false,
       start_time: m.start_time,
       radiant_team: {
@@ -607,12 +626,17 @@ export async function fetchTournamentDetail(leagueId: number): Promise<Tournamen
       rank: index + 1,
     }));
 
+  const cleanName = normalizeTournamentName(rawLeague.name);
   const enrichment = getTournamentEnrichment(rawLeague.name);
+  const isPremierTier =
+    enrichment.numericPrizePool >= 500000 ||
+    cleanName.toLowerCase().includes("dreamleague") ||
+    rawLeague.tier === "premium";
 
   const tournament: TournamentSummary = {
     id: rawLeague.leagueid,
-    name: rawLeague.name.trim(),
-    tier: rawLeague.tier === "premium" ? "premium" : "professional",
+    name: cleanName,
+    tier: isPremierTier ? "premium" : "professional",
     status: rawMatches.length > 0 ? "completed" : "upcoming",
     startDate: matches.length > 0 ? new Date(matches[matches.length - 1].start_time * 1000).toISOString() : null,
     endDate: matches.length > 0 ? new Date(matches[0].start_time * 1000).toISOString() : null,
@@ -625,7 +649,7 @@ export async function fetchTournamentDetail(leagueId: number): Promise<Tournamen
     logo: enrichment.logo || null,
     organizer: enrichment.organizer,
     officialWebsite: enrichment.officialWebsite,
-    description: `Complete Dota 2 competitive telemetry dossier for ${rawLeague.name}.`,
+    description: `Complete Dota 2 competitive telemetry dossier for ${cleanName}.`,
   };
 
   return {

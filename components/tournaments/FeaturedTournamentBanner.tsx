@@ -11,6 +11,23 @@ interface FeaturedTournamentBannerProps {
 export function FeaturedTournamentBanner({ tournament }: FeaturedTournamentBannerProps) {
   const isLive = tournament.status === "live";
 
+  const cleanTitle = tournament.name
+    .replace(/\s*[-–—:]?\s*(western europe|eastern europe|southeast asia|south america|north america|china|europe|cis|sea|weu|eeu|sa|na|cn)\s*(closed|open)?\s*qualif(ier)?(s)?\b/gi, "")
+    .replace(/\s*[-–—:]?\s*(closed|open)?\s*qualif(ier)?(s)?\b/gi, "")
+    .replace(/\s*qualifier(s)?/gi, "")
+    .replace(/\s*qualifs/gi, "")
+    .replace(/[-–—:]+$/, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  const cleanDesc =
+    tournament.description
+      ?.replace(/\s*[-–—:]?\s*(closed|open)?\s*qualifier(s)?/gi, "")
+      .replace(/\s*qualifs/gi, "")
+      .replace(/\s+/g, " ")
+      .trim() ||
+    `Official Valve & ESL competitive circuit championship for ${cleanTitle}.`;
+
   return (
     <div className="relative rounded-sm border border-rose-500/30 bg-gradient-to-r from-[#140A10] via-[#0E1019] to-[#0A0B12] p-6 sm:p-8 overflow-hidden shadow-2xl mb-8">
       {/* Background Ambience & Grid Pattern */}
@@ -46,12 +63,11 @@ export function FeaturedTournamentBanner({ tournament }: FeaturedTournamentBanne
 
           {/* Tournament Title */}
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-mono font-black text-white tracking-tight">
-            {tournament.name}
+            {cleanTitle}
           </h2>
 
           <p className="text-xs sm:text-sm font-mono text-zinc-400 leading-relaxed max-w-2xl">
-            {tournament.description ||
-              `Official Valve competitive circuit championship featuring elite international teams.`}
+            {cleanDesc}
           </p>
 
           {/* Key Facts Pill Grid */}
