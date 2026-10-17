@@ -1,47 +1,78 @@
+import { Metadata } from "next";
+import { connection } from "next/server";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { TrendingUp, Construction } from "lucide-react";
+import { MetaTrendsDashboard } from "@/components/meta/MetaTrendsDashboard";
+import { getMetaTrendsData } from "@/lib/opendota/meta-snapshots";
+import { AlertCircle, RefreshCw, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
-export const metadata = {
-  title: "Meta Trends — DotaTrack",
-  description: "Dota 2 patch meta trends, tier lists, ban rates, and win rate shifts.",
+export const metadata: Metadata = {
+  title: "Meta Trends & Win Rate Analytics — DotaTrack",
+  description:
+    "Analyze live Dota 2 hero meta performance, rank bracket win rates, verified tier lists, and historical shifts across competitive matchmaking.",
 };
 
-export default function MetaTrendsPage() {
-  return (
-    <div className="min-h-screen bg-[#08090C] text-[#EDEDF0] flex flex-col">
-      <Navbar />
+export default async function MetaTrendsPage() {
+  await connection();
 
-      <main className="flex-1 flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8">
-        <div className="tactical-panel max-w-xl w-full p-8 text-center rounded-sm border border-white/[0.08] shadow-2xl">
-          <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-emerald-950/60 border border-emerald-500/40 text-emerald-400 mb-5">
-            <TrendingUp className="h-8 w-8" />
+  try {
+    const data = await getMetaTrendsData("all");
+
+    return (
+      <div className="min-h-screen bg-[#08090C] text-[#EDEDF0] flex flex-col font-sans">
+        <Navbar />
+        <main className="flex-1 esports-grid">
+          <MetaTrendsDashboard initialData={data} />
+        </main>
+        <Footer />
+      </div>
+    );
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "Failed to load meta trends data";
+
+    return (
+      <div className="min-h-screen bg-[#08090C] text-[#EDEDF0] flex flex-col font-sans">
+        <Navbar />
+        <main className="flex-1 flex items-center justify-center p-6">
+          <div className="tactical-panel max-w-lg w-full p-8 text-center rounded-sm border border-red-800/60 shadow-2xl">
+            <div className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-red-950/60 border border-red-600/40 text-red-400 mb-4">
+              <AlertCircle className="h-7 w-7" />
+            </div>
+
+            <div className="inline-block rounded-sm bg-red-950/80 border border-red-800/60 px-2.5 py-0.5 text-[11px] font-mono text-red-300 uppercase tracking-wider mb-2">
+              [TELEMETRY_UNAVAILABLE]
+            </div>
+
+            <h1 className="text-xl font-mono font-bold text-white mb-2">
+              Meta Telemetry Service Offline
+            </h1>
+
+            <p className="text-xs font-mono text-zinc-400 leading-relaxed mb-6">
+              {message}
+            </p>
+
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <Link
+                href="/meta-trends"
+                className="inline-flex items-center gap-2 rounded-sm bg-rose-600 px-4 py-2 text-xs font-mono font-bold text-white hover:bg-rose-500 transition-colors"
+              >
+                <RefreshCw className="h-3.5 w-3.5" />
+                <span>RETRY TELEMETRY FEED</span>
+              </Link>
+
+              <Link
+                href="/"
+                className="inline-flex items-center gap-2 rounded-sm border border-white/[0.1] bg-zinc-900 px-4 py-2 text-xs font-mono text-zinc-300 hover:text-white transition-colors"
+              >
+                <ArrowLeft className="h-3.5 w-3.5" />
+                <span>BACK TO OVERVIEW</span>
+              </Link>
+            </div>
           </div>
-
-          <div className="inline-flex items-center gap-1.5 rounded-sm bg-emerald-950/80 border border-emerald-800/60 px-2.5 py-0.5 text-[11px] font-mono text-emerald-300 uppercase tracking-wider mb-3">
-            <Construction className="h-3 w-3" />
-            <span>MODULE INITIALIZING</span>
-          </div>
-
-          <h1 className="text-2xl font-mono font-black text-white mb-2">
-            Meta Trends &amp; Win Rate Shifts
-          </h1>
-
-          <p className="text-xs font-mono text-zinc-400 leading-relaxed mb-6">
-            Global matchmaking tier lists, trending hero pick rates, patch 7.37e balance changes, and Immortal bracket calibration stats.
-          </p>
-
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 rounded-sm border border-white/[0.1] bg-zinc-900 px-4 py-2 text-xs font-mono text-zinc-300 hover:text-white hover:border-emerald-500/50 transition-colors"
-          >
-            <span>&larr; BACK TO OVERVIEW</span>
-          </Link>
-        </div>
-      </main>
-
-      <Footer />
-    </div>
-  );
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 }

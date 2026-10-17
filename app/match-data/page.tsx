@@ -1,46 +1,48 @@
+import { Metadata } from "next";
+import { connection } from "next/server";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { Swords, Construction } from "lucide-react";
-import Link from "next/link";
+import { MatchAnalyzerDashboard } from "@/components/match/MatchAnalyzerDashboard";
+import { getMatchAnalysis } from "@/lib/opendota/match-service";
+import { NormalizedMatchData } from "@/lib/opendota/match-types";
 
-export const metadata = {
-  title: "Match Data — DotaTrack",
-  description: "Global Dota 2 match explorer, high-MMR public telemetry, and replay archive.",
+export const metadata: Metadata = {
+  title: "Advanced Match Analyzer — DotaTrack",
+  description:
+    "Detailed Dota 2 match analysis: scoreboards, lane matchups, item timings, ability progressions, gold & XP advantage curves, and teamfight breakdowns.",
 };
 
-export default function MatchDataPage() {
+interface MatchDataPageProps {
+  searchParams: Promise<{ id?: string }>;
+}
+
+const DEFAULT_SAMPLE_MATCH_ID = "9049003291";
+
+export default async function MatchDataPage({ searchParams }: MatchDataPageProps) {
+  await connection();
+
+  const { id } = await searchParams;
+  const targetId = id?.trim() || DEFAULT_SAMPLE_MATCH_ID;
+
+  let initialMatch: NormalizedMatchData | null = null;
+  let initialError: string | null = null;
+
+  try {
+    initialMatch = await getMatchAnalysis(targetId);
+  } catch (err) {
+    console.warn(`[MatchDataPage] Failed to prefetch match ${targetId}:`, err);
+    initialError = err instanceof Error ? err.message : "Failed to load match analysis";
+  }
+
   return (
-    <div className="min-h-screen bg-[#08090C] text-[#EDEDF0] flex flex-col">
+    <div className="min-h-screen bg-[#08090C] text-[#EDEDF0] flex flex-col font-sans">
       <Navbar />
-
-      <main className="flex-1 flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8">
-        <div className="tactical-panel max-w-xl w-full p-8 text-center rounded-sm border border-white/[0.08] shadow-2xl">
-          <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-blue-950/60 border border-blue-500/40 text-blue-400 mb-5">
-            <Swords className="h-8 w-8" />
-          </div>
-
-          <div className="inline-flex items-center gap-1.5 rounded-sm bg-blue-950/80 border border-blue-800/60 px-2.5 py-0.5 text-[11px] font-mono text-blue-300 uppercase tracking-wider mb-3">
-            <Construction className="h-3 w-3" />
-            <span>MODULE INITIALIZING</span>
-          </div>
-
-          <h1 className="text-2xl font-mono font-black text-white mb-2">
-            Global Match Data Explorer
-          </h1>
-
-          <p className="text-xs font-mono text-zinc-400 leading-relaxed mb-6">
-            Search individual match IDs, inspect teamfight item progression timelines, gold advantage graphs, and parsed combat telemetry.
-          </p>
-
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 rounded-sm border border-white/[0.1] bg-zinc-900 px-4 py-2 text-xs font-mono text-zinc-300 hover:text-white hover:border-blue-500/50 transition-colors"
-          >
-            <span>&larr; BACK TO OVERVIEW</span>
-          </Link>
-        </div>
+      <main className="flex-1 esports-grid">
+        <MatchAnalyzerDashboard
+          initialMatch={initialMatch}
+          initialError={initialError}
+        />
       </main>
-
       <Footer />
     </div>
   );

@@ -1,0 +1,1402 @@
+{
+  "4": {
+    "id": 4,
+    "name": "EHOME",
+    "tag": "EHOME",
+    "logo_url": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/4.png",
+    "rating": 1224.01
+  },
+  "5": {
+    "id": 5,
+    "name": "Invictus Gaming",
+    "tag": "iG",
+    "logo_url": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/5.png",
+    "rating": 1370.17
+  },
+  "15": {
+    "id": 15,
+    "name": "LGD Gaming",
+    "tag": "LGD",
+    "logo_url": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/15.png",
+    "rating": 1311.25
+  },
+  "36": {
+    "id": 36,
+    "name": "Natus Vincere",
+    "tag": "NAVI",
+    "logo_url": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/36.png",
+    "rating": 1336.13
+  },
+  "38": {
+    "id": 38,
+    "name": "FnaticRaidCall",
+    "tag": "Fntc",
+    "logo_url": null,
+    "rating": 1221.52
+  },
+  "39": {
+    "id": 39,
+    "name": "Shopify Rebellion",
+    "tag": "SR",
+    "logo_url": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/39.png",
+    "rating": 1218.11
+  },
+  "41": {
+    "id": 41,
+    "name": "4 Friends + Chrillee",
+    "tag": "4FC",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/706274505311787193/24FA17D5019799AF118AEB4469DDB76D69A66F63/",
+    "rating": 1265.47
+  },
+  "67": {
+    "id": 67,
+    "name": "paiN Gaming",
+    "tag": "paiN",
+    "logo_url": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/67.png",
+    "rating": 1239.42
+  },
+  "166": {
+    "id": 166,
+    "name": "Scenario",
+    "tag": "",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/1832407370390600391/4B8EDF6460D5D3210412F6CFC2CBE3764DE863C1/",
+    "rating": 1206.59
+  },
+  "2163": {
+    "id": 2163,
+    "name": "Team Liquid",
+    "tag": "Liquid",
+    "logo_url": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/2163.png",
+    "rating": 1330.18
+  },
+  "293390": {
+    "id": 293390,
+    "name": "Radical Online X-tremists",
+    "tag": "RoX.KIS",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/921253447668725714/13C7456AA325AD7AC03DC7D117483E8DBDAD5486/",
+    "rating": 1299.25
+  },
+  "416900": {
+    "id": 416900,
+    "name": "Orange.Neolution Esports",
+    "tag": "Orange",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/612760050488516720/DF0EE7F44746239DBA83B8F4537758ECBB51655E/",
+    "rating": 1263.97
+  },
+  "543897": {
+    "id": 543897,
+    "name": "Mineski",
+    "tag": "Mineski",
+    "logo_url": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/543897.png",
+    "rating": 1319.2
+  },
+  "999689": {
+    "id": 999689,
+    "name": "Titan",
+    "tag": "Titan",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/612798094497099775/B31FD08745284986F02B3FE04021574F964D9FA1/",
+    "rating": 1332.07
+  },
+  "1025734": {
+    "id": 1025734,
+    "name": "LUCCINI GAM1NG",
+    "tag": "Luccini",
+    "logo_url": null,
+    "rating": 1213.98
+  },
+  "1047281": {
+    "id": 1047281,
+    "name": "Speed Gaming International",
+    "tag": "SPG.int",
+    "logo_url": null,
+    "rating": 1268.72
+  },
+  "1059824": {
+    "id": 1059824,
+    "name": "Dream time.",
+    "tag": "DT",
+    "logo_url": null,
+    "rating": 1226.4
+  },
+  "1079149": {
+    "id": 1079149,
+    "name": "SIGMA.int",
+    "tag": "SIGMA",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/1047377791103893273/2F86EB8DE06754907CD316B5DD5D4BE9FC8B1F8A/",
+    "rating": 1204.62
+  },
+  "1087145": {
+    "id": 1087145,
+    "name": "Osliki Gaming",
+    "tag": "OsG",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/594766568879356896/536D5835599DC8A99ABF3D224D6D2B894905E9EB/",
+    "rating": 1218.58
+  },
+  "1271771": {
+    "id": 1271771,
+    "name": "Zero Latitude",
+    "tag": "ZL",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/430448599226110019/41D8B7F02B76DD15E16D40E9C1CC8736D4867E06/",
+    "rating": 1219.4
+  },
+  "1277104": {
+    "id": 1277104,
+    "name": "Nvidia.ArrowGaming.AVF",
+    "tag": "Arrow",
+    "logo_url": null,
+    "rating": 1224.86
+  },
+  "1283482": {
+    "id": 1283482,
+    "name": "Scythe.SG-",
+    "tag": "SCYTHE",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/469812062884140883/C9EDFEDE46BCAC0F1C16A5A3196D6947654FE664/",
+    "rating": 1215.77
+  },
+  "1286339": {
+    "id": 1286339,
+    "name": "Arizona Iced Out Boys",
+    "tag": "sad",
+    "logo_url": null,
+    "rating": 1214.07
+  },
+  "1333179": {
+    "id": 1333179,
+    "name": "",
+    "tag": "",
+    "logo_url": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/1333179.png",
+    "rating": 1217.77
+  },
+  "1370482": {
+    "id": 1370482,
+    "name": "Doggy Team",
+    "tag": "DOG",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/3280049265377219538/69DDD415F33497854C4EA35A2A96E817E88C0F74/",
+    "rating": 1203.18
+  },
+  "1531850": {
+    "id": 1531850,
+    "name": "North American Rejects",
+    "tag": "NAR",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/598160756144927455/E850C4122F42BB762134853C301E4085A1580B19/",
+    "rating": 1206.3
+  },
+  "1556884": {
+    "id": 1556884,
+    "name": "AftershockGaming Int.",
+    "tag": "aShock",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/776056112971508921/DF725FB62C1B052CE52381747AE7C296A65A4051/",
+    "rating": 1246.88
+  },
+  "1773539": {
+    "id": 1773539,
+    "name": "Battle Zone-",
+    "tag": "Bz",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/528385406419881229/5C6A83090C1C1EFD3818475F1A834DB28D1669FD/",
+    "rating": 1216.94
+  },
+  "1803996": {
+    "id": 1803996,
+    "name": "NAM VEZET-MI IGRAEM",
+    "tag": "NVMI",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/575652270942579148/9B38BEC3BEDEE0E300138929E3C802FA9F5ACDCB/",
+    "rating": 1233.22
+  },
+  "1820360": {
+    "id": 1820360,
+    "name": "TEAMERINO TINKERINO",
+    "tag": "TT",
+    "logo_url": null,
+    "rating": 1310.36
+  },
+  "1836806": {
+    "id": 1836806,
+    "name": "the wings gaming",
+    "tag": "Wings",
+    "logo_url": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/1836806.png",
+    "rating": 1225.36
+  },
+  "1848158": {
+    "id": 1848158,
+    "name": "LV-Gaming",
+    "tag": "Lv",
+    "logo_url": null,
+    "rating": 1354.13
+  },
+  "1883502": {
+    "id": 1883502,
+    "name": "Virtus.pro",
+    "tag": "VP",
+    "logo_url": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/1883502.png",
+    "rating": 1262.78
+  },
+  "1910985": {
+    "id": 1910985,
+    "name": "TeamMalaysia",
+    "tag": "MY",
+    "logo_url": null,
+    "rating": 1333.34
+  },
+  "2006291": {
+    "id": 2006291,
+    "name": "Lajons",
+    "tag": "",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/541884168947857532/A265E0462753D3981E33961066F897E7C1E6AFDC/",
+    "rating": 1273.27
+  },
+  "2006913": {
+    "id": 2006913,
+    "name": "Vega Squadron",
+    "tag": "Vega",
+    "logo_url": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/2006913.png",
+    "rating": 1227.67
+  },
+  "2101260": {
+    "id": 2101260,
+    "name": "BigGooooood",
+    "tag": "BG",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/53249782181410639/A754634D7F2CA2B33322789ED2EBB953DADEEDA5/",
+    "rating": 1390.3
+  },
+  "2108395": {
+    "id": 2108395,
+    "name": "TNC Predator",
+    "tag": "TNC",
+    "logo_url": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/2108395.png",
+    "rating": 1251.74
+  },
+  "2519319": {
+    "id": 2519319,
+    "name": "(monkey) Business",
+    "tag": "(monkey)",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/383162071968605685/B670804CDB13F184D122ACBB8F75E2DB2C959CAF/",
+    "rating": 1404.49
+  },
+  "2526472": {
+    "id": 2526472,
+    "name": "$5JuNGz$",
+    "tag": "$5JuNGz$",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/620723145147160586/09F1EF05604FC45B22E2B5986715441FB8FCA786/",
+    "rating": 1282.18
+  },
+  "2552118": {
+    "id": 2552118,
+    "name": "FTD club a",
+    "tag": "FTD.a",
+    "logo_url": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/2552118.png",
+    "rating": 1217.79
+  },
+  "2555665": {
+    "id": 2555665,
+    "name": "Archon Dota",
+    "tag": "Archon",
+    "logo_url": null,
+    "rating": 1204.8
+  },
+  "2576071": {
+    "id": 2576071,
+    "name": "Yellow Submarine",
+    "tag": "YeS",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2506900380361558769/01D7A1FC1156B0550B4EF9EA2A3A2AF84D9BF884/",
+    "rating": 1226.09
+  },
+  "2586976": {
+    "id": 2586976,
+    "name": "OG",
+    "tag": "OG",
+    "logo_url": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/2586976.png",
+    "rating": 1294.5
+  },
+  "2621843": {
+    "id": 2621843,
+    "name": "Team. Spirit",
+    "tag": "TSpirit",
+    "logo_url": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/2621843.png",
+    "rating": 1255.58
+  },
+  "2635099": {
+    "id": 2635099,
+    "name": "CDEC.Y",
+    "tag": "",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/266100190168033440/3164343438ECC6AB8E76D0B59349F00CC4034296/",
+    "rating": 1273.14
+  },
+  "2640099": {
+    "id": 2640099,
+    "name": "Shazam~",
+    "tag": "Shazam",
+    "logo_url": "https://steamusercontent-a.akamaihd.net/ugc/352770708586900243/F4F65117024751E46AA8696E8B41B5799F984EF7/",
+    "rating": 1256.3
+  },
+  "2642171": {
+    "id": 2642171,
+    "name": "Team AD FINEM",
+    "tag": "AF",
+    "logo_url": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/2642171.png",
+    "rating": 1205.81
+  },
+  "2714312": {
+    "id": 2714312,
+    "name": "Aggressive 5",
+    "tag": "A5",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/395581850125148530/0A70A5AE02043F47BBF2DF70FDD698F3602D39B8/",
+    "rating": 1210.31
+  },
+  "2777247": {
+    "id": 2777247,
+    "name": "",
+    "tag": "",
+    "logo_url": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/2777247.png",
+    "rating": 1264.59
+  },
+  "2780729": {
+    "id": 2780729,
+    "name": "G.star",
+    "tag": "GS",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/455236803146988180/37D5285DC80FFBEDF84FD0347ADE2E89A4E29731/",
+    "rating": 1212.09
+  },
+  "2789717": {
+    "id": 2789717,
+    "name": "Polarity Dota 2",
+    "tag": "Polarity",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/290853501095454898/DEF7A669784898DFDAC5B3C92816FEC8D1DA4785/",
+    "rating": 1219.54
+  },
+  "2790766": {
+    "id": 2790766,
+    "name": "",
+    "tag": "",
+    "logo_url": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/2790766.png",
+    "rating": 1245.44
+  },
+  "3214108": {
+    "id": 3214108,
+    "name": "Team NP",
+    "tag": "NP",
+    "logo_url": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/3214108.png",
+    "rating": 1416.16
+  },
+  "3260216": {
+    "id": 3260216,
+    "name": "Team HighGround",
+    "tag": "HG",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/860608186751615683/A98EFE34990C8B66694B0F23FC22E3A6E0F60A70/",
+    "rating": 1203.32
+  },
+  "3326126": {
+    "id": 3326126,
+    "name": "Team VG.J",
+    "tag": "VG.J",
+    "logo_url": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/3326126.png",
+    "rating": 1267.92
+  },
+  "3326680": {
+    "id": 3326680,
+    "name": "Horde",
+    "tag": "Horde",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/253716559970590297/28D42322E370E42F0A371025990F4633C4909FDD/",
+    "rating": 1215.32
+  },
+  "3326875": {
+    "id": 3326875,
+    "name": "Faceless",
+    "tag": "fL",
+    "logo_url": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/3326875.png",
+    "rating": 1283.91
+  },
+  "3332295": {
+    "id": 3332295,
+    "name": "Friends",
+    "tag": "Friends",
+    "logo_url": "https://steamusercontent-a.akamaihd.net/ugc/172662099982618634/E9F11AE27B2DA56D749DF996FB687ED583806241/",
+    "rating": 1227.54
+  },
+  "3580606": {
+    "id": 3580606,
+    "name": "SG e-sports",
+    "tag": "SG",
+    "logo_url": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/3580606.png",
+    "rating": 1219.37
+  },
+  "3586078": {
+    "id": 3586078,
+    "name": "Geek Fam",
+    "tag": "GeekFam",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2011450519782421256/C72214A86E6C450DA8CF1A18AE9539B5CAEE7D45/",
+    "rating": 1244.49
+  },
+  "3722973": {
+    "id": 3722973,
+    "name": "Team Onyx",
+    "tag": "Onyx",
+    "logo_url": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/3722973.png",
+    "rating": 1266.09
+  },
+  "3922738": {
+    "id": 3922738,
+    "name": " Thunder Awaken ///",
+    "tag": "Thunder",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/170412655661567888/FEF408443C2CA8AB1953CFA3E530AB9D5EE7ADB7/",
+    "rating": 1308.01
+  },
+  "4251435": {
+    "id": 4251435,
+    "name": "w33ha earthspirit",
+    "tag": "",
+    "logo_url": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/4251435.png",
+    "rating": 1327.81
+  },
+  "4288603": {
+    "id": 4288603,
+    "name": "Rock.Young",
+    "tag": "Rock.Y",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/924796104665763830/965117DF684B6E3801028E33DF02B8528A18E752/",
+    "rating": 1240.07
+  },
+  "4372042": {
+    "id": 4372042,
+    "name": "Team Freedom",
+    "tag": "Freedom",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/788539568429905171/E19817F8B3BFA2F8CDB6F6694F9E024391E82CA0/",
+    "rating": 1204.72
+  },
+  "4425527": {
+    "id": 4425527,
+    "name": "Geek Fam",
+    "tag": "GeekFam",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/770525551623882955/0C4DB2D2430056E2E887CFCB3DD77567F5DE8EE5/",
+    "rating": 1220.36
+  },
+  "4593831": {
+    "id": 4593831,
+    "name": "Planet Dog",
+    "tag": "",
+    "logo_url": "https://steamusercontent-a.akamaihd.net/ugc/836958712904758112/869204355A15C4FF851DE8FBB51CB5456F0FFA20/",
+    "rating": 1201.31
+  },
+  "5017210": {
+    "id": 5017210,
+    "name": "Team Resilience",
+    "tag": "Resilience",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/14326265454983833183/734A1D8A0938380A48221CDAE1AACB0C5C0AB585/",
+    "rating": 1298.18
+  },
+  "5026801": {
+    "id": 5026801,
+    "name": "",
+    "tag": "",
+    "logo_url": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/5026801.png",
+    "rating": 1404.45
+  },
+  "5027210": {
+    "id": 5027210,
+    "name": "VGJ Thunder",
+    "tag": "VGJ.T",
+    "logo_url": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/5027210.png",
+    "rating": 1287.92
+  },
+  "5167450": {
+    "id": 5167450,
+    "name": "boths",
+    "tag": "",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/18181422250618603138/E2EDBD5B7AADCE7CE6581989EBE1526F6F203B55/",
+    "rating": 1216.25
+  },
+  "5228654": {
+    "id": 5228654,
+    "name": "VGJ Storm",
+    "tag": "VGJ.Storm",
+    "logo_url": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/5228654.png",
+    "rating": 1433
+  },
+  "5229127": {
+    "id": 5229127,
+    "name": "Winstrike",
+    "tag": "Winstrike",
+    "logo_url": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/5229127.png",
+    "rating": 1231.2
+  },
+  "5466118": {
+    "id": 5466118,
+    "name": "YOSHIMOTO.DETONATOR",
+    "tag": "DTN",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/921424381009057600/F846ED54123BCE31A1DF03A33879A51CA83E3FF6/",
+    "rating": 1234.5
+  },
+  "5994455": {
+    "id": 5994455,
+    "name": "Team Orca",
+    "tag": "Orca",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/947336408508413358/0FB718DDF99BC7ACA9704C76792C76A31FD5A1E8/",
+    "rating": 1198.67
+  },
+  "6189996": {
+    "id": 6189996,
+    "name": "Lotac",
+    "tag": "LOTAC",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/772866954991861623/B62AB6B6CC124B730DC30D1D8A551490E1EBF48A/",
+    "rating": 1201.31
+  },
+  "6209166": {
+    "id": 6209166,
+    "name": "Team Aster",
+    "tag": "Aster",
+    "logo_url": "https://steamusercontent-a.akamaihd.net/ugc/1629730253163462144/FEF15B2B4528E81103DD693E37FD7B6C9BE6B471/",
+    "rating": 1253.1
+  },
+  "6209804": {
+    "id": 6209804,
+    "name": "Antarctic Penguins",
+    "tag": "AP",
+    "logo_url": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/6209804.png",
+    "rating": 1203.91
+  },
+  "6214538": {
+    "id": 6214538,
+    "name": "Newbee",
+    "tag": "Newbee",
+    "logo_url": "https://steamcdn-a.akamaihd.net/apps/dota2/images/team_logos/6214538.png",
+    "rating": 1329.91
+  },
+  "6298307": {
+    "id": 6298307,
+    "name": "The Pango",
+    "tag": "ThePango",
+    "logo_url": "https://steamusercontent-a.akamaihd.net/ugc/940591295026034251/E12A61717FA706FD38EB08A90F5C3C4D475613EF/",
+    "rating": 1218.47
+  },
+  "6378559": {
+    "id": 6378559,
+    "name": "Devil Eyes",
+    "tag": "DE",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/771733253722221121/74FC9DE6D77B7EBD9964FDBC3D43F2D443A1E48B/",
+    "rating": 1257.48
+  },
+  "6382242": {
+    "id": 6382242,
+    "name": "Thunder Predator",
+    "tag": "ThunderP",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/771721592096213701/FB6F45207F9BF03F6D94C1C515DACD45A9C33411/",
+    "rating": 1309.9
+  },
+  "6382740": {
+    "id": 6382740,
+    "name": "Royal",
+    "tag": "Royal",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/937206137839516292/51F476E62579AA097D2035B9BECC8ADB827660CF/",
+    "rating": 1253.37
+  },
+  "6666989": {
+    "id": 6666989,
+    "name": "Chaos Esports Club",
+    "tag": "CHAOS",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/967615741400119713/CE2F84E2109A30E7726191C7A574756407478ECE/",
+    "rating": 1217.66
+  },
+  "6685591": {
+    "id": 6685591,
+    "name": "ViKin.gg",
+    "tag": "Vikin.gg",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/1628571207900914834/9A093A05B2DDED488984470F0FADEFDE1F5EDE9F/",
+    "rating": 1233.65
+  },
+  "6904594": {
+    "id": 6904594,
+    "name": "TEAM TEAM",
+    "tag": "tt",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/941705094013048629/255CE8E5D541EE17F1851A13802EA56B7E8E0124/",
+    "rating": 1205.14
+  },
+  "6951036": {
+    "id": 6951036,
+    "name": "Cignal Ultra Warriors",
+    "tag": "CUW",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/1649964989855561528/65E8E2799787201DB9BB4DE498EFC7888E31F2C8/",
+    "rating": 1207.62
+  },
+  "6953913": {
+    "id": 6953913,
+    "name": "FlyToMoon",
+    "tag": "FTM",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/916953413384701477/58A15D27D05A5051190589BBED3CDD362AFC3C86/",
+    "rating": 1345.31
+  },
+  "7118032": {
+    "id": 7118032,
+    "name": "Winstrike Team",
+    "tag": "Winstrike",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/789748832053588401/447AE24D04DB1E105B26197B8716D702A740F310/",
+    "rating": 1237.08
+  },
+  "7119388": {
+    "id": 7119388,
+    "name": "Team Spirit",
+    "tag": "TSpirit",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/1839179120711951766/CD7E0885CB527334205CC7885E9C101B7BC17702/",
+    "rating": 1511.03
+  },
+  "7203342": {
+    "id": 7203342,
+    "name": "Chaos EC",
+    "tag": "CHAOS",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/785254538964288557/60C71B6F83A686A41F3AC5455A70D930B92C41F0/",
+    "rating": 1286.31
+  },
+  "7405754": {
+    "id": 7405754,
+    "name": "Positive Guys",
+    "tag": "PG",
+    "logo_url": "https://steamusercontent-a.akamaihd.net/ugc/766098228974731217/3D71569580889E44075A700A836DCC0BA86F1160/",
+    "rating": 1261.03
+  },
+  "7424172": {
+    "id": 7424172,
+    "name": "T1",
+    "tag": "T1",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/773981969136635863/BE28F059BD864F4820323DE5DDD864D4C353CA87/",
+    "rating": 1260.29
+  },
+  "7553952": {
+    "id": 7553952,
+    "name": "Chicken Fighters !",
+    "tag": "ChFight!",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/769486732001897391/E5A91F8FB5ACFE3BC4DF89158B318C4D34960F80/",
+    "rating": 1287.31
+  },
+  "7554697": {
+    "id": 7554697,
+    "name": "Nigma Galaxy",
+    "tag": "NGX",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/1827894588975105240/421C0D8318D71D5DD31FD08A7933AB622AE26590/",
+    "rating": 1403.21
+  },
+  "7555613": {
+    "id": 7555613,
+    "name": "OG.Seed",
+    "tag": "OG.S",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/1004809121655041802/D9C893AC4F6CF2DA59CB22CF7FE1885133389F9A/",
+    "rating": 1266
+  },
+  "7653600": {
+    "id": 7653600,
+    "name": "Aggressive Mode",
+    "tag": "A-Mode",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/793133917198591097/2372880E304EFDBEFE73D101E54C0A34D9AA8612/",
+    "rating": 1202.18
+  },
+  "7681441": {
+    "id": 7681441,
+    "name": "business associates",
+    "tag": "business",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/789755010916561479/354F9DF6125FE48FC70FF8588985EF77E8CDDAAE/",
+    "rating": 1226.87
+  },
+  "7748744": {
+    "id": 7748744,
+    "name": "CR4ZY",
+    "tag": "CR4ZY",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/777372824325330501/0203F5435560EFC32DDBB0B7D170ECF50CCD3BE6/",
+    "rating": 1279.02
+  },
+  "7806386": {
+    "id": 7806386,
+    "name": "Quincy Crew",
+    "tag": "",
+    "logo_url": null,
+    "rating": 1244.96
+  },
+  "7819701": {
+    "id": 7819701,
+    "name": "VP.Prodigy",
+    "tag": "VP.P",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/1009310639742423917/9175453DE6C700E0CC6D547F437B4819F1144A1A/",
+    "rating": 1384.28
+  },
+  "7959677": {
+    "id": 7959677,
+    "name": "Cow boys",
+    "tag": "Coy boys",
+    "logo_url": null,
+    "rating": 1201.52
+  },
+  "8021940": {
+    "id": 8021940,
+    "name": "New Esports",
+    "tag": "NEW",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/1048723493300485230/77C98B21711C5D6981D6964A17F024EEC8674743/",
+    "rating": 1215.6
+  },
+  "8062847": {
+    "id": 8062847,
+    "name": "Galaxy Racer Esports",
+    "tag": "GXR",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/1768194395980957182/F98E05970A8BB8574785B80B004EF148D6F589B7/",
+    "rating": 1240.24
+  },
+  "8086218": {
+    "id": 8086218,
+    "name": "TEAM BRASIL",
+    "tag": "BR",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/1494586360945844832/05E4DDCA25CA313396FFDF01C0D8E65141911E91/",
+    "rating": 1205.84
+  },
+  "8119006": {
+    "id": 8119006,
+    "name": "Among Us",
+    "tag": "AUS",
+    "logo_url": "https://steamusercontent-a.akamaihd.net/ugc/1617311354350013884/6D9A00FEEBF5C70482B1F743EF44EC0764BA4F9F/",
+    "rating": 1261.17
+  },
+  "8121295": {
+    "id": 8121295,
+    "name": "mudgolems",
+    "tag": ".",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/1635325934676609507/8E073AB63209CE73BD08E056B1C6CCE1014B3890/",
+    "rating": 1405.76
+  },
+  "8143502": {
+    "id": 8143502,
+    "name": "4am.小象",
+    "tag": "",
+    "logo_url": "https://steamusercontent-a.akamaihd.net/ugc/1658972492052757763/A6D7CC20DF82E1C48C4B307BF1FD67CA46493AE5/",
+    "rating": 1248.06
+  },
+  "8145157": {
+    "id": 8145157,
+    "name": "Yellow Submarine",
+    "tag": "YeS",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/1648839325588212512/01D7A1FC1156B0550B4EF9EA2A3A2AF84D9BF884/",
+    "rating": 1219.1
+  },
+  "8168562": {
+    "id": 8168562,
+    "name": "INK ICE",
+    "tag": "",
+    "logo_url": "https://steamusercontent-a.akamaihd.net/ugc/1673610911185136184/D03909DFDAC45F9A06E33F42EDE3989BBAD065F7/",
+    "rating": 1280.05
+  },
+  "8169775": {
+    "id": 8169775,
+    "name": "Geek Fam",
+    "tag": "Geek",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2047502867535132722/C72214A86E6C450DA8CF1A18AE9539B5CAEE7D45/",
+    "rating": 1408.73
+  },
+  "8203841": {
+    "id": 8203841,
+    "name": "DestroyItems",
+    "tag": "DI",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/1680367691784130566/110EDF7E5BDD7D305792871B1FC584B52A5794A8/",
+    "rating": 1236.74
+  },
+  "8214850": {
+    "id": 8214850,
+    "name": "BLEED",
+    "tag": "BLEED ",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2295213538402514054/0B50AC73180D7322D099C37682AFF28BE4C4875E/",
+    "rating": 1205.33
+  },
+  "8244493": {
+    "id": 8244493,
+    "name": "Team SMG",
+    "tag": "SMG",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/1856049226625971775/C8540DF2478E5EE8890CD4128DE07176F9FE5FA2/",
+    "rating": 1337.87
+  },
+  "8254400": {
+    "id": 8254400,
+    "name": "beastcoast",
+    "tag": "bc",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2008072595679478968/A080A63C70A5DEA039FBC1AE798EE2570E194606/",
+    "rating": 1302.58
+  },
+  "8255756": {
+    "id": 8255756,
+    "name": "Evil Geniuses",
+    "tag": "EG",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/1983302387907692940/BAA861E234E1BA39D75DF4CB814A5B76D020BED7/",
+    "rating": 1322.96
+  },
+  "8255888": {
+    "id": 8255888,
+    "name": "BETBOOM TEAM",
+    "tag": "BETBOOM",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/9995426432403529725/51E13136D4CCC8C7D8062861541A1D13B8ED87E0/",
+    "rating": 1330.71
+  },
+  "8260983": {
+    "id": 8260983,
+    "name": "TSM",
+    "tag": "TSM",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/1996813186806561034/BC39F0DC131EDC7D7D8A9DCE4933B4A8B0966004/",
+    "rating": 1403.05
+  },
+  "8261234": {
+    "id": 8261234,
+    "name": "CREEPWAVE",
+    "tag": "CREEP",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/1681517831574098379/EDF37F1B1A2A8684DC959A8D0880B70FA6F8C5D2/",
+    "rating": 1237.33
+  },
+  "8261500": {
+    "id": 8261500,
+    "name": "Xtreme Gaming",
+    "tag": "XG",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2402194226059610590/E3CF4B6C4B2CFB974A9B415141E4A37317AD4D80/",
+    "rating": 1251.71
+  },
+  "8261648": {
+    "id": 8261648,
+    "name": "Old G",
+    "tag": "Old.G",
+    "logo_url": "https://steamusercontent-a.akamaihd.net/ugc/2057626457212027024/ADB880F0121D19FD7353B6DCD539D276D88F770C/",
+    "rating": 1205.1
+  },
+  "8261818": {
+    "id": 8261818,
+    "name": "Hellbear Smashers",
+    "tag": "SMASH",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/1745679796967643438/92B0E956ED01D24C679FECED3D23D01EAB1C3048/",
+    "rating": 1291.08
+  },
+  "8282268": {
+    "id": 8282268,
+    "name": "Chadou Fint",
+    "tag": "SF",
+    "logo_url": "https://steamusercontent-a.akamaihd.net/ugc/1764816394006016274/C062CDA27CABC48CFD5DF52459994DCCA43887FE/",
+    "rating": 1211.82
+  },
+  "8291895": {
+    "id": 8291895,
+    "name": "Tundra Esports",
+    "tag": "Tundra",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2031716132171967904/07B168B8063D9B22CDAD53AB421ECAF3D4B2E07E/",
+    "rating": 1377.47
+  },
+  "8310936": {
+    "id": 8310936,
+    "name": "Wayfarers",
+    "tag": "Way",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/1844811606349277848/9115EF5523F852C1EDA27BF1194658188AA197FA/",
+    "rating": 1199.84
+  },
+  "8482814": {
+    "id": 8482814,
+    "name": "Ragdoll",
+    "tag": "Ragdoll",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/1697280262050066254/F18A176DAA613BB8B016AE90F4E8D17BE02AAA63/",
+    "rating": 1220.18
+  },
+  "8514342": {
+    "id": 8514342,
+    "name": "Infamous Uesports",
+    "tag": "Inf.U",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/1691652603942290191/76D5156E3CF7847989185216EEBF36157381CAF9/",
+    "rating": 1212.6
+  },
+  "8571960": {
+    "id": 8571960,
+    "name": "Team Orca",
+    "tag": "Orca",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/1822272203102401273/0DDED0FB4C6EA41DCE3C3DDB25B3D42A40C3C6BB/",
+    "rating": 1377.29
+  },
+  "8574561": {
+    "id": 8574561,
+    "name": "Azure Ray",
+    "tag": "AR",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2298587339939886506/26FF6DD1070476EAF1C69DD30B259FBB197F0256/",
+    "rating": 1231.28
+  },
+  "8597391": {
+    "id": 8597391,
+    "name": "Luna Galaxy",
+    "tag": "LXG",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2038491084577608095/CA67ADB750E3B98E8544FB0CC1D2FF1C9EC27A77/",
+    "rating": 1338.18
+  },
+  "8597976": {
+    "id": 8597976,
+    "name": "Talon",
+    "tag": "TALON",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2028347991408203552/8DC9872DA88071D728A914CE17279959423FA340/",
+    "rating": 1216.28
+  },
+  "8599101": {
+    "id": 8599101,
+    "name": "Gaimin Gladiators",
+    "tag": "GG",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/1850419664501191993/5DAAB68FB5604D29E1792A0F35E74B3FE3F3A026/",
+    "rating": 1321.24
+  },
+  "8605863": {
+    "id": 8605863,
+    "name": "Cloud9",
+    "tag": "C9",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2399941883261718982/81DE19B3FD9737B5F16C725D3FB7E72251BE2A81/",
+    "rating": 1492.34
+  },
+  "8668460": {
+    "id": 8668460,
+    "name": "Blacklist Rivalry ",
+    "tag": "BLR",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2050860821377863997/BAE16F709F0AE46642FAD3366C78FD92FD2FD741/",
+    "rating": 1269.95
+  },
+  "8721219": {
+    "id": 8721219,
+    "name": "Darkside",
+    "tag": "Darkside",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/1845922937363804366/B718AFD0F76379ACDDE28F7512FC91B76C478985/",
+    "rating": 1353.18
+  },
+  "8722443": {
+    "id": 8722443,
+    "name": "Ooredoo Thunders",
+    "tag": "OT",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/1883094124816874766/6F395B569068034041A162578E78E83902E46E83/",
+    "rating": 1276.48
+  },
+  "8728920": {
+    "id": 8728920,
+    "name": "nouns",
+    "tag": "nouns",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/1861686187975269057/6E221E0B04CCB4AEF93A3FDA4DC7873A1BBAFAE2/",
+    "rating": 1238.8
+  },
+  "8750317": {
+    "id": 8750317,
+    "name": "Team Sphinx",
+    "tag": "TSX",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2048607934858898157/B904083AF403DC27F8DC18EA96E2406AEB64BFDA/",
+    "rating": 1214.56
+  },
+  "8761147": {
+    "id": 8761147,
+    "name": "tam_sme",
+    "tag": "tam",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/1830165414580693025/0490CB1A1C9A39BE4735653CDA9DF8270BE26CB8/",
+    "rating": 1325.2
+  },
+  "8894818": {
+    "id": 8894818,
+    "name": "PSG.Quest",
+    "tag": "Quest",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2481004682513190539/324F8847AD21944686DED20FB3E2C0DEA4154AE7/",
+    "rating": 1367.76
+  },
+  "8936210": {
+    "id": 8936210,
+    "name": "Outsiders From CN",
+    "tag": "OFC",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2028342277680788691/B504CC3B01CFEB0201FF7B7CE96F50F61196CE29/",
+    "rating": 1202.28
+  },
+  "8944440": {
+    "id": 8944440,
+    "name": "StoRm",
+    "tag": "StoRm",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2028354481551397489/BA39B32EA6335F75295CDB5E36DCB31D3FC93F77/",
+    "rating": 1260.12
+  },
+  "8962585": {
+    "id": 8962585,
+    "name": "Star Foxes ",
+    "tag": "SF",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2046362392217398188/E6B179AA7B1FAAD9674EE563C044BFDA13502383/",
+    "rating": 1268.57
+  },
+  "8962689": {
+    "id": 8962689,
+    "name": "Star Foxes",
+    "tag": "Star Fox",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2036224757701238372/A6FA8DDA68296D4ED65754301F2C0AEC812321F7/",
+    "rating": 1198.66
+  },
+  "8975678": {
+    "id": 8975678,
+    "name": "Team Sexy",
+    "tag": "Sexy",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2032861231216761354/13C0C97E4F1B758EDAF89B19C45226E68DFEEA52/",
+    "rating": 1232.94
+  },
+  "8980714": {
+    "id": 8980714,
+    "name": "Team Tough",
+    "tag": "TT",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2298586614153129772/34892DA3BE31B7E7E9E4BED828EB54B3A055388A/",
+    "rating": 1264.27
+  },
+  "9017006": {
+    "id": 9017006,
+    "name": "NAVI Junior",
+    "tag": "NAVIj",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2909225722380320/5C6EFC9004093ED29E9B48242DE79418BDDBFE30/",
+    "rating": 1362.24
+  },
+  "9018710": {
+    "id": 9018710,
+    "name": "Holy Grail",
+    "tag": "HG",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2036233631759545038/183C2584681DBC309834BCE5561EA04CDDFFC736/",
+    "rating": 1291.55
+  },
+  "9054352": {
+    "id": 9054352,
+    "name": "Fortnite",
+    "tag": "alt",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/16326258531762154557/88D6A1CB366D006460F6FF183FA8230F26E5C456/",
+    "rating": 1269.12
+  },
+  "9080405": {
+    "id": 9080405,
+    "name": "Team Zero",
+    "tag": "Tz",
+    "logo_url": "https://steamusercontent-a.akamaihd.net/ugc/2384179827551149860/D284923AE9D25AB431DCBF11D0E2CC88C495E00E/",
+    "rating": 1294.13
+  },
+  "9131584": {
+    "id": 9131584,
+    "name": "BB Team",
+    "tag": "BB",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/9393895253468454856/41CF4EBEB359259E56E03AECEF6A7606CF0A076F/",
+    "rating": 1396.46
+  },
+  "9142866": {
+    "id": 9142866,
+    "name": "Business Club",
+    "tag": "bs",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2031737253379162247/A9D128309B9FC2C328AE048CB69E4D07C67BD26C/",
+    "rating": 1380.15
+  },
+  "9187066": {
+    "id": 9187066,
+    "name": "Team Tickles",
+    "tag": "TT",
+    "logo_url": "https://steamusercontent-a.akamaihd.net/ugc/2056510796283092608/8B9AE4B1B129EBBCE213FE917D4B22478B087870/",
+    "rating": 1205.62
+  },
+  "9201870": {
+    "id": 9201870,
+    "name": "ROR",
+    "tag": "ROR",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2076779599437195979/F472FC7B699006A25B505F6AAC6B12CBF1B73DCF/",
+    "rating": 1222.46
+  },
+  "9238717": {
+    "id": 9238717,
+    "name": "Team 13",
+    "tag": "T13",
+    "logo_url": null,
+    "rating": 1229.06
+  },
+  "9247354": {
+    "id": 9247354,
+    "name": "Team Falcons",
+    "tag": "FLCN",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2314350571781870059/2B5C9FE9BA0A2DC303A13261444532AA08352843/",
+    "rating": 1372.26
+  },
+  "9248240": {
+    "id": 9248240,
+    "name": "TeamWaska",
+    "tag": "WaSka",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2376297984889887726/F2376446D05157B080B5D506473EE2F1D43097BF/",
+    "rating": 1282.88
+  },
+  "9255238": {
+    "id": 9255238,
+    "name": "ESTAR_BACKS",
+    "tag": "StarBackus",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2247920665251197227/5D236EEB62190F9B0FC6F25BDA98DDB3EB6A5F0A/",
+    "rating": 1234.11
+  },
+  "9255706": {
+    "id": 9255706,
+    "name": "Aurora.1xBet",
+    "tag": "Aurora",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2362769341411270166/E13C592A0E744E1C386E09DE650BE36B85AE8137/",
+    "rating": 1458.74
+  },
+  "9263388": {
+    "id": 9263388,
+    "name": "The dudley boys",
+    "tag": "",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2240039780382774383/E60E1732900AE3CE26C1BEA0BBE7B85CCB872B8E/",
+    "rating": 1230.01
+  },
+  "9283988": {
+    "id": 9283988,
+    "name": "Invaders",
+    "tag": "INV",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2297462073171121106/5EF06B2A21F8BDFA6E3A99CE45C896E47B05A926/",
+    "rating": 1248.15
+  },
+  "9303484": {
+    "id": 9303484,
+    "name": "HEROIC",
+    "tag": "HEROIC",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2471984170520125054/B066431AF4D322D300DD5180CEC8F6BA0E85A7F5/",
+    "rating": 1330
+  },
+  "9373270": {
+    "id": 9373270,
+    "name": "Night Pulse",
+    "tag": "NP",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2479883856029444185/44A2207BF5B75CADD5B02860CC3D78333E4E1E76/",
+    "rating": 1327.93
+  },
+  "9381131": {
+    "id": 9381131,
+    "name": "Uzumaki",
+    "tag": "uzu",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2466356199630889718/46DF71E78D3B769867F51200FB60F6C692EFFF28/",
+    "rating": 1312.06
+  },
+  "9381678": {
+    "id": 9381678,
+    "name": "Apex Genesis",
+    "tag": "Apex",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2441586999439290451/0F48C94C7A1F1E5FCB4A339E23F52CBEE97D8024/",
+    "rating": 1289.53
+  },
+  "9389381": {
+    "id": 9389381,
+    "name": "Team  KEV",
+    "tag": "KEV",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2527155798055904204/2AEEDAB9C8203A2C066B01850585C6E37589FF9F/",
+    "rating": 1244.48
+  },
+  "9466943": {
+    "id": 9466943,
+    "name": "Team Tea",
+    "tag": "Tea",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2547430415563820852/14C528D0CE511F1534CABBB97EBAECCF0CC22DD0/",
+    "rating": 1233.96
+  },
+  "9467224": {
+    "id": 9467224,
+    "name": "Aurora Gaming",
+    "tag": "Aurora",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/12718684494192239317/812E31EF22D232EFE1F1F147940F3D3BEE55D40D/",
+    "rating": 1404.26
+  },
+  "9467430": {
+    "id": 9467430,
+    "name": "Blacklist International",
+    "tag": "BLCK",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/2541800915846514860/CF1883DC6BFE37EA765A0920324ACE06A410DF63/",
+    "rating": 1208.25
+  },
+  "9482900": {
+    "id": 9482900,
+    "name": "Рязань-ВДВ",
+    "tag": "RZN",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/13741096457434928378/380B5E62BB30028B2BFFAE56DBBC839E5F1B915B/",
+    "rating": 1253.63
+  },
+  "9572001": {
+    "id": 9572001,
+    "name": "TEAM VISION",
+    "tag": "VSN",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/10380389074903512947/5D074799695A862D17D4205285315FE20399B28D/",
+    "rating": 1545.86
+  },
+  "9593895": {
+    "id": 9593895,
+    "name": "Gaozu",
+    "tag": "",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/23175424386899819/25AC5B927B5B194D204BE406F53B3ADB1F2B6E4B/",
+    "rating": 1230.84
+  },
+  "9594647": {
+    "id": 9594647,
+    "name": "PuckChamp",
+    "tag": "PC",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/11915702531314439/4DA6A4535A1B02E092638D7BBF581E9C89508832/",
+    "rating": 1264.95
+  },
+  "9634742": {
+    "id": 9634742,
+    "name": "Chimera Esports",
+    "tag": "CHMR",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/25429846520505742/8CC6F7D4209315AEB9CC55B5224FE95C6E757D91/",
+    "rating": 1414.75
+  },
+  "9640842": {
+    "id": 9640842,
+    "name": "Team Tidebound",
+    "tag": "TT",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/12094940740270677482/9AD05F0A80A562EE4A833375BF1783B52B3D4C30/",
+    "rating": 1292.36
+  },
+  "9691969": {
+    "id": 9691969,
+    "name": "Team Nemesis",
+    "tag": "NMSS",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/16578975333650734744/040492179D9E0E83DA0559848D88CFC17A1EFCAC/",
+    "rating": 1213.54
+  },
+  "9699158": {
+    "id": 9699158,
+    "name": "tearlaments",
+    "tag": "TT",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/13054916969328839/7663A2A47B72EF63B9ACE9860B377CF97B35D98C/",
+    "rating": 1204.25
+  },
+  "9729720": {
+    "id": 9729720,
+    "name": "Virtus.pro",
+    "tag": "VP",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/34447015205836647/F5F0B39A1483B26EFFAB587AC05EE23316821BA7/",
+    "rating": 1245.56
+  },
+  "9744330": {
+    "id": 9744330,
+    "name": "Somos Nós a Justiça",
+    "tag": "SNJ",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/38951882813950031/E0BC702CE1C18CCE5FB7A0BA7C2B006B21C04444/",
+    "rating": 1206.06
+  },
+  "9758040": {
+    "id": 9758040,
+    "name": "Runa Team",
+    "tag": "RT",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/23189918875091243/4CEBD73D73236BCAC62F16D2D432532CC2A5D1F2/",
+    "rating": 1231.31
+  },
+  "9766941": {
+    "id": 9766941,
+    "name": "FLIPSTER TALON",
+    "tag": "FLIPSTRTLN",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/16993496185238442896/AEC83EE01F7ABD5F64CE99CCECC2AD4D9B311221/",
+    "rating": 1353.54
+  },
+  "9798195": {
+    "id": 9798195,
+    "name": "Cyber Goose",
+    "tag": "CG",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/10211157587642124035/8782DBD433A137EAC11039A8B5F60DB1304A971C/",
+    "rating": 1290.01
+  },
+  "9814008": {
+    "id": 9814008,
+    "name": "eSpoiled",
+    "tag": "eSpoiled",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/12151579140932746225/A9E4132B12671244A194F68779793550B1C8C2E8/",
+    "rating": 1244.99
+  },
+  "9823272": {
+    "id": 9823272,
+    "name": "Team Yandex",
+    "tag": "TY",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/17599312477106395083/DEE09659361BE8BDB1438FCFE6BF03C8B62A45F9/",
+    "rating": 1606.38
+  },
+  "9824702": {
+    "id": 9824702,
+    "name": "PARIVISION",
+    "tag": "PV",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/11751543457229798134/1569CC553CB72963C8EC4C3F807EE50DA925BDC2/",
+    "rating": 1520.57
+  },
+  "9885130": {
+    "id": 9885130,
+    "name": "Perú Rejects",
+    "tag": "PERU",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/10976329918721107017/77707BDD58E2B2C3C34D66940EF3E3EF1249F0E2/",
+    "rating": 1299.44
+  },
+  "9885654": {
+    "id": 9885654,
+    "name": "Team Aureus",
+    "tag": "",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/11321842346504571852/C7BE0E4CB4BE1E57E10805C7BFBA48D04410C7DF/",
+    "rating": 1275.83
+  },
+  "9895392": {
+    "id": 9895392,
+    "name": "Virtus.pro",
+    "tag": "VP",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/13061694558372404982/7AC363D410AC6F2F4B016EE7D73B7C266D0113F9/",
+    "rating": 1212.98
+  },
+  "9949210": {
+    "id": 9949210,
+    "name": "loodowolfs",
+    "tag": "lw",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/11925720862554961540/A5FA1F052E6FF631D6D5736B4BD7AB10E3310446/",
+    "rating": 1199.37
+  },
+  "9964962": {
+    "id": 9964962,
+    "name": "GamerLegion",
+    "tag": "GL",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/13245379764580870318/1048428BEFAC87EC1C64E15706A4758A173B5BFB/",
+    "rating": 1242.26
+  },
+  "10108947": {
+    "id": 10108947,
+    "name": "SouthAmericaRejects",
+    "tag": "SAR",
+    "logo_url": null,
+    "rating": 1431.07
+  },
+  "10135834": {
+    "id": 10135834,
+    "name": "TEAM GRIND",
+    "tag": "GrindBack",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/18313019652320109896/09DE0090D6F99C3AF44DA97360CCDAEA1CA7D214/",
+    "rating": 1212.18
+  },
+  "10136133": {
+    "id": 10136133,
+    "name": "Two Move",
+    "tag": "TM",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/14832539996629907250/104CC9C96E6BE157DA1A8E63FB26084539394C70/",
+    "rating": 1243.52
+  },
+  "10136357": {
+    "id": 10136357,
+    "name": "Nigma Galaxy ",
+    "tag": "NGX",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/16959999218725724364/1D334B91A52606CA3E0027832D6F646E2A094391/",
+    "rating": 1355.49
+  },
+  "10144936": {
+    "id": 10144936,
+    "name": "软柿子人身意外饱险",
+    "tag": "上饱险",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/13747572253287912032/634BB7C2CACDB9BCA0EC28C8B1F7E204DBE0D33D/",
+    "rating": 1205.97
+  },
+  "10150413": {
+    "id": 10150413,
+    "name": "Iron Wing",
+    "tag": "IW",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/16903873521422862552/02513782FE03E7A567B8B8955A0DEF415EF2B624/",
+    "rating": 1274.58
+  },
+  "10150538": {
+    "id": 10150538,
+    "name": "LGD Gaming",
+    "tag": "LGD",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/10055782735581672481/2B2BCEA9CC05286D7164E4548A2EB64CDBC77F31/",
+    "rating": 1293.56
+  },
+  "10182357": {
+    "id": 10182357,
+    "name": "1win",
+    "tag": "1win",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/10678669599334676082/E48827F4A163D4D02F817EA3C32166D5F1D5FC98/",
+    "rating": 1294.14
+  },
+  "10232231": {
+    "id": 10232231,
+    "name": "Klim Sani4",
+    "tag": "KS",
+    "logo_url": "https://cdn.steamusercontent.com/ugc/17154379317387244703/A3F526268CFCE8F90DC4AC49D48D69ACE33ACEB5/",
+    "rating": 1218.12
+  }
+}
