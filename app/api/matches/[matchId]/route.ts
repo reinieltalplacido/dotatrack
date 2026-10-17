@@ -15,12 +15,19 @@ export async function GET(request: NextRequest, { params }: Params) {
     );
   }
 
+  const searchParams = request.nextUrl.searchParams;
+  const bypassCache = searchParams.get("refresh") === "true" || searchParams.get("bypassCache") === "true";
+
   try {
-    const data = await getMatchAnalysis(matchId);
+    const data = await getMatchAnalysis(matchId, { bypassCache });
+    const cacheHeader = data.isParsed
+      ? "public, s-maxage=300, stale-while-revalidate=86400"
+      : "no-store, no-cache, must-revalidate";
+
     return NextResponse.json(data, {
       status: 200,
       headers: {
-        "Cache-Control": "public, s-maxage=300, stale-while-revalidate=86400",
+        "Cache-Control": cacheHeader,
       },
     });
   } catch (error: unknown) {

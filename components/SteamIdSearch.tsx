@@ -1,11 +1,28 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
-import { Loader2, AlertCircle, CheckCircle2, ArrowRight, X, Terminal, ExternalLink } from "lucide-react";
+import {
+  Loader2,
+  AlertCircle,
+  ArrowRight,
+  X,
+  Terminal,
+  History,
+  User,
+} from "lucide-react";
 import { validateSteamId, ValidationResult } from "@/lib/validation";
 import { PlayerDashboardData } from "@/lib/opendota/types";
+
+interface RecentPlayerSearch {
+  id: string;
+  name: string;
+  avatarUrl?: string;
+  timestamp: number;
+}
+
+const RECENT_SEARCHES_KEY = "dotatrack_recent_player_searches";
+const MAX_RECENT_SEARCHES = 5;
 
 interface SteamIdSearchProps {
   onSearchSubmit?: (result: ValidationResult) => void;
@@ -18,10 +35,65 @@ export function SteamIdSearch({ onSearchSubmit, autoNavigate = true }: SteamIdSe
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState("QUERYING OPENDOTA...");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [confirmedPlayer, setConfirmedPlayer] = useState<{
-    data: PlayerDashboardData;
-    validation: ValidationResult;
-  } | null>(null);
+  const [recentSearches, setRecentSearches] = useState<RecentPlayerSearch[]>([]);
+
+  // Load recent searches from localStorage on mount
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const stored = localStorage.getItem(RECENT_SEARCHES_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed)) {
+          setRecentSearches(parsed.slice(0, MAX_RECENT_SEARCHES));
+        }
+      }
+    } catch {
+      // Ignore corrupted localStorage data
+    }
+  }, []);
+
+  const saveRecentSearch = (item: RecentPlayerSearch) => {
+    setRecentSearches((prev) => {
+      const filtered = prev.filter((p) => p.id !== item.id);
+      const updated = [item, ...filtered].slice(0, MAX_RECENT_SEARCHES);
+      if (typeof window !== "undefined") {
+        try {
+          localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(updated));
+        } catch (err) {
+          console.warn("Failed to save recent search to localStorage", err);
+        }
+      }
+      return updated;
+    });
+  };
+
+  const handleRemoveRecent = (idToRemove: string, e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    setRecentSearches((prev) => {
+      const updated = prev.filter((p) => p.id !== idToRemove);
+      if (typeof window !== "undefined") {
+        try {
+          localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(updated));
+        } catch {
+          // ignore
+        }
+      }
+      return updated;
+    });
+  };
+
+  const handleClearAllRecent = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    setRecentSearches([]);
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.removeItem(RECENT_SEARCHES_KEY);
+      } catch {
+        // ignore
+      }
+    }
+  };
 
   // Notable Dota 2 Pro Player Public Account IDs
   const proPresets = [
@@ -38,7 +110,6 @@ export function SteamIdSearch({ onSearchSubmit, autoNavigate = true }: SteamIdSe
     if (isLoading) return;
 
     setErrorMessage(null);
-    setConfirmedPlayer(null);
 
     const queryTarget = (directId ?? inputValue).trim();
     const validation = validateSteamId(queryTarget);
@@ -83,10 +154,12 @@ export function SteamIdSearch({ onSearchSubmit, autoNavigate = true }: SteamIdSe
 
       const playerData = responseData as PlayerDashboardData;
 
-      // Show confirmed state with real verified server data
-      setConfirmedPlayer({
-        data: playerData,
-        validation,
+      // Save to recent searches
+      saveRecentSearch({
+        id: String(accountId),
+        name: playerData.proName || playerData.personaname || `Player #${accountId}`,
+        avatarUrl: playerData.avatarUrl || undefined,
+        timestamp: Date.now(),
       });
 
       if (autoNavigate) {
@@ -103,14 +176,12 @@ export function SteamIdSearch({ onSearchSubmit, autoNavigate = true }: SteamIdSe
   const handleSelectPreset = (id: string) => {
     setInputValue(id);
     setErrorMessage(null);
-    setConfirmedPlayer(null);
     handleSearch(undefined, id);
   };
 
   const handleClear = () => {
     setInputValue("");
     setErrorMessage(null);
-    setConfirmedPlayer(null);
   };
 
   return (
@@ -147,7 +218,6 @@ export function SteamIdSearch({ onSearchSubmit, autoNavigate = true }: SteamIdSe
                 onChange={(e) => {
                   setInputValue(e.target.value);
                   if (errorMessage) setErrorMessage(null);
-                  if (confirmedPlayer) setConfirmedPlayer(null);
                 }}
                 disabled={isLoading}
                 placeholder="Enter Steam Account ID or Profile URL..."
@@ -198,81 +268,57 @@ export function SteamIdSearch({ onSearchSubmit, autoNavigate = true }: SteamIdSe
           </div>
         )}
 
-        {/* Verified Target Status Box - Only displayed after successful server response */}
-        {confirmedPlayer && (
-          <div
-            role="status"
-            className="mt-2 rounded-sm border border-emerald-500/40 bg-[#0F151C] p-4 text-left shadow-2xl transition-all animate-in fade-in duration-200"
-          >
-            <div className="flex items-start gap-3.5">
-              <div className="relative h-12 w-12 rounded border border-emerald-500/40 overflow-hidden shrink-0 bg-zinc-900">
-                <Image
-                  src={confirmedPlayer.data.avatarUrl}
-                  alt={confirmedPlayer.data.personaname}
-                  width={48}
-                  height={48}
-                  className="object-cover"
-                  unoptimized
-                />
+
+
+        {/* Recent Searches */}
+        {recentSearches.length > 0 && (
+          <div className="mt-2 flex flex-wrap items-center gap-1.5 pt-2 border-t border-white/[0.06]">
+            <span className="text-[11px] font-mono text-zinc-400 uppercase tracking-wider mr-1 flex items-center gap-1">
+              <History className="h-3 w-3 text-rose-500/80" />
+              <span>Recent:</span>
+            </span>
+            {recentSearches.map((item) => (
+              <div
+                key={item.id}
+                className="group inline-flex items-center rounded-sm border border-white/[0.08] bg-zinc-900/80 text-[11px] font-mono text-zinc-300 hover:border-rose-500/50 hover:bg-zinc-800 hover:text-white transition-all overflow-hidden"
+              >
+                <button
+                  type="button"
+                  disabled={isLoading}
+                  onClick={() => handleSelectPreset(item.id)}
+                  className="inline-flex items-center gap-1.5 px-2 py-1 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {item.avatarUrl ? (
+                    <img
+                      src={item.avatarUrl}
+                      alt=""
+                      className="h-3.5 w-3.5 rounded-full object-cover border border-white/10"
+                    />
+                  ) : (
+                    <User className="h-3 w-3 text-zinc-500" />
+                  )}
+                  <span className="font-bold text-white max-w-[120px] truncate">{item.name}</span>
+                  <span className="text-rose-400 font-semibold">{item.id}</span>
+                </button>
+                <button
+                  type="button"
+                  disabled={isLoading}
+                  onClick={(e) => handleRemoveRecent(item.id, e)}
+                  title="Remove from recent searches"
+                  className="px-1.5 py-1 text-zinc-500 hover:text-rose-400 hover:bg-rose-950/40 border-l border-white/[0.06] transition-colors cursor-pointer"
+                >
+                  <X className="h-2.5 w-2.5" />
+                </button>
               </div>
-
-              <div className="flex-1 min-w-0">
-                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/[0.08] pb-2">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-mono font-bold text-zinc-400">TARGET:</span>
-                    <span className="font-mono text-sm font-bold text-emerald-400 truncate">
-                      {confirmedPlayer.data.personaname}
-                    </span>
-                    {confirmedPlayer.data.proName && (
-                      <span className="text-xs font-mono text-amber-400 font-semibold">
-                        [{confirmedPlayer.data.proName}]
-                      </span>
-                    )}
-                  </div>
-                  <span className="rounded bg-emerald-950/80 px-2 py-0.5 text-[10px] font-mono uppercase text-emerald-300 border border-emerald-800/50 flex items-center gap-1">
-                    <CheckCircle2 className="h-3 w-3" /> VERIFIED ON OPENDOTA
-                  </span>
-                </div>
-
-                <div className="mt-2 grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-mono text-zinc-300">
-                  <div>
-                    <span className="text-zinc-500 block text-[10px]">ACCOUNT ID</span>
-                    <span className="font-bold text-zinc-200">{confirmedPlayer.data.accountId}</span>
-                  </div>
-                  <div>
-                    <span className="text-zinc-500 block text-[10px]">RANK TIER</span>
-                    <span className="font-bold text-rose-400">{confirmedPlayer.data.rankFormatted.name}</span>
-                  </div>
-                  <div>
-                    <span className="text-zinc-500 block text-[10px]">LIFETIME W/L</span>
-                    <span className="font-bold text-zinc-200">
-                      {confirmedPlayer.data.lifetime.wins} - {confirmedPlayer.data.lifetime.losses}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-zinc-500 block text-[10px]">WIN RATE</span>
-                    <span className="font-bold text-emerald-400">
-                      {confirmedPlayer.data.lifetime.winRate}%
-                    </span>
-                  </div>
-                </div>
-
-                <div className="mt-3 pt-2 border-t border-white/[0.06] flex items-center justify-between text-xs">
-                  <span className="text-zinc-400 font-mono text-[11px] flex items-center gap-1.5">
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    Synchronized telemetry. Redirecting to profile dashboard...
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => router.push(`/player/${confirmedPlayer.data.accountId}`)}
-                    className="font-mono text-rose-400 hover:text-rose-300 transition-colors uppercase font-bold text-[11px] flex items-center gap-1"
-                  >
-                    <span>View Profile Now</span>
-                    <ExternalLink className="h-3 w-3" />
-                  </button>
-                </div>
-              </div>
-            </div>
+            ))}
+            <button
+              type="button"
+              disabled={isLoading}
+              onClick={handleClearAllRecent}
+              className="text-[10px] font-mono text-zinc-500 hover:text-zinc-300 underline ml-1 cursor-pointer transition-colors"
+            >
+              Clear
+            </button>
           </div>
         )}
 
@@ -285,7 +331,7 @@ export function SteamIdSearch({ onSearchSubmit, autoNavigate = true }: SteamIdSe
               type="button"
               disabled={isLoading}
               onClick={() => handleSelectPreset(pro.id)}
-              className="inline-flex items-center gap-1.5 rounded-sm border border-white/[0.08] bg-zinc-900/80 px-2.5 py-1 text-[11px] font-mono text-zinc-300 hover:border-rose-500/50 hover:bg-zinc-800 hover:text-white transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="inline-flex items-center gap-1.5 rounded-sm border border-white/[0.08] bg-zinc-900/80 px-2.5 py-1 text-[11px] font-mono text-zinc-300 hover:border-rose-500/50 hover:bg-zinc-800 hover:text-white transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
               <span className="font-bold text-white">{pro.name}</span>
               <span className="text-zinc-400">({pro.role})</span>

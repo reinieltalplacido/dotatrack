@@ -16,22 +16,22 @@ interface MatchDataPageProps {
   searchParams: Promise<{ id?: string }>;
 }
 
-const DEFAULT_SAMPLE_MATCH_ID = "9049003291";
-
 export default async function MatchDataPage({ searchParams }: MatchDataPageProps) {
   await connection();
 
   const { id } = await searchParams;
-  const targetId = id?.trim() || DEFAULT_SAMPLE_MATCH_ID;
+  const targetId = id?.trim();
 
   let initialMatch: NormalizedMatchData | null = null;
   let initialError: string | null = null;
 
-  try {
-    initialMatch = await getMatchAnalysis(targetId);
-  } catch (err) {
-    console.warn(`[MatchDataPage] Failed to prefetch match ${targetId}:`, err);
-    initialError = err instanceof Error ? err.message : "Failed to load match analysis";
+  if (targetId) {
+    try {
+      initialMatch = await getMatchAnalysis(targetId);
+    } catch (err) {
+      console.warn(`[MatchDataPage] Failed to prefetch match ${targetId}:`, err);
+      initialError = err instanceof Error ? err.message : "Failed to load match analysis";
+    }
   }
 
   return (

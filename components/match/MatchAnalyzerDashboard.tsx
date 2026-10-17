@@ -101,7 +101,11 @@ export function MatchAnalyzerDashboard({ initialMatch, initialError }: MatchAnal
       ) : match ? (
         <>
           {/* Match Overview Banner */}
-          <MatchOverviewBanner match={match} onRefresh={() => handleSearch(match.matchId)} />
+          <MatchOverviewBanner
+            match={match}
+            onRefresh={() => handleSearch(match.matchId)}
+            onMatchUpdated={(updated) => setMatch(updated)}
+          />
 
           {/* Analysis Navigation Tabs */}
           <div className="flex flex-wrap items-center gap-1.5 mb-8 border-b border-white/[0.08] pb-3 text-xs font-mono">
@@ -214,18 +218,7 @@ export function MatchAnalyzerDashboard({ initialMatch, initialError }: MatchAnal
             <MatchAdvancedStats players={match.allPlayers} />
           )}
         </>
-      ) : (
-        /* Empty Prompt State when no match is analyzed yet */
-        <div className="tactical-panel p-12 text-center rounded-sm border border-white/[0.08]">
-          <Swords className="h-10 w-10 text-rose-500 mx-auto mb-3 opacity-80" />
-          <h2 className="text-lg font-mono font-bold text-white mb-2">
-            No Match Selected
-          </h2>
-          <p className="text-xs font-mono text-zinc-400 max-w-md mx-auto leading-relaxed mb-6">
-            Enter any public Dota 2 Match ID in the search field above, or click the sample pro match button to explore a full parsed game breakdown.
-          </p>
-        </div>
-      )}
+      ) : null}
     </div>
   );
 }

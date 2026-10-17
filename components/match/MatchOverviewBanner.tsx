@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Trophy,
   Clock,
@@ -12,26 +12,123 @@ import {
   FileQuestion,
   RefreshCw,
   ExternalLink,
+  CheckCircle2,
 } from "lucide-react";
 import { NormalizedMatchData } from "@/lib/opendota/match-types";
 
 interface MatchOverviewBannerProps {
   match: NormalizedMatchData;
   onRefresh?: () => void;
+  onMatchUpdated?: (updatedMatch: NormalizedMatchData) => void;
 }
 
-export function MatchOverviewBanner({ match, onRefresh }: MatchOverviewBannerProps) {
+export function MatchOverviewBanner({ match, onRefresh, onMatchUpdated }: MatchOverviewBannerProps) {
   const [isRequestingParse, setIsRequestingParse] = useState(false);
   const [parseMessage, setParseMessage] = useState<string | null>(null);
+  const [isRequested, setIsRequested] = useState(false);
+  const [isPolling, setIsPolling] = useState(false);
+  const [pollSeconds, setPollSeconds] = useState(0);
+  const [parseSuccess, setParseSuccess] = useState(false);
+
+  // Sync isRequested status with localStorage
+  useEffect(() => {
+    if (typeof window === "undefined" || !match.matchId) return;
+
+    if (match.isParsed) {
+      localStorage.removeItem(`dotatrack_parse_requested_${match.matchId}`);
+      setIsRequested(false);
+      setIsPolling(false);
+    } else {
+      const stored = localStorage.getItem(`dotatrack_parse_requested_${match.matchId}`);
+      if (stored === "true") {
+        setIsRequested(true);
+      }
+    }
+  }, [match.matchId, match.isParsed]);
+
+  // Real-time polling when parse has been requested
+  useEffect(() => {
+    if (!isRequested || match.isParsed || !match.matchId) {
+      setIsPolling(false);
+      return;
+    }
+
+    setIsPolling(true);
+    setPollSeconds(0);
+
+    const startTime = Date.now();
+    const MAX_POLL_MS = 300000; // 5 minutes max
+    let isCancelled = false;
+
+    // Timer to update elapsed seconds for smooth UI feedback
+    const timerInterval = setInterval(() => {
+      const elapsed = Math.floor((Date.now() - startTime) / 1000);
+      setPollSeconds(elapsed);
+    }, 1000);
+
+    // Polling interval checking every 5 seconds
+    const pollInterval = setInterval(async () => {
+      if (Date.now() - startTime > MAX_POLL_MS) {
+        clearInterval(pollInterval);
+        clearInterval(timerInterval);
+        if (!isCancelled) {
+          setIsPolling(false);
+          setParseMessage("Parsing is taking longer than expected on OpenDota. You can check back again soon.");
+        }
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/matches/${match.matchId}?refresh=true`, {
+          cache: "no-store",
+        });
+        if (!res.ok) return;
+
+        const data: NormalizedMatchData = await res.json();
+        if (data.isParsed) {
+          clearInterval(pollInterval);
+          clearInterval(timerInterval);
+          if (isCancelled) return;
+
+          setIsPolling(false);
+          setIsRequested(false);
+          setParseSuccess(true);
+          setParseMessage("Replay parsed successfully! Real-time telemetry, timelines, and combat metrics are now live.");
+          if (typeof window !== "undefined") {
+            localStorage.removeItem(`dotatrack_parse_requested_${match.matchId}`);
+          }
+          onMatchUpdated?.(data);
+        }
+      } catch (err) {
+        // Silently tolerate temporary network hiccups while polling
+        console.warn("[RealtimeParse] Poll check skipped:", err);
+      }
+    }, 5000);
+
+    return () => {
+      isCancelled = true;
+      clearInterval(pollInterval);
+      clearInterval(timerInterval);
+    };
+  }, [isRequested, match.isParsed, match.matchId, onMatchUpdated]);
 
   const handleRequestParse = async () => {
+    if (isRequestingParse || isRequested) return;
+
     setIsRequestingParse(true);
     setParseMessage(null);
+    setParseSuccess(false);
+
     try {
       const res = await fetch(`/api/matches/${match.matchId}`, { method: "POST" });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to request parse");
-      setParseMessage(data.message || "Parse requested successfully. Replay processing queued.");
+      
+      setIsRequested(true);
+      if (typeof window !== "undefined") {
+        localStorage.setItem(`dotatrack_parse_requested_${match.matchId}`, "true");
+      }
+      setParseMessage(data.message || "Parse requested. Watching replay status in real-time...");
     } catch (err) {
       setParseMessage(err instanceof Error ? err.message : "Error submitting parse request.");
     } finally {
@@ -90,22 +187,96 @@ export function MatchOverviewBanner({ match, onRefresh }: MatchOverviewBannerPro
               <button
                 type="button"
                 onClick={handleRequestParse}
-                disabled={isRequestingParse}
-                className="inline-flex items-center gap-1 rounded-sm bg-zinc-900 border border-white/[0.1] px-2.5 py-1 text-[11px] font-mono text-zinc-300 hover:text-white hover:border-amber-500/50 transition-colors cursor-pointer"
+                disabled={isRequestingParse || isRequested}
+                title={
+                  isRequested
+                    ? "Parse request is being monitored in real-time. This page will automatically update once ready."
+                    : "Request OpenDota to parse this match replay"
+                }
+                className={`inline-flex items-center gap-1.5 rounded-sm px-2.5 py-1 text-[11px] font-mono transition-colors ${
+                  isRequested
+                    ? "bg-amber-950/40 border border-amber-600/40 text-amber-300/90 cursor-not-allowed select-none"
+                    : isRequestingParse
+                    ? "bg-zinc-900 border border-white/[0.1] text-zinc-400 cursor-not-allowed"
+                    : "bg-zinc-900 border border-white/[0.1] text-zinc-300 hover:text-white hover:border-amber-500/50 cursor-pointer"
+                }`}
               >
-                <RefreshCw className={`h-3 w-3 ${isRequestingParse ? "animate-spin text-amber-400" : ""}`} />
-                <span>{isRequestingParse ? "QUEUEING..." : "REQUEST PARSE"}</span>
+                {isRequested ? (
+                  isPolling ? (
+                    <>
+                      <span className="relative flex h-2 w-2 mr-0.5">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                      </span>
+                      <RefreshCw className="h-3 w-3 animate-spin text-amber-400" />
+                      <span>PARSING LIVE...</span>
+                    </>
+                  ) : (
+                    <>
+                      <CheckCircle2 className="h-3 w-3 text-emerald-400" />
+                      <span>ALREADY REQUESTED</span>
+                    </>
+                  )
+                ) : (
+                  <>
+                    <RefreshCw className={`h-3 w-3 ${isRequestingParse ? "animate-spin text-amber-400" : ""}`} />
+                    <span>{isRequestingParse ? "QUEUEING..." : "REQUEST PARSE"}</span>
+                  </>
+                )}
               </button>
             </div>
           )}
         </div>
       </div>
 
-      {/* Parse confirmation notice if triggered */}
+      {/* Parse confirmation / real-time monitoring notice if triggered */}
       {parseMessage && (
-        <div className="mb-4 p-3 rounded-sm bg-zinc-900 border border-amber-600/40 text-xs font-mono text-amber-300 flex items-center justify-between">
-          <span>{parseMessage}</span>
-          <button onClick={() => setParseMessage(null)} className="text-[10px] underline ml-2">
+        <div
+          className={`mb-4 p-3 rounded-sm border text-xs font-mono flex items-center justify-between transition-all ${
+            parseSuccess
+              ? "bg-emerald-950/80 border-emerald-500/60 text-emerald-200"
+              : isPolling
+              ? "bg-amber-950/40 border-amber-600/50 text-amber-200"
+              : "bg-zinc-900 border-amber-600/40 text-amber-300"
+          }`}
+        >
+          <div className="flex items-center gap-3">
+            {parseSuccess ? (
+              <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
+            ) : isPolling ? (
+              <span className="relative flex h-2.5 w-2.5 shrink-0">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
+              </span>
+            ) : null}
+
+            <div>
+              <span>{parseMessage}</span>
+              {isPolling && (
+                <span className="text-amber-400/80 ml-2 text-[11px]">
+                  (checking live • {pollSeconds}s elapsed)
+                </span>
+              )}
+            </div>
+
+            {onRefresh && !isPolling && (
+              <button
+                type="button"
+                onClick={onRefresh}
+                className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 border border-amber-500/40 text-[10px] transition-colors cursor-pointer"
+              >
+                <RefreshCw className="h-2.5 w-2.5" />
+                <span>Check if parsed</span>
+              </button>
+            )}
+          </div>
+          <button
+            onClick={() => {
+              setParseMessage(null);
+              setParseSuccess(false);
+            }}
+            className="text-[10px] underline ml-2 hover:text-white"
+          >
             Dismiss
           </button>
         </div>

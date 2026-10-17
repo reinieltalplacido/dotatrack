@@ -1,15 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Clipboard, Share2, Check, Sparkles, Loader2, AlertCircle } from "lucide-react";
+import { Search, Clipboard, Share2, Check, Loader2, AlertCircle } from "lucide-react";
 
 interface MatchSearchHeaderProps {
   currentMatchId?: string;
   onSearch: (matchId: string) => void;
   isLoading: boolean;
 }
-
-const SAMPLE_PRO_MATCH = "9049003291";
 
 export function MatchSearchHeader({ currentMatchId, onSearch, isLoading }: MatchSearchHeaderProps) {
   const [inputValue, setInputValue] = useState(currentMatchId || "");
@@ -141,28 +139,13 @@ export function MatchSearchHeader({ currentMatchId, onSearch, isLoading }: Match
         </div>
       )}
 
-      {/* Quick Links & Share */}
-      <div className="flex flex-wrap items-center justify-between gap-3 text-xs font-mono text-zinc-400 pt-2 border-t border-white/[0.04]">
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-zinc-500">Quick Test:</span>
-          <button
-            type="button"
-            onClick={() => {
-              setInputValue(SAMPLE_PRO_MATCH);
-              onSearch(SAMPLE_PRO_MATCH);
-            }}
-            className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-mono rounded-sm bg-zinc-900 border border-white/[0.08] text-zinc-300 hover:text-rose-400 hover:border-rose-500/40 transition-colors cursor-pointer"
-          >
-            <Sparkles className="h-3 w-3 text-amber-400" />
-            <span>Sample Pro Match ({SAMPLE_PRO_MATCH})</span>
-          </button>
-        </div>
-
-        {currentMatchId && (
+      {/* Share Action */}
+      {currentMatchId && (
+        <div className="flex items-center justify-end text-xs font-mono text-zinc-400 pt-2 border-t border-white/[0.04]">
           <button
             type="button"
             onClick={handleShare}
-            className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-mono rounded-sm bg-zinc-900 border border-white/[0.08] text-zinc-300 hover:text-white transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-mono rounded-sm bg-zinc-900 border border-white/[0.08] text-zinc-300 hover:text-white hover:border-white/[0.2] transition-colors cursor-pointer"
             title="Copy shareable link"
           >
             {copied ? (
@@ -177,8 +160,8 @@ export function MatchSearchHeader({ currentMatchId, onSearch, isLoading }: Match
               </>
             )}
           </button>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

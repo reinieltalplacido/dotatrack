@@ -201,7 +201,10 @@ const REGION_NAMES: Record<number, string> = {
 /**
  * Fetch and normalize OpenDota match data.
  */
-export async function getMatchAnalysis(matchId: string | number): Promise<NormalizedMatchData> {
+export async function getMatchAnalysis(
+  matchId: string | number,
+  options?: { bypassCache?: boolean }
+): Promise<NormalizedMatchData> {
   const numericId = typeof matchId === "string" ? matchId.trim() : String(matchId);
 
   // Validate ID: Positive number up to 64-bit integer
@@ -218,7 +221,9 @@ export async function getMatchAnalysis(matchId: string | number): Promise<Normal
     res = await fetch(url, {
       signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
       headers: { Accept: "application/json" },
-      next: { revalidate: 300 }, // Cache for 5 minutes
+      ...(options?.bypassCache
+        ? { cache: "no-store" }
+        : { next: { revalidate: 300 } }),
     });
   } catch (err) {
     if (err instanceof Error && err.name === "TimeoutError") {
