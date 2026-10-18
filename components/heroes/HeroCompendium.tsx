@@ -945,6 +945,8 @@ function ClassicHeroTile({
     ? "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/pudge.png"
     : hero.img;
 
+  const isRadiant = lore?.faction === "radiant";
+
   return (
     <div
       role="button"
@@ -958,15 +960,20 @@ function ClassicHeroTile({
           onSelect();
         }
       }}
-      className={`group relative block rounded overflow-hidden bg-[#10121A] border transition-all duration-200 select-none cursor-pointer text-left ${
+      title={`${hero.localized_name} ("${lore?.realName || hero.localized_name}")`}
+      className={`group relative flex flex-col rounded-sm overflow-hidden bg-[#0C0E17] border transition-all duration-200 select-none cursor-pointer text-left ${
         isSelected
-          ? "border-rose-500 shadow-[0_0_16px_rgba(244,63,94,0.6)] ring-1 ring-rose-500 scale-[1.04] z-30"
+          ? "border-rose-500 shadow-[0_0_18px_rgba(244,63,94,0.7)] ring-1 ring-rose-500 -translate-y-1 scale-[1.04] z-30"
           : isHovered
-          ? "border-amber-400/90 shadow-[0_0_14px_rgba(251,191,36,0.4)] scale-[1.04] z-30 ring-1 ring-amber-400/50"
-          : "border-white/[0.12] hover:border-white/30"
+          ? isRadiant
+            ? "border-emerald-400 shadow-[0_0_16px_rgba(16,185,129,0.45)] -translate-y-1 scale-[1.04] z-30 ring-1 ring-emerald-400/60"
+            : "border-rose-400 shadow-[0_0_16px_rgba(244,63,94,0.45)] -translate-y-1 scale-[1.04] z-30 ring-1 ring-rose-400/60"
+          : isRadiant
+          ? "border-emerald-950/60 hover:border-emerald-500/50"
+          : "border-rose-950/60 hover:border-rose-500/50"
       }`}
     >
-      {/* Hero Portrait Container */}
+      {/* Hero Portrait Container (Unobscured Artwork) */}
       <div className="relative aspect-[16/10] w-full bg-zinc-950 overflow-hidden">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -974,15 +981,15 @@ function ClassicHeroTile({
           alt={hero.localized_name}
           onError={() => setImgError(true)}
           loading="lazy"
-          className="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-105"
+          className="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-108"
         />
 
         {/* Faction color accent bar at very top */}
         <div
-          className={`absolute top-0 left-0 right-0 h-[2px] opacity-75 ${
-            lore?.faction === "radiant"
-              ? "bg-gradient-to-r from-emerald-500 via-teal-400 to-transparent"
-              : "bg-gradient-to-r from-rose-500 via-red-600 to-transparent"
+          className={`absolute top-0 left-0 right-0 h-[2px] ${
+            isRadiant
+              ? "bg-gradient-to-r from-emerald-500 via-teal-300 to-transparent"
+              : "bg-gradient-to-r from-rose-500 via-red-400 to-transparent"
           }`}
         />
 
@@ -997,34 +1004,41 @@ function ClassicHeroTile({
           className={`absolute top-1 right-1 z-20 h-5 w-5 rounded flex items-center justify-center transition-all ${
             isCompared
               ? "bg-rose-600 text-white shadow-md shadow-rose-950/60"
-              : "bg-black/60 text-zinc-400 hover:text-white hover:bg-black/90 border border-white/10 opacity-0 group-hover:opacity-100"
+              : "bg-black/75 text-zinc-400 hover:text-white hover:bg-black border border-white/20 opacity-0 group-hover:opacity-100"
           }`}
         >
           {isCompared ? <Check className="h-3 w-3 stroke-[2.5]" /> : <Plus className="h-3 w-3" />}
         </button>
 
-        {/* Hero Name Badge Overlay (Styled matching classic Dota UI) */}
-        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/95 via-black/80 to-transparent pt-3 pb-1 px-1.5 flex flex-col justify-end text-center pointer-events-none">
-          {/* Main Hero Name */}
-          <span className="text-[11px] sm:text-[11.5px] font-sans font-bold text-[#86d9ff] tracking-tight leading-tight truncate drop-shadow-[0_1.5px_2px_rgba(0,0,0,1)] group-hover:text-white transition-colors">
-            {hero.localized_name}
-          </span>
-          {/* Real Lore Name */}
-          <span className="text-[9px] sm:text-[9.5px] font-serif text-[#fbbf24] font-medium tracking-normal leading-tight truncate drop-shadow-[0_1px_2px_rgba(0,0,0,1)] opacity-95">
-            {lore?.realName || hero.localized_name}
+        {/* Attack Type Indicator */}
+        <div className="absolute top-1 left-1 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+          <span className="text-[8.5px] font-mono uppercase px-1 py-0.2 rounded bg-black/80 text-zinc-300 border border-white/10">
+            {hero.attack_type === "Melee" ? "MEL" : "RNG"}
           </span>
         </div>
       </div>
 
+      {/* Dedicated Tactical Nameplate Footer (Clean, readable, centered) */}
+      <div className="px-1 py-1.5 bg-gradient-to-b from-[#10131F] to-[#090A10] border-t border-white/[0.08] flex flex-col items-center justify-center text-center">
+        {/* Hero Localized Title */}
+        <span className="w-full text-[11px] sm:text-[11.5px] font-sans font-bold text-[#7fd3ff] tracking-tight leading-snug truncate drop-shadow-[0_1px_2px_rgba(0,0,0,1)] group-hover:text-white transition-colors">
+          {hero.localized_name}
+        </span>
+        {/* Canonical Real Lore Name */}
+        <span className="w-full text-[9px] sm:text-[9.5px] font-serif italic text-[#fbbf24] font-medium tracking-normal leading-tight truncate drop-shadow-[0_1px_2px_rgba(0,0,0,1)] opacity-95 group-hover:text-amber-200 transition-colors">
+          {lore?.realName || hero.localized_name}
+        </span>
+      </div>
+
       {/* Floating Hover Card on Hover with Extra Telemetry */}
       {isHovered && (
-        <div className="absolute -top-12 left-1/2 -translate-x-1/2 whitespace-nowrap z-50 pointer-events-none px-2.5 py-1 rounded bg-[#0A0B10]/95 border border-amber-400/60 shadow-xl backdrop-blur-md">
+        <div className="absolute -top-12 left-1/2 -translate-x-1/2 whitespace-nowrap z-50 pointer-events-none px-3 py-1 rounded bg-[#0A0B10]/95 border border-amber-400/60 shadow-2xl backdrop-blur-md">
           <div className="text-[10px] font-mono text-zinc-300 flex items-center gap-1.5">
             <span className="font-bold text-white">{hero.localized_name}</span>
             <span className="text-zinc-500">•</span>
             <span className="text-amber-300 italic font-serif">&quot;{lore?.realName || ""}&quot;</span>
             <span className="text-zinc-500">•</span>
-            <span className="text-[9px] text-emerald-400">{hero.winRate.toFixed(1)}% WR</span>
+            <span className="text-[9.5px] text-emerald-400 font-semibold">{hero.winRate.toFixed(1)}% Win</span>
           </div>
         </div>
       )}

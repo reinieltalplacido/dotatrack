@@ -602,6 +602,7 @@ interface HeroCardTileProps {
 
 function HeroCardTile({ hero, isHovered, onHover, onLeave }: HeroCardTileProps) {
   const [imgError, setImgError] = useState(false);
+  const isRadiant = hero.faction === "radiant";
 
   const heroImgUrl = imgError
     ? "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/pudge.png"
@@ -612,13 +613,18 @@ function HeroCardTile({ hero, isHovered, onHover, onLeave }: HeroCardTileProps) 
       href={`/heroes?search=${encodeURIComponent(hero.name)}`}
       onMouseEnter={onHover}
       onMouseLeave={onLeave}
-      className={`group relative block rounded overflow-hidden bg-[#10121A] border transition-all duration-200 select-none ${
+      title={`${hero.name} ("${hero.realName}")`}
+      className={`group relative flex flex-col rounded-sm overflow-hidden bg-[#0C0E17] border transition-all duration-200 select-none ${
         isHovered
-          ? "border-amber-400/90 shadow-[0_0_14px_rgba(251,191,36,0.35)] scale-[1.04] z-30 ring-1 ring-amber-400/50"
-          : "border-white/[0.12] hover:border-white/30"
+          ? isRadiant
+            ? "border-emerald-400 shadow-[0_0_16px_rgba(16,185,129,0.45)] -translate-y-1 scale-[1.04] z-30 ring-1 ring-emerald-400/60"
+            : "border-rose-400 shadow-[0_0_16px_rgba(244,63,94,0.45)] -translate-y-1 scale-[1.04] z-30 ring-1 ring-rose-400/60"
+          : isRadiant
+          ? "border-emerald-950/60 hover:border-emerald-500/50"
+          : "border-rose-950/60 hover:border-rose-500/50"
       }`}
     >
-      {/* Hero Portrait */}
+      {/* Hero Portrait Container (Unobscured Artwork) */}
       <div className="relative aspect-[16/10] w-full bg-zinc-950 overflow-hidden">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -626,34 +632,41 @@ function HeroCardTile({ hero, isHovered, onHover, onLeave }: HeroCardTileProps) 
           alt={hero.name}
           onError={() => setImgError(true)}
           loading="lazy"
-          className="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-105"
+          className="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-108"
         />
 
         {/* Faction color accent bar at very top */}
         <div
-          className={`absolute top-0 left-0 right-0 h-[2px] opacity-75 ${
-            hero.faction === "radiant"
-              ? "bg-gradient-to-r from-emerald-500 via-teal-400 to-transparent"
-              : "bg-gradient-to-r from-rose-500 via-red-600 to-transparent"
+          className={`absolute top-0 left-0 right-0 h-[2px] ${
+            isRadiant
+              ? "bg-gradient-to-r from-emerald-500 via-teal-300 to-transparent"
+              : "bg-gradient-to-r from-rose-500 via-red-400 to-transparent"
           }`}
         />
 
-        {/* Hero Name Badge Overlay (Styled matching classic Dota UI) */}
-        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/95 via-black/80 to-transparent pt-3 pb-1 px-1.5 flex flex-col justify-end text-center pointer-events-none">
-          {/* Main Hero Name */}
-          <span className="text-[11px] sm:text-[11.5px] font-sans font-bold text-[#86d9ff] tracking-tight leading-tight truncate drop-shadow-[0_1.5px_2px_rgba(0,0,0,1)] group-hover:text-white transition-colors">
-            {hero.name}
-          </span>
-          {/* Real Lore Name */}
-          <span className="text-[9px] sm:text-[9.5px] font-serif text-[#fbbf24] font-medium tracking-normal leading-tight truncate drop-shadow-[0_1px_2px_rgba(0,0,0,1)] opacity-95">
-            {hero.realName}
+        {/* Attack Type Indicator */}
+        <div className="absolute top-1 left-1 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+          <span className="text-[8.5px] font-mono uppercase px-1 py-0.2 rounded bg-black/80 text-zinc-300 border border-white/10">
+            {hero.attackType === "Melee" ? "MEL" : "RNG"}
           </span>
         </div>
       </div>
 
+      {/* Dedicated Tactical Nameplate Footer (Clean, readable, centered) */}
+      <div className="px-1 py-1.5 bg-gradient-to-b from-[#10131F] to-[#090A10] border-t border-white/[0.08] flex flex-col items-center justify-center text-center">
+        {/* Hero Localized Title */}
+        <span className="w-full text-[11px] sm:text-[11.5px] font-sans font-bold text-[#7fd3ff] tracking-tight leading-snug truncate drop-shadow-[0_1px_2px_rgba(0,0,0,1)] group-hover:text-white transition-colors">
+          {hero.name}
+        </span>
+        {/* Canonical Real Lore Name */}
+        <span className="w-full text-[9px] sm:text-[9.5px] font-serif italic text-[#fbbf24] font-medium tracking-normal leading-tight truncate drop-shadow-[0_1px_2px_rgba(0,0,0,1)] opacity-95 group-hover:text-amber-200 transition-colors">
+          {hero.realName}
+        </span>
+      </div>
+
       {/* Floating Hover Card on Hover with Extra Details */}
       {isHovered && (
-        <div className="absolute -top-12 left-1/2 -translate-x-1/2 whitespace-nowrap z-50 pointer-events-none px-2.5 py-1 rounded bg-[#0A0B10]/95 border border-amber-400/60 shadow-xl backdrop-blur-md">
+        <div className="absolute -top-12 left-1/2 -translate-x-1/2 whitespace-nowrap z-50 pointer-events-none px-3 py-1 rounded bg-[#0A0B10]/95 border border-amber-400/60 shadow-2xl backdrop-blur-md">
           <div className="text-[10px] font-mono text-zinc-300 flex items-center gap-1.5">
             <span className="font-bold text-white">{hero.name}</span>
             <span className="text-zinc-500">•</span>

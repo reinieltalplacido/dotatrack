@@ -134,7 +134,7 @@ export function HeroDetailDrawer({
       <div className="flex items-center justify-between px-5 py-3 border-b border-white/[0.08] bg-[#0D0F18]/80">
         <div className="flex items-center gap-2">
           <span className="text-[10px] font-mono uppercase tracking-widest text-rose-500 font-bold">
-            HERO_PROFILE // #{hero.id}
+            Hero Profile #{hero.id}
           </span>
           <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-white/[0.05] text-zinc-400">
             {hero.attack_type}
@@ -195,13 +195,10 @@ export function HeroDetailDrawer({
                 {hero.localized_name}
               </h2>
               {getHeroLoreById(hero.id)?.realName && (
-                <div className="text-sm font-serif text-amber-300 font-semibold mt-0.5">
+                <div className="text-sm font-serif text-amber-300 font-semibold mt-0.5 mb-3">
                   &quot;{getHeroLoreById(hero.id)?.realName}&quot;
                 </div>
               )}
-              <div className="text-xs font-mono text-zinc-400 mt-0.5 mb-3">
-                {hero.name}
-              </div>
 
               {/* Roles Chips */}
               <div className="flex flex-wrap gap-1.5">
