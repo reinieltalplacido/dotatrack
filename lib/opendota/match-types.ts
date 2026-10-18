@@ -151,11 +151,23 @@ export interface MatchTeamfight {
 export interface MatchObjectiveEvent {
   time: number;
   timeFormatted: string;
-  type: "tower" | "barracks" | "roshan" | "aegis" | "tormentor" | "other";
+  type: "firstblood" | "tower" | "barracks" | "roshan" | "aegis" | "tormentor" | "other";
   description: string;
   team: "Radiant" | "Dire" | "Neutral";
   playerSlot?: number;
   unit?: string;
+  killerHero?: {
+    id: number;
+    name: string;
+    localizedName: string;
+    img: string;
+  };
+  victimHero?: {
+    id: number;
+    name: string;
+    localizedName: string;
+    img: string;
+  };
 }
 
 export interface NormalizedMatchData {

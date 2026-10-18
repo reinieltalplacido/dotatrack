@@ -1,125 +1,668 @@
-import { Shield, Zap, Brain, Sparkles } from "lucide-react";
+"use client";
+
+import { useState, useMemo } from "react";
+import Link from "next/link";
+import { Search, X, Sparkles, Shield, Zap, Brain, ArrowRight, BookOpen } from "lucide-react";
+import { HERO_LORE_DATABASE, HeroLoreEntry } from "@/lib/opendota/hero-lore-names";
+
+type AttributeFilter = "all" | "str" | "agi" | "int" | "uni";
+type FactionFilter = "all" | "radiant" | "dire";
 
 export function HeroesSection() {
-  const attributes = [
-    {
-      id: "str",
-      name: "Strength",
-      colorTag: "text-red-400",
-      borderTag: "border-red-900/40",
-      bgTag: "bg-red-950/20",
-      badgeColor: "bg-red-950/70 text-red-300 border-red-800/40",
-      icon: <Shield className="h-4 w-4 text-red-400" />,
-      archetype: "Frontline, Initiator & Durability",
-      heroes: ["Axe", "Pudge", "Tiny", "Earthshaker", "Centaur Warrunner", "Mars"],
-      telemetry: "HP Scaling, Damage Soak, Stun Duration, BKB Engagement Window",
-    },
-    {
-      id: "agi",
-      name: "Agility",
-      colorTag: "text-emerald-400",
-      borderTag: "border-emerald-900/40",
-      bgTag: "bg-emerald-950/20",
-      badgeColor: "bg-emerald-950/70 text-emerald-300 border-emerald-800/40",
-      icon: <Zap className="h-4 w-4 text-emerald-400" />,
-      archetype: "Physical DPS, Carry & Mobility",
-      heroes: ["Juggernaut", "Phantom Assassin", "Anti-Mage", "Sniper", "Morphling", "Faceless Void"],
-      telemetry: "Attack Speed, Armor Scaling, CS/Min, Net Worth Acceleration",
-    },
-    {
-      id: "int",
-      name: "Intelligence",
-      colorTag: "text-sky-400",
-      borderTag: "border-sky-900/40",
-      bgTag: "bg-sky-950/20",
-      badgeColor: "bg-sky-950/70 text-sky-300 border-sky-800/40",
-      icon: <Brain className="h-4 w-4 text-sky-400" />,
-      archetype: "Spell Damage, Crowd Control & Utility",
-      heroes: ["Invoker", "Crystal Maiden", "Rubick", "Storm Spirit", "Puck", "Witch Doctor"],
-      telemetry: "Spell Amplification, Mana Efficiency, Neutral Camp Stacks, Ward Impact",
-    },
-    {
-      id: "uni",
-      name: "Universal",
-      colorTag: "text-amber-400",
-      borderTag: "border-amber-900/40",
-      bgTag: "bg-amber-950/20",
-      badgeColor: "bg-amber-950/70 text-amber-300 border-amber-800/40",
-      icon: <Sparkles className="h-4 w-4 text-amber-400" />,
-      archetype: "Multi-Attribute Scaling & Versatility",
-      heroes: ["Windranger", "Vengeful Spirit", "Bane", "Clockwerk", "Enigma", "Techies"],
-      telemetry: "Dynamic Attack Damage per Stat, Multi-Role Flex Rate, Facet Synergies",
-    },
-  ];
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedAttr, setSelectedAttr] = useState<AttributeFilter>("all");
+  const [selectedFaction, setSelectedFaction] = useState<FactionFilter>("all");
+  const [hoveredHeroId, setHoveredHeroId] = useState<number | null>(null);
+
+  // Filtered heroes based on search and filters
+  const filteredHeroes = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    return HERO_LORE_DATABASE.filter((hero) => {
+      // Search matches name, realName, or shortName
+      if (q) {
+        const matchesQuery =
+          hero.name.toLowerCase().includes(q) ||
+          hero.realName.toLowerCase().includes(q) ||
+          hero.shortName.toLowerCase().includes(q);
+        if (!matchesQuery) return false;
+      }
+
+      // Faction filter
+      if (selectedFaction !== "all" && hero.faction !== selectedFaction) {
+        return false;
+      }
+
+      // Attribute filter
+      if (selectedAttr === "str" && hero.classicAttr !== "str") return false;
+      if (selectedAttr === "agi" && hero.classicAttr !== "agi") return false;
+      if (selectedAttr === "int" && hero.classicAttr !== "int") return false;
+      if (selectedAttr === "uni" && hero.modernAttr !== "all") return false;
+
+      return true;
+    });
+  }, [searchQuery, selectedAttr, selectedFaction]);
+
+  // Group heroes by attribute and faction
+  const strengthRadiant = useMemo(
+    () => filteredHeroes.filter((h) => h.classicAttr === "str" && h.faction === "radiant"),
+    [filteredHeroes]
+  );
+  const strengthDire = useMemo(
+    () => filteredHeroes.filter((h) => h.classicAttr === "str" && h.faction === "dire"),
+    [filteredHeroes]
+  );
+
+  const agilityRadiant = useMemo(
+    () => filteredHeroes.filter((h) => h.classicAttr === "agi" && h.faction === "radiant"),
+    [filteredHeroes]
+  );
+  const agilityDire = useMemo(
+    () => filteredHeroes.filter((h) => h.classicAttr === "agi" && h.faction === "dire"),
+    [filteredHeroes]
+  );
+
+  const intelligenceRadiant = useMemo(
+    () => filteredHeroes.filter((h) => h.classicAttr === "int" && h.faction === "radiant"),
+    [filteredHeroes]
+  );
+  const intelligenceDire = useMemo(
+    () => filteredHeroes.filter((h) => h.classicAttr === "int" && h.faction === "dire"),
+    [filteredHeroes]
+  );
+
+  const universalHeroes = useMemo(
+    () => filteredHeroes.filter((h) => h.modernAttr === "all"),
+    [filteredHeroes]
+  );
 
   return (
-    <section id="heroes" className="relative py-14 sm:py-20 border-t border-white/[0.08] bg-[#0A0B10] scroll-mt-16">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="mb-8 pb-4 border-b border-white/[0.06]">
-          <div className="text-[11px] font-mono uppercase tracking-widest text-rose-500 font-bold mb-1">
-            HERO_MATRIX // ATTRIBUTE BENCHMARKS
+    <section id="heroes" className="relative py-14 sm:py-20 bg-[#090A0F] text-[#F1F3F7] border-t border-white/[0.08] scroll-mt-16 overflow-hidden">
+      {/* Background ambient lighting */}
+      <div className="absolute inset-0 pointer-events-none opacity-30">
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-gradient-to-b from-amber-900/20 via-transparent to-transparent rounded-full blur-3xl" />
+        <div className="absolute top-2/3 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-gradient-to-b from-emerald-900/20 via-transparent to-transparent rounded-full blur-3xl" />
+      </div>
+
+      <div className="relative mx-auto max-w-[1440px] px-3 sm:px-6 lg:px-8">
+        {/* Top Header & Search Bar */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 pb-6 border-b border-white/[0.08]">
+          <div>
+            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-rose-500/10 border border-rose-500/20 text-rose-400 text-[11px] font-mono uppercase tracking-widest font-semibold mb-2">
+              <Sparkles className="w-3.5 h-3.5" />
+              CANONICAL HERO ROSTER & REAL LORE NAMES
+            </div>
+            <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white font-mono">
+              The Heroes of the Ancients
+            </h2>
+            <p className="text-xs sm:text-sm text-zinc-400 mt-1 max-w-2xl">
+              Complete Dota 2 hero matrix categorized into classic taverns and attributes. Every hero includes their official localized name alongside their legendary DotA Allstars lore name.
+            </p>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white font-mono">
-            Deep Analysis Across Every Hero Class
-          </h2>
+
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            {/* Search Input */}
+            <div className="relative min-w-[260px] sm:min-w-[320px]">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400 pointer-events-none" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search hero or real name (e.g. Magina, Furion, Traxex)..."
+                className="w-full bg-[#11131B] border border-white/10 rounded-md pl-9 pr-8 py-2 text-xs sm:text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500/30 transition-all font-mono"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+
+            {/* Link to Compendium */}
+            <Link
+              href="/heroes"
+              className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-md bg-white/[0.06] hover:bg-white/[0.1] border border-white/10 text-xs font-mono font-medium text-zinc-200 transition-all"
+            >
+              <BookOpen className="w-3.5 h-3.5 text-rose-400" />
+              <span>Full Compendium</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
         </div>
 
-        {/* Attribute Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-          {attributes.map((attr) => (
-            <div
-              key={attr.name}
-              className={`rounded-sm border ${attr.borderTag} ${attr.bgTag} p-5 flex flex-col justify-between transition-all hover:border-white/[0.2]`}
+        {/* Filters Toolbar */}
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-8 bg-[#0E1017]/80 backdrop-blur border border-white/[0.06] p-2.5 rounded-lg">
+          {/* Attribute Pills */}
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span className="text-[11px] font-mono uppercase text-zinc-500 mr-1.5 hidden sm:inline">Attribute:</span>
+            <button
+              onClick={() => setSelectedAttr("all")}
+              className={`px-3 py-1 rounded text-xs font-mono font-medium transition-all ${
+                selectedAttr === "all"
+                  ? "bg-white text-black font-semibold shadow"
+                  : "bg-white/[0.03] text-zinc-400 hover:text-white hover:bg-white/[0.08]"
+              }`}
             >
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-2">
-                    {attr.icon}
-                    <h3 className={`font-mono text-base font-bold ${attr.colorTag}`}>
-                      {attr.name}
-                    </h3>
-                  </div>
-                  <span className={`text-[9px] font-mono uppercase px-2 py-0.5 rounded border ${attr.badgeColor}`}>
-                    {attr.id.toUpperCase()}
+              All ({HERO_LORE_DATABASE.length})
+            </button>
+            <button
+              onClick={() => setSelectedAttr("str")}
+              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded text-xs font-mono font-medium transition-all ${
+                selectedAttr === "str"
+                  ? "bg-amber-600 text-white font-semibold shadow-lg shadow-amber-600/30"
+                  : "bg-amber-950/20 text-amber-300 hover:bg-amber-950/40 border border-amber-900/30"
+              }`}
+            >
+              <Shield className="w-3 h-3 text-amber-400" />
+              Strength (42)
+            </button>
+            <button
+              onClick={() => setSelectedAttr("agi")}
+              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded text-xs font-mono font-medium transition-all ${
+                selectedAttr === "agi"
+                  ? "bg-emerald-600 text-white font-semibold shadow-lg shadow-emerald-600/30"
+                  : "bg-emerald-950/20 text-emerald-300 hover:bg-emerald-950/40 border border-emerald-900/30"
+              }`}
+            >
+              <Zap className="w-3 h-3 text-emerald-400" />
+              Agility (39)
+            </button>
+            <button
+              onClick={() => setSelectedAttr("int")}
+              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded text-xs font-mono font-medium transition-all ${
+                selectedAttr === "int"
+                  ? "bg-sky-600 text-white font-semibold shadow-lg shadow-sky-600/30"
+                  : "bg-sky-950/20 text-sky-300 hover:bg-sky-950/40 border border-sky-900/30"
+              }`}
+            >
+              <Brain className="w-3 h-3 text-sky-400" />
+              Intelligence (45)
+            </button>
+            <button
+              onClick={() => setSelectedAttr("uni")}
+              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded text-xs font-mono font-medium transition-all ${
+                selectedAttr === "uni"
+                  ? "bg-purple-600 text-white font-semibold shadow-lg shadow-purple-600/30"
+                  : "bg-purple-950/20 text-purple-300 hover:bg-purple-950/40 border border-purple-900/30"
+              }`}
+            >
+              <Sparkles className="w-3 h-3 text-purple-400" />
+              Universal (22)
+            </button>
+          </div>
+
+          {/* Faction Pills */}
+          <div className="flex items-center gap-1.5">
+            <span className="text-[11px] font-mono uppercase text-zinc-500 mr-1 hidden sm:inline">Faction:</span>
+            <button
+              onClick={() => setSelectedFaction("all")}
+              className={`px-2.5 py-1 rounded text-xs font-mono transition-all ${
+                selectedFaction === "all"
+                  ? "bg-zinc-700 text-white font-semibold"
+                  : "text-zinc-400 hover:text-white"
+              }`}
+            >
+              Both
+            </button>
+            <button
+              onClick={() => setSelectedFaction("radiant")}
+              className={`px-2.5 py-1 rounded text-xs font-mono transition-all ${
+                selectedFaction === "radiant"
+                  ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/50 font-semibold"
+                  : "text-zinc-400 hover:text-emerald-400"
+              }`}
+            >
+              Radiant Only
+            </button>
+            <button
+              onClick={() => setSelectedFaction("dire")}
+              className={`px-2.5 py-1 rounded text-xs font-mono transition-all ${
+                selectedFaction === "dire"
+                  ? "bg-rose-500/20 text-rose-300 border border-rose-500/50 font-semibold"
+                  : "text-zinc-400 hover:text-rose-400"
+              }`}
+            >
+              Dire Only
+            </button>
+          </div>
+        </div>
+
+        {/* Results Count Banner if searching */}
+        {searchQuery && (
+          <div className="mb-6 flex items-center justify-between px-4 py-2.5 rounded bg-white/[0.04] border border-white/10 text-xs font-mono">
+            <span className="text-zinc-300">
+              Found <strong className="text-white">{filteredHeroes.length}</strong> hero
+              {filteredHeroes.length === 1 ? "" : "es"} matching query &quot;
+              <span className="text-rose-400">{searchQuery}</span>&quot;
+            </span>
+            <button
+              onClick={() => setSearchQuery("")}
+              className="text-xs text-zinc-400 hover:text-white underline"
+            >
+              Clear filter
+            </button>
+          </div>
+        )}
+
+        {/* ======================================================== */}
+        {/* 1. STRENGTH HEROES SECTION                              */}
+        {/* ======================================================== */}
+        {(selectedAttr === "all" || selectedAttr === "str") &&
+          (strengthRadiant.length > 0 || strengthDire.length > 0) && (
+            <div className="mb-14">
+              {/* Glowing Diamond Banner Header */}
+              <div className="relative py-4 mb-6 flex items-center justify-center">
+                {/* Horizontal Diamond Flare Background */}
+                <div
+                  className="absolute inset-0 pointer-events-none"
+                  style={{
+                    background:
+                      "radial-gradient(ellipse 65% 100% at 50% 50%, rgba(217, 95, 24, 0.45) 0%, rgba(154, 52, 18, 0.22) 45%, rgba(9, 10, 15, 0) 80%)",
+                  }}
+                />
+                <div className="relative z-10 flex items-center gap-3.5">
+                  <span className="text-xl sm:text-2xl font-serif tracking-[0.25em] uppercase font-bold text-amber-200 drop-shadow-[0_2px_12px_rgba(245,158,11,0.65)]">
+                    STRENGTH
                   </span>
-                </div>
-
-                <p className="text-xs text-zinc-300 font-medium mb-4">
-                  {attr.archetype}
-                </p>
-
-                {/* Popular Heroes in this attribute */}
-                <div className="mb-4">
-                  <div className="text-[10px] font-mono uppercase text-zinc-500 tracking-wider mb-2">
-                    Key Benchmark Heroes
+                  {/* Circular Strength Emblem */}
+                  <div className="relative w-8 h-8 rounded-full bg-gradient-to-br from-amber-500 via-orange-600 to-red-700 p-0.5 shadow-[0_0_15px_rgba(234,88,12,0.8)] border border-amber-300/60 flex items-center justify-center">
+                    <Shield className="w-4 h-4 text-white fill-white/80" />
                   </div>
-                  <div className="flex flex-wrap gap-1.5">
-                    {attr.heroes.map((hero) => (
-                      <span
-                        key={hero}
-                        className="rounded-sm bg-black/60 border border-white/[0.06] px-2 py-0.5 text-[11px] font-mono text-zinc-300"
-                      >
-                        {hero}
-                      </span>
-                    ))}
-                  </div>
+                  <span className="text-xl sm:text-2xl font-serif tracking-[0.25em] uppercase font-bold text-amber-200 drop-shadow-[0_2px_12px_rgba(245,158,11,0.65)]">
+                    HEROES
+                  </span>
                 </div>
               </div>
 
-              {/* Telemetry Focus Area */}
-              <div className="border-t border-white/[0.06] pt-3 text-[11px] font-mono text-zinc-400">
-                <span className="text-zinc-500 uppercase block text-[9px] tracking-wider mb-0.5">
-                  Core Analytics Tracked:
+              {/* Two Column Grid: Radiant on Left, Dire on Right */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
+                {/* Radiant Strength */}
+                {(selectedFaction === "all" || selectedFaction === "radiant") && (
+                  <div>
+                    <div className="flex items-center justify-between mb-3 px-1 border-b border-emerald-900/30 pb-1.5">
+                      <span className="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
+                        The Radiant
+                      </span>
+                      <span className="text-[10px] font-mono text-zinc-500">
+                        {strengthRadiant.length} Heroes
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-2.5">
+                      {strengthRadiant.map((hero) => (
+                        <HeroCardTile
+                          key={hero.id}
+                          hero={hero}
+                          isHovered={hoveredHeroId === hero.id}
+                          onHover={() => setHoveredHeroId(hero.id)}
+                          onLeave={() => setHoveredHeroId(null)}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Dire Strength */}
+                {(selectedFaction === "all" || selectedFaction === "dire") && (
+                  <div>
+                    <div className="flex items-center justify-between mb-3 px-1 border-b border-rose-900/30 pb-1.5">
+                      <span className="text-xs font-mono uppercase tracking-wider text-rose-400 font-bold flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)]" />
+                        The Dire
+                      </span>
+                      <span className="text-[10px] font-mono text-zinc-500">
+                        {strengthDire.length} Heroes
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-2.5">
+                      {strengthDire.map((hero) => (
+                        <HeroCardTile
+                          key={hero.id}
+                          hero={hero}
+                          isHovered={hoveredHeroId === hero.id}
+                          onHover={() => setHoveredHeroId(hero.id)}
+                          onLeave={() => setHoveredHeroId(null)}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+        {/* ======================================================== */}
+        {/* 2. AGILITY HEROES SECTION                               */}
+        {/* ======================================================== */}
+        {(selectedAttr === "all" || selectedAttr === "agi") &&
+          (agilityRadiant.length > 0 || agilityDire.length > 0) && (
+            <div className="mb-14">
+              {/* Glowing Diamond Banner Header */}
+              <div className="relative py-4 mb-6 flex items-center justify-center">
+                {/* Horizontal Diamond Flare Background */}
+                <div
+                  className="absolute inset-0 pointer-events-none"
+                  style={{
+                    background:
+                      "radial-gradient(ellipse 65% 100% at 50% 50%, rgba(34, 197, 94, 0.45) 0%, rgba(20, 120, 50, 0.22) 45%, rgba(9, 10, 15, 0) 80%)",
+                  }}
+                />
+                <div className="relative z-10 flex items-center gap-3.5">
+                  <span className="text-xl sm:text-2xl font-serif tracking-[0.25em] uppercase font-bold text-emerald-200 drop-shadow-[0_2px_12px_rgba(34,197,94,0.65)]">
+                    AGILITY
+                  </span>
+                  {/* Circular Agility Emblem */}
+                  <div className="relative w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 via-green-600 to-teal-800 p-0.5 shadow-[0_0_15px_rgba(34,197,94,0.8)] border border-emerald-300/60 flex items-center justify-center">
+                    <Zap className="w-4 h-4 text-white fill-white/80" />
+                  </div>
+                  <span className="text-xl sm:text-2xl font-serif tracking-[0.25em] uppercase font-bold text-emerald-200 drop-shadow-[0_2px_12px_rgba(34,197,94,0.65)]">
+                    HEROES
+                  </span>
+                </div>
+              </div>
+
+              {/* Two Column Grid: Radiant on Left, Dire on Right */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
+                {/* Radiant Agility */}
+                {(selectedFaction === "all" || selectedFaction === "radiant") && (
+                  <div>
+                    <div className="flex items-center justify-between mb-3 px-1 border-b border-emerald-900/30 pb-1.5">
+                      <span className="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
+                        The Radiant
+                      </span>
+                      <span className="text-[10px] font-mono text-zinc-500">
+                        {agilityRadiant.length} Heroes
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-2.5">
+                      {agilityRadiant.map((hero) => (
+                        <HeroCardTile
+                          key={hero.id}
+                          hero={hero}
+                          isHovered={hoveredHeroId === hero.id}
+                          onHover={() => setHoveredHeroId(hero.id)}
+                          onLeave={() => setHoveredHeroId(null)}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Dire Agility */}
+                {(selectedFaction === "all" || selectedFaction === "dire") && (
+                  <div>
+                    <div className="flex items-center justify-between mb-3 px-1 border-b border-rose-900/30 pb-1.5">
+                      <span className="text-xs font-mono uppercase tracking-wider text-rose-400 font-bold flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)]" />
+                        The Dire
+                      </span>
+                      <span className="text-[10px] font-mono text-zinc-500">
+                        {agilityDire.length} Heroes
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-2.5">
+                      {agilityDire.map((hero) => (
+                        <HeroCardTile
+                          key={hero.id}
+                          hero={hero}
+                          isHovered={hoveredHeroId === hero.id}
+                          onHover={() => setHoveredHeroId(hero.id)}
+                          onLeave={() => setHoveredHeroId(null)}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+        {/* ======================================================== */}
+        {/* 3. INTELLIGENCE HEROES SECTION                          */}
+        {/* ======================================================== */}
+        {(selectedAttr === "all" || selectedAttr === "int") &&
+          (intelligenceRadiant.length > 0 || intelligenceDire.length > 0) && (
+            <div className="mb-14">
+              {/* Glowing Diamond Banner Header */}
+              <div className="relative py-4 mb-6 flex items-center justify-center">
+                {/* Horizontal Diamond Flare Background */}
+                <div
+                  className="absolute inset-0 pointer-events-none"
+                  style={{
+                    background:
+                      "radial-gradient(ellipse 65% 100% at 50% 50%, rgba(56, 189, 248, 0.45) 0%, rgba(14, 116, 144, 0.22) 45%, rgba(9, 10, 15, 0) 80%)",
+                  }}
+                />
+                <div className="relative z-10 flex items-center gap-3.5">
+                  <span className="text-xl sm:text-2xl font-serif tracking-[0.25em] uppercase font-bold text-sky-200 drop-shadow-[0_2px_12px_rgba(56,189,248,0.65)]">
+                    INTELLIGENCE
+                  </span>
+                  {/* Circular Intelligence Emblem */}
+                  <div className="relative w-8 h-8 rounded-full bg-gradient-to-br from-sky-400 via-blue-600 to-indigo-800 p-0.5 shadow-[0_0_15px_rgba(56,189,248,0.8)] border border-sky-300/60 flex items-center justify-center">
+                    <Brain className="w-4 h-4 text-white fill-white/80" />
+                  </div>
+                  <span className="text-xl sm:text-2xl font-serif tracking-[0.25em] uppercase font-bold text-sky-200 drop-shadow-[0_2px_12px_rgba(56,189,248,0.65)]">
+                    HEROES
+                  </span>
+                </div>
+              </div>
+
+              {/* Two Column Grid: Radiant on Left, Dire on Right */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
+                {/* Radiant Intelligence */}
+                {(selectedFaction === "all" || selectedFaction === "radiant") && (
+                  <div>
+                    <div className="flex items-center justify-between mb-3 px-1 border-b border-emerald-900/30 pb-1.5">
+                      <span className="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
+                        The Radiant
+                      </span>
+                      <span className="text-[10px] font-mono text-zinc-500">
+                        {intelligenceRadiant.length} Heroes
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-2.5">
+                      {intelligenceRadiant.map((hero) => (
+                        <HeroCardTile
+                          key={hero.id}
+                          hero={hero}
+                          isHovered={hoveredHeroId === hero.id}
+                          onHover={() => setHoveredHeroId(hero.id)}
+                          onLeave={() => setHoveredHeroId(null)}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Dire Intelligence */}
+                {(selectedFaction === "all" || selectedFaction === "dire") && (
+                  <div>
+                    <div className="flex items-center justify-between mb-3 px-1 border-b border-rose-900/30 pb-1.5">
+                      <span className="text-xs font-mono uppercase tracking-wider text-rose-400 font-bold flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)]" />
+                        The Dire
+                      </span>
+                      <span className="text-[10px] font-mono text-zinc-500">
+                        {intelligenceDire.length} Heroes
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-2.5">
+                      {intelligenceDire.map((hero) => (
+                        <HeroCardTile
+                          key={hero.id}
+                          hero={hero}
+                          isHovered={hoveredHeroId === hero.id}
+                          onHover={() => setHoveredHeroId(hero.id)}
+                          onLeave={() => setHoveredHeroId(null)}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+        {/* ======================================================== */}
+        {/* 4. UNIVERSAL HEROES SECTION (Modern Patch 7.33+)        */}
+        {/* ======================================================== */}
+        {selectedAttr === "uni" && (
+          <div className="mb-14">
+            <div className="relative py-4 mb-6 flex items-center justify-center">
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background:
+                    "radial-gradient(ellipse 65% 100% at 50% 50%, rgba(168, 85, 247, 0.45) 0%, rgba(107, 33, 168, 0.22) 45%, rgba(9, 10, 15, 0) 80%)",
+                }}
+              />
+              <div className="relative z-10 flex items-center gap-3.5">
+                <span className="text-xl sm:text-2xl font-serif tracking-[0.25em] uppercase font-bold text-purple-200 drop-shadow-[0_2px_12px_rgba(168,85,247,0.65)]">
+                  UNIVERSAL
                 </span>
-                <span className="text-zinc-300 leading-snug block">
-                  {attr.telemetry}
+                <div className="relative w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 via-violet-600 to-indigo-800 p-0.5 shadow-[0_0_15px_rgba(168,85,247,0.8)] border border-purple-300/60 flex items-center justify-center">
+                  <Sparkles className="w-4 h-4 text-white fill-white/80" />
+                </div>
+                <span className="text-xl sm:text-2xl font-serif tracking-[0.25em] uppercase font-bold text-purple-200 drop-shadow-[0_2px_12px_rgba(168,85,247,0.65)]">
+                  HEROES
                 </span>
               </div>
             </div>
-          ))}
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2.5">
+              {universalHeroes.map((hero) => (
+                <HeroCardTile
+                  key={hero.id}
+                  hero={hero}
+                  isHovered={hoveredHeroId === hero.id}
+                  onHover={() => setHoveredHeroId(hero.id)}
+                  onLeave={() => setHoveredHeroId(null)}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Empty Search State */}
+        {filteredHeroes.length === 0 && (
+          <div className="py-16 text-center border border-dashed border-white/10 rounded-lg bg-white/[0.02]">
+            <p className="text-sm font-mono text-zinc-400">
+              No heroes found matching &quot;{searchQuery}&quot;.
+            </p>
+            <p className="text-xs text-zinc-500 mt-1">
+              Try searching by either localized name (e.g. &quot;Anti-Mage&quot;) or real name (e.g. &quot;Magina&quot;).
+            </p>
+            <button
+              onClick={() => {
+                setSearchQuery("");
+                setSelectedAttr("all");
+                setSelectedFaction("all");
+              }}
+              className="mt-4 px-3.5 py-1.5 rounded bg-rose-600 hover:bg-rose-500 text-white text-xs font-mono font-medium transition-all"
+            >
+              Reset Filters
+            </button>
+          </div>
+        )}
+
+        {/* Bottom Banner */}
+        <div className="mt-8 pt-6 border-t border-white/[0.08] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-zinc-400">
+          <div className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+            <span>126 Heroes Indexed</span>
+            <span className="text-zinc-600">|</span>
+            <span className="text-amber-400/90 font-medium">Real Names from DotA Allstars &amp; Valve Lore</span>
+          </div>
+          <Link
+            href="/heroes"
+            className="inline-flex items-center gap-1.5 text-rose-400 hover:text-rose-300 font-semibold group transition-all"
+          >
+            <span>Explore In-Depth Hero Analytics &amp; Matchups</span>
+            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+          </Link>
         </div>
       </div>
     </section>
+  );
+}
+
+// ========================================================
+// Individual Hero Tile Card Component
+// ========================================================
+interface HeroCardTileProps {
+  hero: HeroLoreEntry;
+  isHovered: boolean;
+  onHover: () => void;
+  onLeave: () => void;
+}
+
+function HeroCardTile({ hero, isHovered, onHover, onLeave }: HeroCardTileProps) {
+  const [imgError, setImgError] = useState(false);
+
+  const heroImgUrl = imgError
+    ? "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/pudge.png"
+    : `https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/${hero.shortName}.png`;
+
+  return (
+    <Link
+      href={`/heroes?search=${encodeURIComponent(hero.name)}`}
+      onMouseEnter={onHover}
+      onMouseLeave={onLeave}
+      className={`group relative block rounded overflow-hidden bg-[#10121A] border transition-all duration-200 select-none ${
+        isHovered
+          ? "border-amber-400/90 shadow-[0_0_14px_rgba(251,191,36,0.35)] scale-[1.04] z-30 ring-1 ring-amber-400/50"
+          : "border-white/[0.12] hover:border-white/30"
+      }`}
+    >
+      {/* Hero Portrait */}
+      <div className="relative aspect-[16/10] w-full bg-zinc-950 overflow-hidden">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={heroImgUrl}
+          alt={hero.name}
+          onError={() => setImgError(true)}
+          loading="lazy"
+          className="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-105"
+        />
+
+        {/* Faction color accent bar at very top */}
+        <div
+          className={`absolute top-0 left-0 right-0 h-[2px] opacity-75 ${
+            hero.faction === "radiant"
+              ? "bg-gradient-to-r from-emerald-500 via-teal-400 to-transparent"
+              : "bg-gradient-to-r from-rose-500 via-red-600 to-transparent"
+          }`}
+        />
+
+        {/* Hero Name Badge Overlay (Styled matching classic Dota UI) */}
+        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/95 via-black/80 to-transparent pt-3 pb-1 px-1.5 flex flex-col justify-end text-center pointer-events-none">
+          {/* Main Hero Name */}
+          <span className="text-[11px] sm:text-[11.5px] font-sans font-bold text-[#86d9ff] tracking-tight leading-tight truncate drop-shadow-[0_1.5px_2px_rgba(0,0,0,1)] group-hover:text-white transition-colors">
+            {hero.name}
+          </span>
+          {/* Real Lore Name */}
+          <span className="text-[9px] sm:text-[9.5px] font-serif text-[#fbbf24] font-medium tracking-normal leading-tight truncate drop-shadow-[0_1px_2px_rgba(0,0,0,1)] opacity-95">
+            {hero.realName}
+          </span>
+        </div>
+      </div>
+
+      {/* Floating Hover Card on Hover with Extra Details */}
+      {isHovered && (
+        <div className="absolute -top-12 left-1/2 -translate-x-1/2 whitespace-nowrap z-50 pointer-events-none px-2.5 py-1 rounded bg-[#0A0B10]/95 border border-amber-400/60 shadow-xl backdrop-blur-md">
+          <div className="text-[10px] font-mono text-zinc-300 flex items-center gap-1.5">
+            <span className="font-bold text-white">{hero.name}</span>
+            <span className="text-zinc-500">•</span>
+            <span className="text-amber-300 italic font-serif">&quot;{hero.realName}&quot;</span>
+            <span className="text-zinc-500">•</span>
+            <span className="text-[9px] text-zinc-400 uppercase">{hero.attackType}</span>
+          </div>
+        </div>
+      )}
+    </Link>
   );
 }

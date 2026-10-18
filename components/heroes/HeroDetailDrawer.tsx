@@ -23,6 +23,7 @@ import {
   HeroDetailDeepDive,
   PrimaryAttrType,
 } from "@/lib/opendota/hero-types";
+import { getHeroLoreById } from "@/lib/opendota/hero-lore-names";
 
 interface HeroDetailDrawerProps {
   hero: EnrichedHeroSummary | null;
@@ -193,6 +194,11 @@ export function HeroDetailDrawer({
               <h2 id="hero-drawer-title" className="text-2xl font-mono font-black text-white tracking-tight">
                 {hero.localized_name}
               </h2>
+              {getHeroLoreById(hero.id)?.realName && (
+                <div className="text-sm font-serif text-amber-300 font-semibold mt-0.5">
+                  &quot;{getHeroLoreById(hero.id)?.realName}&quot;
+                </div>
+              )}
               <div className="text-xs font-mono text-zinc-400 mt-0.5 mb-3">
                 {hero.name}
               </div>

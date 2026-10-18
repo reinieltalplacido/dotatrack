@@ -4,6 +4,7 @@ import { useState } from "react";
 import NextImage from "next/image";
 import { EnrichedHeroSummary, PrimaryAttrType } from "@/lib/opendota/hero-types";
 import { Check, Plus } from "lucide-react";
+import { getHeroLoreById } from "@/lib/opendota/hero-lore-names";
 
 interface HeroCardProps {
   hero: EnrichedHeroSummary;
@@ -130,11 +131,16 @@ export function HeroCard({
 
       {/* Card Content Body */}
       <div className="p-3 flex-1 flex flex-col justify-between">
-        {/* Name and Roles */}
+        {/* Name, Real Name and Roles */}
         <div>
           <h3 className="font-mono text-sm font-bold text-white truncate group-hover:text-rose-400 transition-colors">
             {hero.localized_name}
           </h3>
+          {getHeroLoreById(hero.id)?.realName && (
+            <p className="text-[10.5px] font-serif text-amber-300/90 font-medium truncate mb-1">
+              &quot;{getHeroLoreById(hero.id)?.realName}&quot;
+            </p>
+          )}
           <p className="text-[10px] font-mono text-zinc-400 truncate mb-2.5">
             {hero.roles.slice(0, 2).join(" • ") || "Hero"}
           </p>

@@ -125,6 +125,7 @@ interface RawObjective {
   key?: string;
   slot?: number;
   player_slot?: number;
+  victim_player_slot?: number;
   unit?: string;
   team?: number;
 }
@@ -507,7 +508,7 @@ function normalizeMatch(raw: RawMatchResponse): NormalizedMatchData {
   const teamfights = extractTeamfights(raw.teamfights, allPlayers);
 
   // Objectives
-  const objectives = extractObjectives(raw.objectives);
+  const objectives = extractObjectives(raw.objectives, allPlayers);
 
   // Gold & XP timelines
   const rawGoldAdv = Array.isArray(raw.radiant_gold_adv) ? raw.radiant_gold_adv : [];
@@ -823,37 +824,159 @@ function extractTeamfights(
 }
 
 /**
- * Extracts and maps building, Roshan, and objective events.
+ * Formats Dota 2 building keys into clean, human-readable building names.
+ * e.g., "npc_dota_goodguys_tower1_mid" -> "Tier 1 Mid Tower"
  */
-function extractObjectives(rawObjectives: RawObjective[] | undefined): MatchObjectiveEvent[] {
+function formatBuildingName(key: string): { name: string; type: "tower" | "barracks" | "other"; isRadiantBuilding: boolean } {
+  const lower = key.toLowerCase();
+  const isRadiantBuilding = lower.includes("goodguys");
+
+  let lane = "";
+  if (lower.includes("mid")) lane = "Mid";
+  else if (lower.includes("top")) lane = "Top";
+  else if (lower.includes("bot")) lane = "Bot";
+
+  if (lower.includes("tower1")) {
+    return { name: `Tier 1 ${lane} Tower`, type: "tower", isRadiantBuilding };
+  }
+  if (lower.includes("tower2")) {
+    return { name: `Tier 2 ${lane} Tower`, type: "tower", isRadiantBuilding };
+  }
+  if (lower.includes("tower3")) {
+    return { name: `Tier 3 ${lane} Tower`, type: "tower", isRadiantBuilding };
+  }
+  if (lower.includes("tower4")) {
+    return { name: "Tier 4 Ancient Tower", type: "tower", isRadiantBuilding };
+  }
+  if (lower.includes("range_rax") || lower.includes("ranged_rax")) {
+    return { name: `Ranged Barracks (${lane})`, type: "barracks", isRadiantBuilding };
+  }
+  if (lower.includes("melee_rax")) {
+    return { name: `Melee Barracks (${lane})`, type: "barracks", isRadiantBuilding };
+  }
+  if (lower.includes("fort") || lower.includes("ancient")) {
+    return { name: "Ancient (Throne)", type: "other", isRadiantBuilding };
+  }
+
+  return { name: "Structure", type: "other", isRadiantBuilding };
+}
+
+/**
+ * Extracts and maps building, Roshan, Aegis, and First Blood objective events.
+ */
+function extractObjectives(
+  rawObjectives: RawObjective[] | undefined,
+  allPlayers: MatchPlayerDetailed[]
+): MatchObjectiveEvent[] {
   if (!Array.isArray(rawObjectives)) return [];
+
+  const playerMap = new Map<number, MatchPlayerDetailed>();
+  allPlayers.forEach((p) => {
+    playerMap.set(p.playerSlot, p);
+  });
 
   return rawObjectives.map((obj) => {
     let type: MatchObjectiveEvent["type"] = "other";
     let desc = "Objective Secured";
     let team: MatchObjectiveEvent["team"] = "Neutral";
+    let killerHero: MatchObjectiveEvent["killerHero"] | undefined;
+    let victimHero: MatchObjectiveEvent["victimHero"] | undefined;
 
     const key = (obj.key || "").toLowerCase();
     const objType = (obj.type || "").toLowerCase();
 
-    if (objType.includes("tower") || key.includes("tower")) {
-      type = "tower";
-      const isRadiantLoss = key.includes("goodguys") || obj.team === 2;
-      team = isRadiantLoss ? "Dire" : "Radiant";
-      desc = `${team} destroyed a Tower`;
-    } else if (objType.includes("barracks") || key.includes("rax") || key.includes("barracks")) {
-      type = "barracks";
-      const isRadiantLoss = key.includes("goodguys") || obj.team === 2;
-      team = isRadiantLoss ? "Dire" : "Radiant";
-      desc = `${team} destroyed Barracks`;
-    } else if (objType.includes("roshan") || key.includes("roshan")) {
+    // 1. FIRST BLOOD
+    if (objType.includes("firstblood")) {
+      type = "firstblood";
+      const killer = obj.player_slot !== undefined ? playerMap.get(obj.player_slot) : undefined;
+      const victim = obj.victim_player_slot !== undefined ? playerMap.get(obj.victim_player_slot) : undefined;
+
+      if (killer) {
+        team = killer.isRadiant ? "Radiant" : "Dire";
+        killerHero = {
+          id: killer.heroId,
+          name: killer.heroName,
+          localizedName: killer.heroLocalizedName,
+          img: killer.heroImg,
+        };
+      }
+      if (victim) {
+        victimHero = {
+          id: victim.heroId,
+          name: victim.heroName,
+          localizedName: victim.heroLocalizedName,
+          img: victim.heroImg,
+        };
+      }
+
+      if (killer && victim) {
+        desc = `${killer.heroLocalizedName} drew First Blood on ${victim.heroLocalizedName}`;
+      } else if (killer) {
+        desc = `${killer.heroLocalizedName} secured First Blood`;
+      } else {
+        desc = "First Blood claimed";
+      }
+    }
+    // 2. TOWER & BARRACKS & THRONE DESTROYED
+    else if (objType.includes("building") || key.includes("tower") || key.includes("rax") || key.includes("fort")) {
+      const bInfo = formatBuildingName(key);
+      type = bInfo.type;
+
+      // The destroying team is the opposite of the building owner
+      const destroyingTeam: MatchObjectiveEvent["team"] = bInfo.isRadiantBuilding ? "Dire" : "Radiant";
+      team = destroyingTeam;
+
+      const killer = obj.player_slot !== undefined ? playerMap.get(obj.player_slot) : undefined;
+      if (killer) {
+        killerHero = {
+          id: killer.heroId,
+          name: killer.heroName,
+          localizedName: killer.heroLocalizedName,
+          img: killer.heroImg,
+        };
+        desc = `${destroyingTeam} destroyed ${bInfo.name} (${killer.heroLocalizedName})`;
+      } else if (obj.unit?.includes("siege")) {
+        desc = `${destroyingTeam} destroyed ${bInfo.name} (Catapult)`;
+      } else if (obj.unit?.includes("creep")) {
+        desc = `${destroyingTeam} destroyed ${bInfo.name} (Creeps)`;
+      } else {
+        desc = `${destroyingTeam} destroyed ${bInfo.name}`;
+      }
+    }
+    // 3. ROSHAN KILLED
+    else if (objType.includes("roshan") || key.includes("roshan")) {
       type = "roshan";
       team = obj.team === 2 ? "Radiant" : obj.team === 3 ? "Dire" : "Neutral";
-      desc = `${team} killed Roshan`;
-    } else if (objType.includes("aegis") || key.includes("aegis")) {
+      const killer = obj.player_slot !== undefined ? playerMap.get(obj.player_slot) : undefined;
+      if (killer) {
+        killerHero = {
+          id: killer.heroId,
+          name: killer.heroName,
+          localizedName: killer.heroLocalizedName,
+          img: killer.heroImg,
+        };
+        desc = `${team} killed Roshan (${killer.heroLocalizedName})`;
+      } else {
+        desc = `${team} killed Roshan`;
+      }
+    }
+    // 4. AEGIS CLAIMED
+    else if (objType.includes("aegis") || key.includes("aegis")) {
       type = "aegis";
-      team = obj.team === 2 ? "Radiant" : obj.team === 3 ? "Dire" : "Neutral";
-      desc = "Aegis of the Immortal claimed";
+      const carrier = obj.player_slot !== undefined ? playerMap.get(obj.player_slot) : undefined;
+      if (carrier) {
+        team = carrier.isRadiant ? "Radiant" : "Dire";
+        killerHero = {
+          id: carrier.heroId,
+          name: carrier.heroName,
+          localizedName: carrier.heroLocalizedName,
+          img: carrier.heroImg,
+        };
+        desc = `${carrier.heroLocalizedName} claimed the Aegis of the Immortal`;
+      } else {
+        team = obj.team === 2 ? "Radiant" : obj.team === 3 ? "Dire" : "Neutral";
+        desc = "Aegis of the Immortal claimed";
+      }
     }
 
     return {
@@ -864,6 +987,8 @@ function extractObjectives(rawObjectives: RawObjective[] | undefined): MatchObje
       team,
       playerSlot: obj.player_slot,
       unit: obj.unit,
+      killerHero,
+      victimHero,
     };
   });
 }
