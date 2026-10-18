@@ -126,7 +126,7 @@ export function SteamIdSearch({ onSearchSubmit, autoNavigate = true }: SteamIdSe
     }
 
     setIsLoading(true);
-    setLoadingMessage("RESOLVING TELEMETRY...");
+    setLoadingMessage("FETCHING STATS...");
 
     try {
       if (onSearchSubmit) {
@@ -147,7 +147,7 @@ export function SteamIdSearch({ onSearchSubmit, autoNavigate = true }: SteamIdSe
             ? `Player #${accountId} not found on OpenDota. Ensure the ID is correct and match history is public.`
             : res.status === 429
             ? "OpenDota rate limit exceeded. Please wait a few seconds before trying again."
-            : "Failed to load player telemetry. Please verify connection and retry.");
+            : "Failed to load player stats. Please verify connection and retry.");
         setErrorMessage(errorText);
         return;
       }
@@ -167,7 +167,7 @@ export function SteamIdSearch({ onSearchSubmit, autoNavigate = true }: SteamIdSe
         router.push(`/player/${accountId}`);
       }
     } catch {
-      setErrorMessage("Network error connecting to telemetry server. Please check your connection.");
+      setErrorMessage("Network error connecting to stats server. Please check your connection.");
     } finally {
       setIsLoading(false);
     }
@@ -262,7 +262,7 @@ export function SteamIdSearch({ onSearchSubmit, autoNavigate = true }: SteamIdSe
           >
             <AlertCircle className="h-4 w-4 text-red-400 shrink-0 mt-0.5" aria-hidden="true" />
             <div className="flex-1 font-mono">
-              <strong className="text-red-300 uppercase">[TELEMETRY_ERROR] </strong>
+              <strong className="text-red-300 uppercase">[ERROR] </strong>
               <span>{errorMessage}</span>
             </div>
           </div>

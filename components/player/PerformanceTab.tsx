@@ -17,7 +17,7 @@ export function PerformanceTab({ data }: PerformanceTabProps) {
         <div className="flex items-center gap-2 mb-2">
           <Activity className="h-4 w-4 text-rose-500" />
           <h2 className="text-base font-mono font-bold text-white uppercase tracking-wider">
-            Performance Telemetry Benchmark
+            Performance Benchmark
           </h2>
         </div>
         <p className="text-xs font-mono text-zinc-400 leading-relaxed max-w-2xl">

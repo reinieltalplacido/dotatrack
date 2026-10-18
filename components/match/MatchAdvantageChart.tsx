@@ -112,7 +112,7 @@ export function MatchAdvantageChart({
             Advantage Graphs Unavailable (Unparsed Replay)
           </h3>
           <p className="text-xs font-mono text-zinc-400 max-w-md mx-auto leading-relaxed">
-            Minute-by-minute gold and XP advantage curves require recorded replay telemetry.
+            Minute-by-minute gold and XP advantage curves require recorded replay data.
           </p>
         </div>
       ) : (

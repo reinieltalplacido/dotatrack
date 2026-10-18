@@ -11,15 +11,7 @@ interface TournamentCardProps {
 export function TournamentCard({ tournament }: TournamentCardProps) {
   const isLive = tournament.status === "live";
   const isUpcoming = tournament.status === "upcoming";
-
-  const cleanTitle = tournament.name
-    .replace(/\s*[-–—:]?\s*(western europe|eastern europe|southeast asia|south america|north america|china|europe|cis|sea|weu|eeu|sa|na|cn)\s*(closed|open)?\s*qualif(ier)?(s)?\b/gi, "")
-    .replace(/\s*[-–—:]?\s*(closed|open)?\s*qualif(ier)?(s)?\b/gi, "")
-    .replace(/\s*qualifier(s)?/gi, "")
-    .replace(/\s*qualifs/gi, "")
-    .replace(/[-–—:]+$/, "")
-    .replace(/\s+/g, " ")
-    .trim();
+  const cleanTitle = tournament.name;
 
   return (
     <Link
@@ -102,7 +94,7 @@ export function TournamentCard({ tournament }: TournamentCardProps) {
           </div>
 
           <span className="inline-flex items-center gap-1 font-bold text-rose-400 group-hover:translate-x-0.5 transition-transform">
-            <span>Dossier</span>
+            <span>Details</span>
             <ArrowRight className="h-3.5 w-3.5" />
           </span>
         </div>

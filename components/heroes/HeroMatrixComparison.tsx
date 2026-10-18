@@ -270,7 +270,7 @@ export function HeroMatrixComparison({
                     </strong>{" "}
                     • Pick Rate: <strong className="text-white">{hoveredHero.pickRate.toFixed(1)}%</strong>
                   </div>
-                  <div className="text-[9px] text-zinc-500 mt-0.5">Click to view full dossier</div>
+                  <div className="text-[9px] text-zinc-500 mt-0.5">Click to view full details</div>
                 </div>
               </div>
             )}

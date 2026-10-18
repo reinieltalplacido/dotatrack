@@ -24,7 +24,7 @@ export function Footer() {
                 DOTA<span className="text-rose-500">TRACK</span>
               </span>
               <span className="text-[10px] text-zinc-400 bg-white/[0.04] px-1.5 py-0.2 rounded-xs">
-                TELEMETRY SUITE
+                STATS PLATFORM
               </span>
             </div>
             <p className="text-zinc-400 text-xs leading-relaxed font-sans">

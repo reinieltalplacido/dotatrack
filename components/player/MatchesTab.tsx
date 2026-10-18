@@ -40,7 +40,7 @@ export function MatchesTab({ matches }: MatchesTabProps) {
       <div className="tactical-panel p-12 text-center rounded-sm border border-white/[0.08]">
         <Skull className="h-10 w-10 text-zinc-600 mx-auto mb-3" />
         <h3 className="text-base font-mono font-bold text-white mb-1">
-          No Recent Match Telemetry
+          No Recent Matches Found
         </h3>
         <p className="text-xs font-mono text-zinc-400 max-w-md mx-auto">
           No recent public matches could be retrieved for this account. The player may have enabled match privacy or hasn&apos;t played recently.

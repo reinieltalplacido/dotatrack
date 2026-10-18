@@ -119,7 +119,7 @@ export function MetaOverviewHeader({
 
         <p className="text-xs sm:text-sm font-mono text-zinc-400 max-w-3xl leading-relaxed">
           Comprehensive competitive meta analysis across active Dota 2 pub matchmaking and professional play.
-          All win rates, pick frequencies, and tier distributions are computed from verified match telemetry
+          All win rates, pick frequencies, and tier distributions are computed from verified match data
           under official gameplay patch <span className="text-rose-400 font-bold">{currentPatch.name}</span>.
         </p>
       </div>
@@ -135,7 +135,7 @@ export function MetaOverviewHeader({
           {/* Explanation tooltip */}
           <div className="flex items-center gap-1 text-[11px] font-mono text-zinc-500">
             <Info className="h-3 w-3 text-zinc-500" />
-            <span className="hidden sm:inline">Telemetry segregated by OpenDota MMR brackets</span>
+            <span className="hidden sm:inline">Stats grouped by OpenDota MMR brackets</span>
           </div>
         </div>
 

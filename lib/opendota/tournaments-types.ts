@@ -59,10 +59,44 @@ export interface TournamentStanding {
   winRate: number;
 }
 
+export interface TournamentSeries {
+  series_id: number;
+  series_name: string;
+  series_type: number;
+  start_time: number;
+  team1: {
+    id: number;
+    name: string;
+    tag?: string;
+    logo: string | null;
+    score: number;
+    isWinner: boolean;
+  };
+  team2: {
+    id: number;
+    name: string;
+    tag?: string;
+    logo: string | null;
+    score: number;
+    isWinner: boolean;
+  };
+  matches: TournamentMatch[];
+}
+
+export interface TournamentStage {
+  id: number;
+  name: string;
+  isCurrent: boolean;
+  type: "main" | "qualifier";
+  region?: string;
+}
+
 export interface TournamentDetail {
   tournament: TournamentSummary;
   teams: TournamentTeam[];
   matches: TournamentMatch[];
+  series: TournamentSeries[];
+  stages: TournamentStage[];
   standings: TournamentStanding[];
   bracketAvailable: boolean;
   fetchedAt: string;

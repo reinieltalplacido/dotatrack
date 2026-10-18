@@ -169,7 +169,7 @@ export function HeroCompendium({ initialData }: HeroCompendiumProps) {
           <div>
             <div className="text-[11px] font-mono uppercase tracking-widest text-rose-500 font-bold mb-1 flex items-center gap-2">
               <span className="h-1.5 w-1.5 rounded-full bg-rose-500 animate-pulse" />
-              <span>HERO DATABASE // LIVE STATISTICS</span>
+              <span>HERO DIRECTORY // LIVE STATS</span>
             </div>
             <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white font-mono">
               Hero Compendium

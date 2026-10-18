@@ -33,7 +33,7 @@ export function LiveProMatchesStrip({ matches }: LiveProMatchesStripProps) {
         <div className="flex items-center gap-2">
           <Swords className="h-4 w-4 text-rose-500" />
           <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-white">
-            Live &amp; Recent Pro Matches // Circuit Telemetry
+            Live &amp; Recent Pro Matches // Pro Match Feed
           </h3>
         </div>
         <span className="text-[10px] font-mono text-zinc-400">

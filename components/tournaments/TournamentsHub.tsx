@@ -127,7 +127,7 @@ export function TournamentsHub({ initialData }: TournamentsHubProps) {
               Tournaments
             </h1>
             <p className="text-sm font-mono text-zinc-400 mt-1 max-w-2xl">
-              Live esports brackets, premier championships, and competitive match telemetry.
+              Live esports brackets, premier championships, and competitive match stats.
             </p>
           </div>
 

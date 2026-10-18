@@ -19,7 +19,7 @@ export function MatchupsTab({ data }: MatchupsTabProps) {
           Matchups & Synergy Matrix
         </h2>
         <p className="text-xs font-mono text-zinc-400 max-w-xl mx-auto leading-relaxed mb-6">
-          The automated hero synergy and counter matchup engine is currently under active calibration for Dota 2 Patch 7.37. Telemetry will calculate individual player win rates when paired with or playing against specific hero compositions.
+          The automated hero synergy and counter matchup engine is currently under active calibration for Dota 2 Patch 7.37. This system calculates individual player win rates when paired with or playing against specific hero compositions.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto text-left">

@@ -191,7 +191,7 @@ export function HeroMetaTierList({ heroes, selectedBracketName }: HeroMetaTierLi
           </div>
 
           <p className="leading-relaxed text-zinc-400">
-            Tiers are calculated purely from actual match telemetry without subjective opinion or manual assignment.
+            Tiers are calculated purely from actual match results without subjective opinion or manual assignment.
             To eliminate small-sample-size anomalies (where a hero with 5 games has an 80% win rate), we apply an
             <span className="text-white font-bold"> Empirical Bayes Smoothed Win Rate</span>:
           </p>
@@ -221,7 +221,7 @@ export function HeroMetaTierList({ heroes, selectedBracketName }: HeroMetaTierLi
           </div>
 
           <div className="text-[10px] text-zinc-500 italic pt-1 border-t border-white/[0.04]">
-            * Not official Valve rankings. Calculated dynamically from OpenDota matchmaking telemetry.
+            * Not official Valve rankings. Calculated dynamically from OpenDota match data.
           </div>
         </div>
       )}

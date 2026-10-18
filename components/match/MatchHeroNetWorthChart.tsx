@@ -283,7 +283,7 @@ export function MatchHeroNetWorthChart({
         <div className="p-8 text-center rounded-sm bg-black/40 border border-white/[0.04]">
           <ShieldAlert className="h-6 w-6 text-amber-400 mx-auto mb-2" />
           <h3 className="text-sm font-mono font-bold text-white mb-1">
-            Minute-by-Minute Net Worth Telemetry Unavailable
+            Minute-by-Minute Net Worth Graph Unavailable
           </h3>
           <p className="text-xs font-mono text-zinc-400 max-w-md mx-auto leading-relaxed">
             Individual hero net worth time series requires a parsed Dota 2 replay file.

@@ -76,7 +76,7 @@ export function MatchSearchHeader({ currentMatchId, onSearch, isLoading }: Match
       {/* Title */}
       <div className="mb-6">
         <div className="inline-flex items-center gap-2 rounded-sm bg-blue-950/70 border border-blue-700/50 px-2.5 py-1 text-[11px] font-mono text-blue-300 font-bold tracking-wider mb-2">
-          <span>MATCH TELEMETRY &amp; COMBAT ANALYZER</span>
+          <span>MATCH BREAKDOWN &amp; COMBAT STATS</span>
         </div>
         <h1 className="text-2xl sm:text-3xl font-mono font-black text-white tracking-tight">
           DOTA 2 MATCH ANALYZER

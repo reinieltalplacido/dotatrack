@@ -301,7 +301,7 @@ export function OverviewTab({
 
           <div className="mt-4 pt-3 border-t border-white/[0.06] flex items-center justify-between text-xs font-mono">
             <span className="text-zinc-400">Total Games: <strong className="text-white">{lifetime.totalMatches.toLocaleString()}</strong></span>
-            <span className="text-zinc-500 text-[11px]">Telemetry Source: OpenDota</span>
+            <span className="text-zinc-500 text-[11px]">Data Source: OpenDota</span>
           </div>
         </div>
       </div>
@@ -327,7 +327,7 @@ export function OverviewTab({
 
         {topHeroes.length === 0 ? (
           <div className="py-6 text-center font-mono text-sm text-zinc-500">
-            No hero match telemetry found.
+            No hero match records found.
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-5 gap-3">

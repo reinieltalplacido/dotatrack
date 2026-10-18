@@ -41,11 +41,11 @@ export default async function HeroesPage() {
             </div>
 
             <div className="inline-block rounded-sm bg-red-950/80 border border-red-800/60 px-2.5 py-0.5 text-[11px] font-mono text-red-300 uppercase tracking-wider mb-2">
-              [TELEMETRY_UNAVAILABLE]
+              [DATA_UNAVAILABLE]
             </div>
 
             <h1 className="text-xl font-mono font-bold text-white mb-2">
-              Hero Database Telemetry Offline
+              Hero Stats Unavailable
             </h1>
 
             <p className="text-xs font-mono text-zinc-400 leading-relaxed mb-6">

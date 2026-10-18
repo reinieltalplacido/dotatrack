@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (isNaN(numericId) || numericId <= 0) {
     return {
-      title: "Tournament Dossier — DotaTrack",
+      title: "Tournament Details — DotaTrack",
       description: "Dota 2 competitive esports tournament details and match results.",
     };
   }
@@ -65,7 +65,7 @@ export default async function TournamentDetailPage({ params }: PageProps) {
     }
 
     const message =
-      error instanceof Error ? error.message : "Failed to load tournament dossier";
+      error instanceof Error ? error.message : "Failed to load tournament details";
 
     return (
       <div className="min-h-screen bg-[#08090C] text-[#EDEDF0] flex flex-col font-sans">
@@ -77,11 +77,11 @@ export default async function TournamentDetailPage({ params }: PageProps) {
             </div>
 
             <div className="inline-block rounded-sm bg-red-950/80 border border-red-800/60 px-2.5 py-0.5 text-[11px] font-mono text-red-300 uppercase tracking-wider mb-2">
-              [DOSSIER_UNAVAILABLE]
+              [DETAILS_UNAVAILABLE]
             </div>
 
             <h1 className="text-xl font-mono font-bold text-white mb-2">
-              Tournament Dossier Telemetry Error
+              Tournament Details Telemetry Error
             </h1>
 
             <p className="text-xs font-mono text-zinc-400 leading-relaxed mb-6">{message}</p>

@@ -7,6 +7,8 @@ import {
   TournamentTeam,
   TournamentTier,
   TournamentStatus,
+  TournamentSeries,
+  TournamentStage,
   TournamentsCatalogPayload,
 } from "./tournaments-types";
 import teamsSnapshot from "./teams-snapshot.json";
@@ -227,14 +229,7 @@ const PREMIER_METADATA: Record<string, PremierTournamentMeta> = {
  */
 export function normalizeTournamentName(rawName: string): string {
   if (!rawName) return "Dota 2 Championship";
-  return rawName
-    .replace(/\s*[-–—:]?\s*(western europe|eastern europe|southeast asia|south america|north america|china|europe|cis|sea|weu|eeu|sa|na|cn)\s*(closed|open)?\s*qualif(ier)?(s)?\b/gi, "")
-    .replace(/\s*[-–—:]?\s*(closed|open)?\s*qualif(ier)?(s)?\b/gi, "")
-    .replace(/\s*qualifier(s)?/gi, "")
-    .replace(/\s*qualifs/gi, "")
-    .replace(/[-–—:]+$/, "")
-    .replace(/\s+/g, " ")
-    .trim();
+  return rawName.replace(/\s+/g, " ").trim();
 }
 
 /**
@@ -603,17 +598,42 @@ export async function fetchTournamentDetail(leagueId: number): Promise<Tournamen
     };
   });
 
-  // Calculate standings from teams & matches
-  const standings: TournamentStanding[] = Array.from(teamMap.values())
+  // Calculate tournament-specific standings from actual matches
+  const eventTeamStats = new Map<number, { wins: number; losses: number; matchesPlayed: number }>();
+  matches.forEach((m) => {
+    if (m.radiant_team_id) {
+      const rad = eventTeamStats.get(m.radiant_team_id) || { wins: 0, losses: 0, matchesPlayed: 0 };
+      rad.matchesPlayed++;
+      if (m.radiant_win) rad.wins++;
+      else rad.losses++;
+      eventTeamStats.set(m.radiant_team_id, rad);
+    }
+    if (m.dire_team_id) {
+      const dire = eventTeamStats.get(m.dire_team_id) || { wins: 0, losses: 0, matchesPlayed: 0 };
+      dire.matchesPlayed++;
+      if (!m.radiant_win) dire.wins++;
+      else dire.losses++;
+      eventTeamStats.set(m.dire_team_id, dire);
+    }
+  });
+
+  const participatingTeams = Array.from(teamMap.values()).filter(
+    (t) => (eventTeamStats.get(t.team_id)?.matchesPlayed ?? 0) > 0
+  );
+
+  const standings: TournamentStanding[] = (participatingTeams.length > 0 ? participatingTeams : Array.from(teamMap.values()))
     .map((team) => {
-      const totalMatches = team.wins + team.losses;
-      const winRate = totalMatches > 0 ? Number(((team.wins / totalMatches) * 100).toFixed(1)) : 0;
+      const stats = eventTeamStats.get(team.team_id);
+      const wins = stats ? stats.wins : team.wins;
+      const losses = stats ? stats.losses : team.losses;
+      const totalMatches = stats ? stats.matchesPlayed : wins + losses;
+      const winRate = totalMatches > 0 ? Number(((wins / totalMatches) * 100).toFixed(1)) : 0;
       return {
         rank: 0,
         team,
         matchesPlayed: totalMatches,
-        wins: team.wins,
-        losses: team.losses,
+        wins,
+        losses,
         winRate,
       };
     })
@@ -625,6 +645,126 @@ export async function fetchTournamentDetail(leagueId: number): Promise<Tournamen
       ...s,
       rank: index + 1,
     }));
+
+  // Group matches into real esports Series
+  const seriesMap = new Map<number, TournamentMatch[]>();
+  matches.forEach((m) => {
+    const sId = m.series_id || m.match_id;
+    if (!seriesMap.has(sId)) {
+      seriesMap.set(sId, []);
+    }
+    seriesMap.get(sId)!.push(m);
+  });
+
+  const series: TournamentSeries[] = Array.from(seriesMap.entries()).map(([sId, sMatches]) => {
+    const firstMatch = sMatches[0];
+    const sType = firstMatch.series_type || 2;
+    const formatName = sType === 1 ? "BO1" : sType === 3 ? "BO5" : "BO3";
+
+    const t1Id = firstMatch.radiant_team_id;
+    const t2Id = firstMatch.dire_team_id;
+    const t1Meta = teamMap.get(t1Id) || teamsLookup[String(t1Id)];
+    const t2Meta = teamMap.get(t2Id) || teamsLookup[String(t2Id)];
+
+    let t1Score = 0;
+    let t2Score = 0;
+    sMatches.forEach((m) => {
+      if (m.radiant_team_id === t1Id) {
+        if (m.radiant_win) t1Score++;
+        else t2Score++;
+      } else {
+        if (m.radiant_win) t2Score++;
+        else t1Score++;
+      }
+    });
+
+    const isT1Winner = t1Score > t2Score;
+    const isT2Winner = t2Score > t1Score;
+
+    return {
+      series_id: sId,
+      series_name: formatName,
+      series_type: sType,
+      start_time: firstMatch.start_time,
+      team1: {
+        id: t1Id,
+        name: firstMatch.radiant_team_name || t1Meta?.name || `Team ${t1Id}`,
+        tag: t1Meta?.tag,
+        logo: firstMatch.radiant_team_logo || t1Meta?.logo_url || null,
+        score: t1Score,
+        isWinner: isT1Winner,
+      },
+      team2: {
+        id: t2Id,
+        name: firstMatch.dire_team_name || t2Meta?.name || `Team ${t2Id}`,
+        tag: t2Meta?.tag,
+        logo: firstMatch.dire_team_logo || t2Meta?.logo_url || null,
+        score: t2Score,
+        isWinner: isT2Winner,
+      },
+      matches: sMatches,
+    };
+  });
+
+  // Discover related stages (e.g., Regional Qualifiers, Main Event)
+  const stages: TournamentStage[] = [];
+  try {
+    const allLeagues = await fetchWithTimeout<RawLeague[]>("/leagues", 3600);
+    if (Array.isArray(allLeagues)) {
+      // Find matches in name family: e.g. "DreamLeague Season 30", "PGL Wallachia Season #2"
+      const currentRaw = rawLeague.name.toLowerCase();
+      // Extract brand and season tokens
+      const brandMatch = currentRaw.match(/(dreamleague|wallachia|pgl|esl one|blast|betboom|riyadh|international|epl)/i);
+      const seasonMatch = currentRaw.match(/season\s*#?(\d+)|(\b202\d\b)/i);
+
+      if (brandMatch) {
+        const brand = brandMatch[1].toLowerCase();
+        const season = seasonMatch ? (seasonMatch[1] || seasonMatch[2]) : "";
+
+        const related = allLeagues.filter((l) => {
+          if (!l.name) return false;
+          const lLower = l.name.toLowerCase();
+          const matchesBrand = lLower.includes(brand);
+          const matchesSeason = season ? lLower.includes(season) : true;
+          return matchesBrand && matchesSeason && l.tier !== "excluded";
+        });
+
+        // Add current league first or in order
+        related.forEach((rel) => {
+          const isCurrent = rel.leagueid === leagueId;
+          const lowerName = rel.name.toLowerCase();
+          const isQualifier = lowerName.includes("qualif");
+          let region = "Global";
+          if (lowerName.includes("weu") || lowerName.includes("western europe")) region = "Western Europe";
+          else if (lowerName.includes("eeu") || lowerName.includes("eastern europe")) region = "Eastern Europe";
+          else if (lowerName.includes("cn") || lowerName.includes("china")) region = "China";
+          else if (lowerName.includes("sea") || lowerName.includes("southeast asia") || lowerName.includes("asia")) region = "Southeast Asia";
+          else if (lowerName.includes("sa") || lowerName.includes("south america")) region = "South America";
+          else if (lowerName.includes("na") || lowerName.includes("north america") || lowerName.includes("amer")) region = "Americas";
+
+          stages.push({
+            id: rel.leagueid,
+            name: rel.name,
+            isCurrent,
+            type: isQualifier ? "qualifier" : "main",
+            region,
+          });
+        });
+      }
+    }
+  } catch {
+    // Stage discovery failure shouldn't fail detail view
+  }
+
+  // Ensure at least the current tournament is in stages
+  if (!stages.some((s) => s.id === leagueId)) {
+    stages.unshift({
+      id: leagueId,
+      name: rawLeague.name,
+      isCurrent: true,
+      type: rawLeague.name.toLowerCase().includes("qualif") ? "qualifier" : "main",
+    });
+  }
 
   const cleanName = normalizeTournamentName(rawLeague.name);
   const enrichment = getTournamentEnrichment(rawLeague.name);
@@ -643,21 +783,25 @@ export async function fetchTournamentDetail(leagueId: number): Promise<Tournamen
     prizePool: enrichment.prizePool,
     numericPrizePool: enrichment.numericPrizePool,
     region: enrichment.region,
-    teamsCount: teamMap.size || rawTeams.length,
+    teamsCount: participatingTeams.length || teamMap.size || rawTeams.length,
     matchesCount: matches.length,
     banner: normalizeTournamentAssetUrl(rawLeague.banner),
     logo: enrichment.logo || null,
     organizer: enrichment.organizer,
     officialWebsite: enrichment.officialWebsite,
-    description: `Complete Dota 2 competitive telemetry dossier for ${cleanName}.`,
+    description: `Complete Dota 2 competitive telemetry details for ${cleanName}.`,
   };
+
+  const finalTeams = participatingTeams.length > 0 ? participatingTeams : Array.from(teamMap.values());
 
   return {
     tournament,
-    teams: Array.from(teamMap.values()),
+    teams: finalTeams,
     matches,
+    series,
+    stages,
     standings,
-    bracketAvailable: false, // Valve / OpenDota does not expose interactive tree brackets via public REST
+    bracketAvailable: false,
     fetchedAt: new Date().toISOString(),
   };
 }

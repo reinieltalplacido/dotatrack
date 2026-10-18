@@ -30,7 +30,7 @@ export function MatchItemTimeline({ players, isParsed }: MatchItemTimelineProps)
             </h2>
           </div>
           <p className="text-[11px] font-mono text-zinc-400">
-            Chronological purchase timestamps derived from recorded replay event telemetry.
+            Chronological purchase timestamps derived from recorded replay events.
           </p>
         </div>
       </div>

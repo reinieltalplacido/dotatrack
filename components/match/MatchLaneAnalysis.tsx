@@ -37,7 +37,7 @@ export function MatchLaneAnalysis({ lanePairings, isParsed }: MatchLaneAnalysisP
         <div className="p-8 text-center rounded-sm bg-black/40 border border-white/[0.04]">
           <ShieldAlert className="h-6 w-6 text-amber-400 mx-auto mb-2" />
           <h3 className="text-sm font-mono font-bold text-white mb-1">
-            Laning Telemetry Unavailable (Unparsed Replay)
+            Laning Data Unavailable (Unparsed Replay)
           </h3>
           <p className="text-xs font-mono text-zinc-400 max-w-md mx-auto leading-relaxed">
             Minute-by-minute CS and Net Worth time series require parsed replay files.

@@ -93,7 +93,7 @@ export function MatchOverviewBanner({ match, onRefresh, onMatchUpdated }: MatchO
           setIsPolling(false);
           setIsRequested(false);
           setParseSuccess(true);
-          setParseMessage("Replay parsed successfully! Real-time telemetry, timelines, and combat metrics are now live.");
+          setParseMessage("Replay parsed successfully! Real-time match stats, timelines, and combat metrics are now live.");
           if (typeof window !== "undefined") {
             localStorage.removeItem(`dotatrack_parse_requested_${match.matchId}`);
           }

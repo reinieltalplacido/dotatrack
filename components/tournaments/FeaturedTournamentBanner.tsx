@@ -11,22 +11,8 @@ interface FeaturedTournamentBannerProps {
 export function FeaturedTournamentBanner({ tournament }: FeaturedTournamentBannerProps) {
   const isLive = tournament.status === "live";
 
-  const cleanTitle = tournament.name
-    .replace(/\s*[-–—:]?\s*(western europe|eastern europe|southeast asia|south america|north america|china|europe|cis|sea|weu|eeu|sa|na|cn)\s*(closed|open)?\s*qualif(ier)?(s)?\b/gi, "")
-    .replace(/\s*[-–—:]?\s*(closed|open)?\s*qualif(ier)?(s)?\b/gi, "")
-    .replace(/\s*qualifier(s)?/gi, "")
-    .replace(/\s*qualifs/gi, "")
-    .replace(/[-–—:]+$/, "")
-    .replace(/\s+/g, " ")
-    .trim();
-
-  const cleanDesc =
-    tournament.description
-      ?.replace(/\s*[-–—:]?\s*(closed|open)?\s*qualifier(s)?/gi, "")
-      .replace(/\s*qualifs/gi, "")
-      .replace(/\s+/g, " ")
-      .trim() ||
-    `Official Valve & ESL competitive circuit championship for ${cleanTitle}.`;
+  const cleanTitle = tournament.name;
+  const cleanDesc = tournament.description || `Official competitive circuit championship for ${cleanTitle}.`;
 
   return (
     <div className="relative rounded-sm border border-rose-500/30 bg-gradient-to-r from-[#140A10] via-[#0E1019] to-[#0A0B12] p-6 sm:p-8 overflow-hidden shadow-2xl mb-8">
@@ -108,7 +94,7 @@ export function FeaturedTournamentBanner({ tournament }: FeaturedTournamentBanne
             href={`/tournaments/${tournament.id}`}
             className="inline-flex items-center justify-center gap-2 rounded-sm bg-gradient-to-b from-rose-600 to-rose-700 px-5 py-3 text-xs font-mono font-bold uppercase tracking-wider text-white shadow-[0_0_20px_-3px_rgba(225,29,72,0.5)] transition-all hover:from-rose-500 hover:to-rose-600 active:scale-[0.98]"
           >
-            <span>View Tournament Dossier</span>
+            <span>View Tournament Details</span>
             <ArrowRight className="h-4 w-4" />
           </Link>
 

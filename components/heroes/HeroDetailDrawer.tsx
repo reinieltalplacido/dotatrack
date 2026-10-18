@@ -133,7 +133,7 @@ export function HeroDetailDrawer({
       <div className="flex items-center justify-between px-5 py-3 border-b border-white/[0.08] bg-[#0D0F18]/80">
         <div className="flex items-center gap-2">
           <span className="text-[10px] font-mono uppercase tracking-widest text-rose-500 font-bold">
-            HERO_DOSSIER // #{hero.id}
+            HERO_PROFILE // #{hero.id}
           </span>
           <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-white/[0.05] text-zinc-400">
             {hero.attack_type}
@@ -404,7 +404,7 @@ export function HeroDetailDrawer({
             <div className="flex items-center gap-2">
               <Swords className="h-4 w-4 text-rose-500" />
               <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-white">
-                Matchup Telemetry &amp; Counters
+                Matchup Stats &amp; Counters
               </h3>
             </div>
             {loadingDeepDive && (

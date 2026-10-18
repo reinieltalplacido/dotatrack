@@ -14,7 +14,7 @@ export function Hero() {
           <span className="h-1.5 w-1.5 rounded-full bg-rose-500 shadow-[0_0_6px_#E11D48]" />
           <span>DOTA 2 PLAYER ANALYTICS</span>
           <span className="text-zinc-600">|</span>
-          <span className="text-zinc-400">VALVE STEAM TELEMETRY</span>
+          <span className="text-zinc-400">OFFICIAL MATCH STATS</span>
         </div>
 
         {/* Main Heading */}
