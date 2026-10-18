@@ -63,7 +63,6 @@ export function HeroCompendium({ initialData }: HeroCompendiumProps) {
   const [selectedAttr, setSelectedAttr] = useState<AttrFilter>("any");
   const [selectedRole, setSelectedRole] = useState<string>("all");
   const [selectedAttackType, setSelectedAttackType] = useState<"all" | "Melee" | "Ranged">("all");
-  const [selectedFaction, setSelectedFaction] = useState<"all" | "radiant" | "dire">("all");
   const [sortBy, setSortBy] = useState<SortOption>("winRate_desc");
 
   // Detailed Drawer & Selection State
@@ -104,7 +103,6 @@ export function HeroCompendium({ initialData }: HeroCompendiumProps) {
     setSelectedAttr("any");
     setSelectedRole("all");
     setSelectedAttackType("all");
-    setSelectedFaction("all");
     setSortBy("winRate_desc");
   };
 
@@ -113,7 +111,6 @@ export function HeroCompendium({ initialData }: HeroCompendiumProps) {
     selectedAttr !== "any" ||
     selectedRole !== "all" ||
     selectedAttackType !== "all" ||
-    selectedFaction !== "all" ||
     sortBy !== "winRate_desc";
 
   // Filter & Sort Pipeline
@@ -134,14 +131,8 @@ export function HeroCompendium({ initialData }: HeroCompendiumProps) {
           }
         }
 
-        // Faction filter
-        if (selectedFaction !== "all" && lore && lore.faction !== selectedFaction) {
-          return false;
-        }
-
         // Primary attribute
         if (selectedAttr !== "any") {
-          // If classic tavern mode, also accept classicAttr mapping
           if (viewMode === "classic") {
             if (selectedAttr === "str" && lore?.classicAttr !== "str" && hero.primary_attr !== "str") return false;
             if (selectedAttr === "agi" && lore?.classicAttr !== "agi" && hero.primary_attr !== "agi") return false;
@@ -184,53 +175,32 @@ export function HeroCompendium({ initialData }: HeroCompendiumProps) {
             return b.winRate - a.winRate;
         }
       });
-  }, [heroes, searchQuery, selectedAttr, selectedRole, selectedAttackType, selectedFaction, sortBy, viewMode]);
+  }, [heroes, searchQuery, selectedAttr, selectedRole, selectedAttackType, sortBy, viewMode]);
 
   const selectedHero = useMemo(
     () => heroes.find((h) => h.id === selectedHeroId) || null,
     [heroes, selectedHeroId]
   );
 
-  // Groupings for Classic Tavern View
-  const strengthRadiant = useMemo(() => {
+  // Unified Groupings by Attribute (No Radiant vs Dire separation)
+  const strengthHeroes = useMemo(() => {
     return filteredHeroes.filter((h) => {
       const lore = getHeroLoreById(h.id);
-      return (lore?.classicAttr === "str" || (!lore && h.primary_attr === "str")) && lore?.faction === "radiant";
+      return lore?.classicAttr === "str" || (!lore && h.primary_attr === "str");
     });
   }, [filteredHeroes]);
 
-  const strengthDire = useMemo(() => {
+  const agilityHeroes = useMemo(() => {
     return filteredHeroes.filter((h) => {
       const lore = getHeroLoreById(h.id);
-      return (lore?.classicAttr === "str" || (!lore && h.primary_attr === "str")) && lore?.faction === "dire";
+      return lore?.classicAttr === "agi" || (!lore && h.primary_attr === "agi");
     });
   }, [filteredHeroes]);
 
-  const agilityRadiant = useMemo(() => {
+  const intelligenceHeroes = useMemo(() => {
     return filteredHeroes.filter((h) => {
       const lore = getHeroLoreById(h.id);
-      return (lore?.classicAttr === "agi" || (!lore && h.primary_attr === "agi")) && lore?.faction === "radiant";
-    });
-  }, [filteredHeroes]);
-
-  const agilityDire = useMemo(() => {
-    return filteredHeroes.filter((h) => {
-      const lore = getHeroLoreById(h.id);
-      return (lore?.classicAttr === "agi" || (!lore && h.primary_attr === "agi")) && lore?.faction === "dire";
-    });
-  }, [filteredHeroes]);
-
-  const intelligenceRadiant = useMemo(() => {
-    return filteredHeroes.filter((h) => {
-      const lore = getHeroLoreById(h.id);
-      return (lore?.classicAttr === "int" || (!lore && h.primary_attr === "int")) && lore?.faction === "radiant";
-    });
-  }, [filteredHeroes]);
-
-  const intelligenceDire = useMemo(() => {
-    return filteredHeroes.filter((h) => {
-      const lore = getHeroLoreById(h.id);
-      return (lore?.classicAttr === "int" || (!lore && h.primary_attr === "int")) && lore?.faction === "dire";
+      return lore?.classicAttr === "int" || (!lore && h.primary_attr === "int");
     });
   }, [filteredHeroes]);
 
@@ -439,17 +409,6 @@ export function HeroCompendium({ initialData }: HeroCompendiumProps) {
               <option value="Ranged">Ranged</option>
             </select>
 
-            {/* Faction Filter */}
-            <select
-              value={selectedFaction}
-              onChange={(e) => setSelectedFaction(e.target.value as "all" | "radiant" | "dire")}
-              className="rounded-sm bg-black/60 border border-white/[0.1] px-2.5 py-1 text-xs font-mono text-zinc-200 focus:outline-none focus:border-rose-500"
-            >
-              <option value="all">Both Factions</option>
-              <option value="radiant">Radiant Only</option>
-              <option value="dire">Dire Only</option>
-            </select>
-
             {/* Clear Filter Action */}
             {isFiltered && (
               <button
@@ -488,303 +447,76 @@ export function HeroCompendium({ initialData }: HeroCompendiumProps) {
           )}
 
           {/* STRENGTH HEROES */}
-          {(selectedAttr === "any" || selectedAttr === "str") &&
-            (strengthRadiant.length > 0 || strengthDire.length > 0) && (
-              <div>
-                {/* Glowing Banner Header */}
-                <div className="relative py-4 mb-6 flex items-center justify-center">
-                  <div
-                    className="absolute inset-0 pointer-events-none"
-                    style={{
-                      background:
-                        "radial-gradient(ellipse 65% 100% at 50% 50%, rgba(217, 95, 24, 0.45) 0%, rgba(154, 52, 18, 0.22) 45%, rgba(9, 10, 15, 0) 80%)",
-                    }}
+          {(selectedAttr === "any" || selectedAttr === "str") && strengthHeroes.length > 0 && (
+            <div>
+              <AttributeSectionBanner type="str" count={strengthHeroes.length} />
+              <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-2 sm:gap-2.5">
+                {strengthHeroes.map((hero) => (
+                  <ClassicHeroTile
+                    key={hero.id}
+                    hero={hero}
+                    isSelected={selectedHeroId === hero.id}
+                    isCompared={comparedHeroIds.includes(hero.id)}
+                    isHovered={hoveredHeroId === hero.id}
+                    onSelect={() => setSelectedHeroId(hero.id)}
+                    onToggleCompare={() => handleToggleCompare(hero.id)}
+                    onHover={() => setHoveredHeroId(hero.id)}
+                    onLeave={() => setHoveredHeroId(null)}
                   />
-                  <div className="relative z-10 flex items-center gap-3.5">
-                    <span className="text-xl sm:text-2xl font-serif tracking-[0.25em] uppercase font-bold text-amber-200 drop-shadow-[0_2px_12px_rgba(245,158,11,0.65)]">
-                      STRENGTH
-                    </span>
-                    <div className="relative w-8 h-8 rounded-full bg-gradient-to-br from-amber-500 via-orange-600 to-red-700 p-0.5 shadow-[0_0_15px_rgba(234,88,12,0.8)] border border-amber-300/60 flex items-center justify-center">
-                      <Shield className="w-4 h-4 text-white fill-white/80" />
-                    </div>
-                    <span className="text-xl sm:text-2xl font-serif tracking-[0.25em] uppercase font-bold text-amber-200 drop-shadow-[0_2px_12px_rgba(245,158,11,0.65)]">
-                      HEROES
-                    </span>
-                  </div>
-                </div>
-
-                {/* Side-by-Side: Radiant vs Dire */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
-                  {/* Radiant Strength */}
-                  {(selectedFaction === "all" || selectedFaction === "radiant") && (
-                    <div>
-                      <div className="flex items-center justify-between mb-3 px-1 border-b border-emerald-900/30 pb-1.5">
-                        <span className="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold flex items-center gap-1.5">
-                          <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
-                          The Radiant
-                        </span>
-                        <span className="text-[10px] font-mono text-zinc-500">
-                          {strengthRadiant.length} Heroes
-                        </span>
-                      </div>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-2.5">
-                        {strengthRadiant.map((hero) => (
-                          <ClassicHeroTile
-                            key={hero.id}
-                            hero={hero}
-                            isSelected={selectedHeroId === hero.id}
-                            isCompared={comparedHeroIds.includes(hero.id)}
-                            isHovered={hoveredHeroId === hero.id}
-                            onSelect={() => setSelectedHeroId(hero.id)}
-                            onToggleCompare={() => handleToggleCompare(hero.id)}
-                            onHover={() => setHoveredHeroId(hero.id)}
-                            onLeave={() => setHoveredHeroId(null)}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Dire Strength */}
-                  {(selectedFaction === "all" || selectedFaction === "dire") && (
-                    <div>
-                      <div className="flex items-center justify-between mb-3 px-1 border-b border-rose-900/30 pb-1.5">
-                        <span className="text-xs font-mono uppercase tracking-wider text-rose-400 font-bold flex items-center gap-1.5">
-                          <span className="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)]" />
-                          The Dire
-                        </span>
-                        <span className="text-[10px] font-mono text-zinc-500">
-                          {strengthDire.length} Heroes
-                        </span>
-                      </div>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-2.5">
-                        {strengthDire.map((hero) => (
-                          <ClassicHeroTile
-                            key={hero.id}
-                            hero={hero}
-                            isSelected={selectedHeroId === hero.id}
-                            isCompared={comparedHeroIds.includes(hero.id)}
-                            isHovered={hoveredHeroId === hero.id}
-                            onSelect={() => setSelectedHeroId(hero.id)}
-                            onToggleCompare={() => handleToggleCompare(hero.id)}
-                            onHover={() => setHoveredHeroId(hero.id)}
-                            onLeave={() => setHoveredHeroId(null)}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
+                ))}
               </div>
-            )}
+            </div>
+          )}
 
           {/* AGILITY HEROES */}
-          {(selectedAttr === "any" || selectedAttr === "agi") &&
-            (agilityRadiant.length > 0 || agilityDire.length > 0) && (
-              <div>
-                {/* Glowing Banner Header */}
-                <div className="relative py-4 mb-6 flex items-center justify-center">
-                  <div
-                    className="absolute inset-0 pointer-events-none"
-                    style={{
-                      background:
-                        "radial-gradient(ellipse 65% 100% at 50% 50%, rgba(34, 197, 94, 0.45) 0%, rgba(20, 120, 50, 0.22) 45%, rgba(9, 10, 15, 0) 80%)",
-                    }}
+          {(selectedAttr === "any" || selectedAttr === "agi") && agilityHeroes.length > 0 && (
+            <div>
+              <AttributeSectionBanner type="agi" count={agilityHeroes.length} />
+              <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-2 sm:gap-2.5">
+                {agilityHeroes.map((hero) => (
+                  <ClassicHeroTile
+                    key={hero.id}
+                    hero={hero}
+                    isSelected={selectedHeroId === hero.id}
+                    isCompared={comparedHeroIds.includes(hero.id)}
+                    isHovered={hoveredHeroId === hero.id}
+                    onSelect={() => setSelectedHeroId(hero.id)}
+                    onToggleCompare={() => handleToggleCompare(hero.id)}
+                    onHover={() => setHoveredHeroId(hero.id)}
+                    onLeave={() => setHoveredHeroId(null)}
                   />
-                  <div className="relative z-10 flex items-center gap-3.5">
-                    <span className="text-xl sm:text-2xl font-serif tracking-[0.25em] uppercase font-bold text-emerald-200 drop-shadow-[0_2px_12px_rgba(34,197,94,0.65)]">
-                      AGILITY
-                    </span>
-                    <div className="relative w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 via-green-600 to-teal-800 p-0.5 shadow-[0_0_15px_rgba(34,197,94,0.8)] border border-emerald-300/60 flex items-center justify-center">
-                      <Zap className="w-4 h-4 text-white fill-white/80" />
-                    </div>
-                    <span className="text-xl sm:text-2xl font-serif tracking-[0.25em] uppercase font-bold text-emerald-200 drop-shadow-[0_2px_12px_rgba(34,197,94,0.65)]">
-                      HEROES
-                    </span>
-                  </div>
-                </div>
-
-                {/* Side-by-Side: Radiant vs Dire */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
-                  {/* Radiant Agility */}
-                  {(selectedFaction === "all" || selectedFaction === "radiant") && (
-                    <div>
-                      <div className="flex items-center justify-between mb-3 px-1 border-b border-emerald-900/30 pb-1.5">
-                        <span className="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold flex items-center gap-1.5">
-                          <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
-                          The Radiant
-                        </span>
-                        <span className="text-[10px] font-mono text-zinc-500">
-                          {agilityRadiant.length} Heroes
-                        </span>
-                      </div>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-2.5">
-                        {agilityRadiant.map((hero) => (
-                          <ClassicHeroTile
-                            key={hero.id}
-                            hero={hero}
-                            isSelected={selectedHeroId === hero.id}
-                            isCompared={comparedHeroIds.includes(hero.id)}
-                            isHovered={hoveredHeroId === hero.id}
-                            onSelect={() => setSelectedHeroId(hero.id)}
-                            onToggleCompare={() => handleToggleCompare(hero.id)}
-                            onHover={() => setHoveredHeroId(hero.id)}
-                            onLeave={() => setHoveredHeroId(null)}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Dire Agility */}
-                  {(selectedFaction === "all" || selectedFaction === "dire") && (
-                    <div>
-                      <div className="flex items-center justify-between mb-3 px-1 border-b border-rose-900/30 pb-1.5">
-                        <span className="text-xs font-mono uppercase tracking-wider text-rose-400 font-bold flex items-center gap-1.5">
-                          <span className="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)]" />
-                          The Dire
-                        </span>
-                        <span className="text-[10px] font-mono text-zinc-500">
-                          {agilityDire.length} Heroes
-                        </span>
-                      </div>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-2.5">
-                        {agilityDire.map((hero) => (
-                          <ClassicHeroTile
-                            key={hero.id}
-                            hero={hero}
-                            isSelected={selectedHeroId === hero.id}
-                            isCompared={comparedHeroIds.includes(hero.id)}
-                            isHovered={hoveredHeroId === hero.id}
-                            onSelect={() => setSelectedHeroId(hero.id)}
-                            onToggleCompare={() => handleToggleCompare(hero.id)}
-                            onHover={() => setHoveredHeroId(hero.id)}
-                            onLeave={() => setHoveredHeroId(null)}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
+                ))}
               </div>
-            )}
+            </div>
+          )}
 
           {/* INTELLIGENCE HEROES */}
-          {(selectedAttr === "any" || selectedAttr === "int") &&
-            (intelligenceRadiant.length > 0 || intelligenceDire.length > 0) && (
-              <div>
-                {/* Glowing Banner Header */}
-                <div className="relative py-4 mb-6 flex items-center justify-center">
-                  <div
-                    className="absolute inset-0 pointer-events-none"
-                    style={{
-                      background:
-                        "radial-gradient(ellipse 65% 100% at 50% 50%, rgba(56, 189, 248, 0.45) 0%, rgba(14, 116, 144, 0.22) 45%, rgba(9, 10, 15, 0) 80%)",
-                    }}
-                  />
-                  <div className="relative z-10 flex items-center gap-3.5">
-                    <span className="text-xl sm:text-2xl font-serif tracking-[0.25em] uppercase font-bold text-sky-200 drop-shadow-[0_2px_12px_rgba(56,189,248,0.65)]">
-                      INTELLIGENCE
-                    </span>
-                    <div className="relative w-8 h-8 rounded-full bg-gradient-to-br from-sky-400 via-blue-600 to-indigo-800 p-0.5 shadow-[0_0_15px_rgba(56,189,248,0.8)] border border-sky-300/60 flex items-center justify-center">
-                      <Brain className="w-4 h-4 text-white fill-white/80" />
-                    </div>
-                    <span className="text-xl sm:text-2xl font-serif tracking-[0.25em] uppercase font-bold text-sky-200 drop-shadow-[0_2px_12px_rgba(56,189,248,0.65)]">
-                      HEROES
-                    </span>
-                  </div>
-                </div>
-
-                {/* Side-by-Side: Radiant vs Dire */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
-                  {/* Radiant Intelligence */}
-                  {(selectedFaction === "all" || selectedFaction === "radiant") && (
-                    <div>
-                      <div className="flex items-center justify-between mb-3 px-1 border-b border-emerald-900/30 pb-1.5">
-                        <span className="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold flex items-center gap-1.5">
-                          <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
-                          The Radiant
-                        </span>
-                        <span className="text-[10px] font-mono text-zinc-500">
-                          {intelligenceRadiant.length} Heroes
-                        </span>
-                      </div>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-2.5">
-                        {intelligenceRadiant.map((hero) => (
-                          <ClassicHeroTile
-                            key={hero.id}
-                            hero={hero}
-                            isSelected={selectedHeroId === hero.id}
-                            isCompared={comparedHeroIds.includes(hero.id)}
-                            isHovered={hoveredHeroId === hero.id}
-                            onSelect={() => setSelectedHeroId(hero.id)}
-                            onToggleCompare={() => handleToggleCompare(hero.id)}
-                            onHover={() => setHoveredHeroId(hero.id)}
-                            onLeave={() => setHoveredHeroId(null)}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Dire Intelligence */}
-                  {(selectedFaction === "all" || selectedFaction === "dire") && (
-                    <div>
-                      <div className="flex items-center justify-between mb-3 px-1 border-b border-rose-900/30 pb-1.5">
-                        <span className="text-xs font-mono uppercase tracking-wider text-rose-400 font-bold flex items-center gap-1.5">
-                          <span className="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)]" />
-                          The Dire
-                        </span>
-                        <span className="text-[10px] font-mono text-zinc-500">
-                          {intelligenceDire.length} Heroes
-                        </span>
-                      </div>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-2.5">
-                        {intelligenceDire.map((hero) => (
-                          <ClassicHeroTile
-                            key={hero.id}
-                            hero={hero}
-                            isSelected={selectedHeroId === hero.id}
-                            isCompared={comparedHeroIds.includes(hero.id)}
-                            isHovered={hoveredHeroId === hero.id}
-                            onSelect={() => setSelectedHeroId(hero.id)}
-                            onToggleCompare={() => handleToggleCompare(hero.id)}
-                            onHover={() => setHoveredHeroId(hero.id)}
-                            onLeave={() => setHoveredHeroId(null)}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-          {/* UNIVERSAL HEROES (Patch 7.33+) */}
-          {selectedAttr === "all" && (
+          {(selectedAttr === "any" || selectedAttr === "int") && intelligenceHeroes.length > 0 && (
             <div>
-              <div className="relative py-4 mb-6 flex items-center justify-center">
-                <div
-                  className="absolute inset-0 pointer-events-none"
-                  style={{
-                    background:
-                      "radial-gradient(ellipse 65% 100% at 50% 50%, rgba(168, 85, 247, 0.45) 0%, rgba(107, 33, 168, 0.22) 45%, rgba(9, 10, 15, 0) 80%)",
-                  }}
-                />
-                <div className="relative z-10 flex items-center gap-3.5">
-                  <span className="text-xl sm:text-2xl font-serif tracking-[0.25em] uppercase font-bold text-purple-200 drop-shadow-[0_2px_12px_rgba(168,85,247,0.65)]">
-                    UNIVERSAL
-                  </span>
-                  <div className="relative w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 via-violet-600 to-indigo-800 p-0.5 shadow-[0_0_15px_rgba(168,85,247,0.8)] border border-purple-300/60 flex items-center justify-center">
-                    <Sparkles className="w-4 h-4 text-white fill-white/80" />
-                  </div>
-                  <span className="text-xl sm:text-2xl font-serif tracking-[0.25em] uppercase font-bold text-purple-200 drop-shadow-[0_2px_12px_rgba(168,85,247,0.65)]">
-                    HEROES
-                  </span>
-                </div>
+              <AttributeSectionBanner type="int" count={intelligenceHeroes.length} />
+              <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-2 sm:gap-2.5">
+                {intelligenceHeroes.map((hero) => (
+                  <ClassicHeroTile
+                    key={hero.id}
+                    hero={hero}
+                    isSelected={selectedHeroId === hero.id}
+                    isCompared={comparedHeroIds.includes(hero.id)}
+                    isHovered={hoveredHeroId === hero.id}
+                    onSelect={() => setSelectedHeroId(hero.id)}
+                    onToggleCompare={() => handleToggleCompare(hero.id)}
+                    onHover={() => setHoveredHeroId(hero.id)}
+                    onLeave={() => setHoveredHeroId(null)}
+                  />
+                ))}
               </div>
+            </div>
+          )}
 
-              <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2.5">
+          {/* UNIVERSAL HEROES */}
+          {selectedAttr === "all" && universalHeroes.length > 0 && (
+            <div>
+              <AttributeSectionBanner type="all" count={universalHeroes.length} />
+              <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-2 sm:gap-2.5">
                 {universalHeroes.map((hero) => (
                   <ClassicHeroTile
                     key={hero.id}
@@ -926,6 +658,136 @@ interface ClassicHeroTileProps {
   onToggleCompare: () => void;
   onHover: () => void;
   onLeave: () => void;
+}
+
+// ========================================================
+// Sleek Attribute Section Banner with Laser Wings & Medal
+// ========================================================
+const ATTR_BANNER_CONFIG = {
+  str: {
+    title: "STRENGTH",
+    subtitle: "HEROES",
+    gradientText: "from-[#FFF6E5] via-[#FBBF24] to-[#D97706]",
+    borderColor: "border-amber-500/40",
+    glowColor: "shadow-[0_0_20px_rgba(245,158,11,0.25)]",
+    lineGradientLeft: "from-transparent to-amber-500/60",
+    lineGradientRight: "from-amber-500/60 to-transparent",
+    diamondColor: "bg-amber-400 border-amber-200/70 shadow-[0_0_8px_rgba(251,191,36,0.9)]",
+    medallionBorder: "from-amber-200 via-amber-500 to-amber-800 shadow-[0_0_12px_rgba(245,158,11,0.6)]",
+    medallionBg: "from-amber-500 via-orange-600 to-red-700",
+    icon: Shield,
+    flareBg: "radial-gradient(ellipse 40% 70% at 50% 50%, rgba(245, 158, 11, 0.15) 0%, rgba(180, 83, 9, 0.05) 50%, transparent 80%)",
+  },
+  agi: {
+    title: "AGILITY",
+    subtitle: "HEROES",
+    gradientText: "from-[#ECFDF5] via-[#34D399] to-[#059669]",
+    borderColor: "border-emerald-500/40",
+    glowColor: "shadow-[0_0_20px_rgba(16,185,129,0.25)]",
+    lineGradientLeft: "from-transparent to-emerald-500/60",
+    lineGradientRight: "from-emerald-500/60 to-transparent",
+    diamondColor: "bg-emerald-400 border-emerald-200/70 shadow-[0_0_8px_rgba(52,211,153,0.9)]",
+    medallionBorder: "from-emerald-200 via-emerald-500 to-emerald-800 shadow-[0_0_12px_rgba(16,185,129,0.6)]",
+    medallionBg: "from-emerald-400 via-green-600 to-teal-800",
+    icon: Zap,
+    flareBg: "radial-gradient(ellipse 40% 70% at 50% 50%, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.05) 50%, transparent 80%)",
+  },
+  int: {
+    title: "INTELLIGENCE",
+    subtitle: "HEROES",
+    gradientText: "from-[#F0F9FF] via-[#38BDF8] to-[#0284C7]",
+    borderColor: "border-sky-500/40",
+    glowColor: "shadow-[0_0_20px_rgba(56,189,248,0.25)]",
+    lineGradientLeft: "from-transparent to-sky-500/60",
+    lineGradientRight: "from-sky-500/60 to-transparent",
+    diamondColor: "bg-sky-400 border-sky-200/70 shadow-[0_0_8px_rgba(56,189,248,0.9)]",
+    medallionBorder: "from-sky-200 via-sky-500 to-sky-800 shadow-[0_0_12px_rgba(56,189,248,0.6)]",
+    medallionBg: "from-sky-400 via-blue-600 to-indigo-800",
+    icon: Brain,
+    flareBg: "radial-gradient(ellipse 40% 70% at 50% 50%, rgba(56, 189, 248, 0.15) 0%, rgba(2, 132, 199, 0.05) 50%, transparent 80%)",
+  },
+  all: {
+    title: "UNIVERSAL",
+    subtitle: "HEROES",
+    gradientText: "from-[#FAF5FF] via-[#C084FC] to-[#7C3AED]",
+    borderColor: "border-purple-500/40",
+    glowColor: "shadow-[0_0_20px_rgba(168,85,247,0.25)]",
+    lineGradientLeft: "from-transparent to-purple-500/60",
+    lineGradientRight: "from-purple-500/60 to-transparent",
+    diamondColor: "bg-purple-400 border-purple-200/70 shadow-[0_0_8px_rgba(192,132,252,0.9)]",
+    medallionBorder: "from-purple-200 via-purple-500 to-purple-800 shadow-[0_0_12px_rgba(168,85,247,0.6)]",
+    medallionBg: "from-purple-400 via-violet-600 to-indigo-800",
+    icon: Sparkles,
+    flareBg: "radial-gradient(ellipse 40% 70% at 50% 50%, rgba(168, 85, 247, 0.15) 0%, rgba(124, 58, 237, 0.05) 50%, transparent 80%)",
+  },
+};
+
+function AttributeSectionBanner({
+  type,
+  count,
+}: {
+  type: "str" | "agi" | "int" | "all";
+  count?: number;
+}) {
+  const cfg = ATTR_BANNER_CONFIG[type];
+  const Icon = cfg.icon;
+
+  return (
+    <div className="relative py-4 mb-6 flex items-center justify-center w-full overflow-hidden select-none">
+      {/* Soft Center Radial Glow */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: cfg.flareBg }}
+      />
+
+      {/* Left Laser Wing */}
+      <div className="flex-1 flex items-center justify-end">
+        <div className={`h-[1px] w-full max-w-[260px] bg-gradient-to-r ${cfg.lineGradientLeft}`} />
+        <div className={`w-1.5 h-1.5 rotate-45 border ${cfg.diamondColor} -mr-0.5`} />
+      </div>
+
+      {/* Sculpted Center Badge */}
+      <div
+        className={`relative z-10 mx-3 sm:mx-5 px-5 sm:px-8 py-2 rounded-full bg-[#0A0C14]/90 backdrop-blur-md border ${cfg.borderColor} ${cfg.glowColor} flex items-center gap-3.5`}
+      >
+        <span
+          className={`text-sm sm:text-base font-serif tracking-[0.24em] uppercase font-black bg-gradient-to-b ${cfg.gradientText} bg-clip-text text-transparent drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]`}
+        >
+          {cfg.title}
+        </span>
+
+        {/* Central Attribute Crest Medallion */}
+        <div
+          className={`relative w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-gradient-to-b ${cfg.medallionBorder} p-[1.5px] flex items-center justify-center`}
+        >
+          <div
+            className={`w-full h-full rounded-full bg-gradient-to-b ${cfg.medallionBg} flex items-center justify-center shadow-inner`}
+          >
+            <Icon className="w-3.5 h-3.5 text-white fill-white/90 drop-shadow" />
+          </div>
+        </div>
+
+        <span
+          className={`text-sm sm:text-base font-serif tracking-[0.24em] uppercase font-black bg-gradient-to-b ${cfg.gradientText} bg-clip-text text-transparent drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]`}
+        >
+          {cfg.subtitle}
+        </span>
+
+        {typeof count === "number" && count > 0 && (
+          <span className="inline-flex items-center gap-1.5 text-xs font-mono px-2.5 py-0.5 rounded-full bg-white/[0.08] text-zinc-200 border border-white/15 tracking-normal font-semibold shadow-inner">
+            <span className="text-white font-bold">{count}</span>
+            <span className="text-zinc-400 text-[10px]">Heroes</span>
+          </span>
+        )}
+      </div>
+
+      {/* Right Laser Wing */}
+      <div className="flex-1 flex items-center justify-start">
+        <div className={`w-1.5 h-1.5 rotate-45 border ${cfg.diamondColor} -ml-0.5`} />
+        <div className={`h-[1px] w-full max-w-[260px] bg-gradient-to-l ${cfg.lineGradientLeft}`} />
+      </div>
+    </div>
+  );
 }
 
 function ClassicHeroTile({
