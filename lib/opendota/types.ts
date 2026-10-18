@@ -135,6 +135,27 @@ export interface RankInfo {
   stars?: number;
 }
 
+export interface PlayerHeroMatchup {
+  heroId: number;
+  heroName: string;
+  heroLocalizedName: string;
+  heroImageUrl: string;
+  primaryAttr: string;
+  // Ally metrics
+  withGames: number;
+  withWin: number;
+  withLoss: number;
+  withWinRate: number;
+  synergyAdvantage: number;
+  // Enemy metrics
+  againstGames: number;
+  againstWin: number;
+  againstLoss: number;
+  againstWinRate: number;
+  defeatRate: number;
+  nemesisIndex: number;
+}
+
 export interface PlayerDashboardData {
   accountId: number;
   steamId64: string | null;
@@ -183,6 +204,10 @@ export interface PlayerDashboardData {
   recentMatches: EnrichedRecentMatch[];
   topHeroes: EnrichedHeroStat[];
   allHeroes: EnrichedHeroStat[];
+  matchups?: {
+    allies: PlayerHeroMatchup[];
+    enemies: PlayerHeroMatchup[];
+  };
 
   isPartial: boolean;
   warningMessage?: string;

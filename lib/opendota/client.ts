@@ -7,6 +7,7 @@ import {
   PlayerDashboardData,
   EnrichedRecentMatch,
   EnrichedHeroStat,
+  PlayerHeroMatchup,
 } from "./types";
 import { getHeroById, formatGameMode, formatLobbyType, formatDuration, formatTimeAgo } from "./heroes";
 import { formatRank } from "./rank";
@@ -284,7 +285,82 @@ export async function fetchOpenDotaPlayerData(accountId: string | number): Promi
 
   const topHeroes = enrichedHeroes.slice(0, 5);
 
-  // 7. Format Profile Details
+  // 7. Process Matchups (Allies and Enemies)
+  const allyMatchups: PlayerHeroMatchup[] = rawHeroes
+    .filter((h) => h.with_games > 0)
+    .map((h) => {
+      const hero = getHeroById(h.hero_id);
+      const withLoss = Math.max(0, h.with_games - h.with_win);
+      const withWinRate = Number(((h.with_win / h.with_games) * 100).toFixed(1));
+      const synergyAdvantage = Number((withWinRate - lifetimeWinRate).toFixed(1));
+      const heroId = typeof h.hero_id === "string" ? parseInt(h.hero_id, 10) : h.hero_id;
+      const againstGames = h.against_games || 0;
+      const againstWin = h.against_win || 0;
+      const againstLoss = Math.max(0, againstGames - againstWin);
+      const againstWinRate = againstGames > 0 ? Number(((againstWin / againstGames) * 100).toFixed(1)) : 0;
+      const defeatRate = againstGames > 0 ? Number(((againstLoss / againstGames) * 100).toFixed(1)) : 0;
+      const nemesisIndex = againstGames > 0 ? Number((defeatRate - (100 - lifetimeWinRate)).toFixed(1)) : 0;
+
+      return {
+        heroId,
+        heroName: hero.name,
+        heroLocalizedName: hero.localized_name,
+        heroImageUrl: hero.img,
+        primaryAttr: hero.primary_attr,
+        withGames: h.with_games,
+        withWin: h.with_win,
+        withLoss,
+        withWinRate,
+        synergyAdvantage,
+        againstGames,
+        againstWin,
+        againstLoss,
+        againstWinRate,
+        defeatRate,
+        nemesisIndex,
+      };
+    })
+    .sort((a, b) => b.withGames - a.withGames);
+
+  const enemyMatchups: PlayerHeroMatchup[] = rawHeroes
+    .filter((h) => h.against_games > 0)
+    .map((h) => {
+      const hero = getHeroById(h.hero_id);
+      const heroId = typeof h.hero_id === "string" ? parseInt(h.hero_id, 10) : h.hero_id;
+      const againstGames = h.against_games;
+      const againstWin = h.against_win;
+      const againstLoss = Math.max(0, againstGames - againstWin);
+      const againstWinRate = Number(((againstWin / againstGames) * 100).toFixed(1));
+      const defeatRate = Number(((againstLoss / againstGames) * 100).toFixed(1));
+      const nemesisIndex = Number((defeatRate - (100 - lifetimeWinRate)).toFixed(1));
+      const withGames = h.with_games || 0;
+      const withWin = h.with_win || 0;
+      const withLoss = Math.max(0, withGames - withWin);
+      const withWinRate = withGames > 0 ? Number(((withWin / withGames) * 100).toFixed(1)) : 0;
+      const synergyAdvantage = withGames > 0 ? Number((withWinRate - lifetimeWinRate).toFixed(1)) : 0;
+
+      return {
+        heroId,
+        heroName: hero.name,
+        heroLocalizedName: hero.localized_name,
+        heroImageUrl: hero.img,
+        primaryAttr: hero.primary_attr,
+        withGames,
+        withWin,
+        withLoss,
+        withWinRate,
+        synergyAdvantage,
+        againstGames,
+        againstWin,
+        againstLoss,
+        againstWinRate,
+        defeatRate,
+        nemesisIndex,
+      };
+    })
+    .sort((a, b) => b.againstGames - a.againstGames);
+
+  // 8. Format Profile Details
   const profile = playerRes.profile;
   const personaname = profile?.personaname || `Player #${numericId}`;
   const proName = profile?.name || null;
@@ -335,6 +411,10 @@ export async function fetchOpenDotaPlayerData(accountId: string | number): Promi
     recentMatches: enrichedMatches,
     topHeroes,
     allHeroes: enrichedHeroes,
+    matchups: {
+      allies: allyMatchups,
+      enemies: enemyMatchups,
+    },
     isPartial,
     warningMessage,
     fetchedAt: (() => {
