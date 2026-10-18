@@ -43,7 +43,7 @@ export function Navbar() {
             aria-label="DotaTrack - Esports Analytics"
           >
             {/* DotaTrack Brand Logo */}
-            <div className="relative flex h-8 w-8 items-center justify-center rounded-sm bg-gradient-to-b from-rose-600/40 via-rose-700/20 to-[#12080C] p-[1px] shadow-sm shadow-rose-950/60 overflow-hidden">
+            <div className="relative flex h-8 w-8 items-center justify-center rounded-sm bg-[#12080C] border border-rose-800/40 p-[1px] shadow-sm shadow-rose-950/60 overflow-hidden">
               <Image
                 src="/dotatrack.png"
                 alt="DotaTrack Logo"
@@ -93,7 +93,7 @@ export function Navbar() {
           <Link
             href="/#search-section"
             onClick={handleTrackPlayerClick}
-            className="group relative inline-flex items-center gap-2 rounded-sm border border-rose-500/60 bg-gradient-to-b from-rose-600 via-rose-600 to-rose-700 px-4 py-2 text-xs font-bold uppercase tracking-wider text-white shadow-[0_0_15px_-3px_rgba(225,29,72,0.4)] transition-all hover:border-rose-400 hover:from-rose-500 hover:to-rose-600 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-400"
+            className="group relative inline-flex items-center gap-2 rounded-sm border border-rose-500/60 bg-rose-600 px-4 py-2 text-xs font-bold uppercase tracking-wider text-white shadow-md shadow-rose-950/50 transition-all hover:bg-rose-500 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-400"
           >
             <Search className="h-3.5 w-3.5 text-rose-200 group-hover:text-white transition-colors" aria-hidden="true" />
             <span>Track Player</span>

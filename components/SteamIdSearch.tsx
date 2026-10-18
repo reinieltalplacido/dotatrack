@@ -231,7 +231,7 @@ export function SteamIdSearch({ onSearchSubmit, autoNavigate = true }: SteamIdSe
             <button
               type="submit"
               disabled={isLoading}
-              className="mt-2 sm:mt-0 flex items-center justify-center gap-2 rounded-sm bg-gradient-to-r from-rose-600 via-rose-600 to-rose-700 px-6 py-3 sm:py-2.5 text-xs font-mono font-bold tracking-wider uppercase text-white shadow-md shadow-rose-950/80 transition-all hover:from-rose-500 hover:to-rose-600 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 shrink-0"
+              className="mt-2 sm:mt-0 flex items-center justify-center gap-2 rounded-sm bg-rose-600 px-6 py-3 sm:py-2.5 text-xs font-mono font-bold tracking-wider uppercase text-white shadow-md shadow-rose-950/80 transition-all hover:bg-rose-500 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 shrink-0"
             >
               {isLoading ? (
                 <>

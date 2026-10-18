@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
-import { Search, X, Sparkles, Shield, Zap, Brain, ArrowRight, BookOpen } from "lucide-react";
+import { Search, X, Layers, Shield, Zap, Brain, ArrowRight, BookOpen } from "lucide-react";
 import { HERO_LORE_DATABASE, HeroLoreEntry } from "@/lib/opendota/hero-lore-names";
 
 type AttributeFilter = "all" | "str" | "agi" | "int" | "uni";
@@ -65,11 +65,10 @@ export function HeroesSection() {
         {/* Top Header & Search Bar */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 pb-6 border-b border-white/[0.08]">
           <div>
-            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-rose-500/10 border border-rose-500/20 text-rose-400 text-[11px] font-mono uppercase tracking-widest font-semibold mb-2">
-              <Sparkles className="w-3.5 h-3.5" />
-              CANONICAL HERO ROSTER & REAL LORE NAMES
-            </div>
-            <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white font-mono">
+            <span className="text-xs font-mono uppercase tracking-wider text-rose-500 font-bold block mb-1">
+              CANONICAL HERO COMPENDIUM
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white font-sans">
               The Heroes of the Ancients
             </h2>
             <p className="text-xs sm:text-sm text-zinc-400 mt-1 max-w-2xl">
@@ -166,7 +165,7 @@ export function HeroesSection() {
                   : "bg-purple-950/20 text-purple-300 hover:bg-purple-950/40 border border-purple-900/30"
               }`}
             >
-              <Sparkles className="w-3 h-3 text-purple-400" />
+              <Layers className="w-3 h-3 text-purple-400" />
               Universal (22)
             </button>
           </div>
@@ -384,7 +383,7 @@ const ATTR_BANNER_CONFIG = {
     diamondColor: "bg-purple-400 border-purple-200/70 shadow-[0_0_8px_rgba(192,132,252,0.9)]",
     medallionBorder: "from-purple-200 via-purple-500 to-purple-800 shadow-[0_0_12px_rgba(168,85,247,0.6)]",
     medallionBg: "from-purple-400 via-violet-600 to-indigo-800",
-    icon: Sparkles,
+    icon: Layers,
     flareBg: "radial-gradient(ellipse 40% 70% at 50% 50%, rgba(168, 85, 247, 0.15) 0%, rgba(124, 58, 237, 0.05) 50%, transparent 80%)",
   },
 };

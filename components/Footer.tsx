@@ -37,17 +37,20 @@ export function Footer() {
             <Link href="/" className="hover:text-white transition-colors">
               OVERVIEW
             </Link>
-            <a href="#search-section" className="hover:text-white transition-colors">
-              SEARCH
-            </a>
-            <a href="#heroes" className="hover:text-white transition-colors">
+            <Link href="/match-data" className="hover:text-white transition-colors">
+              MATCH ANALYZER
+            </Link>
+            <Link href="/meta-trends" className="hover:text-white transition-colors">
+              META TRENDS
+            </Link>
+            <Link href="/tournaments" className="hover:text-white transition-colors">
+              TOURNAMENTS
+            </Link>
+            <Link href="/heroes" className="hover:text-white transition-colors">
               HEROES
-            </a>
-            <a href="#workflow" className="hover:text-white transition-colors">
+            </Link>
+            <a href="#pipeline" className="hover:text-white transition-colors">
               PIPELINE
-            </a>
-            <a href="#about" className="hover:text-white transition-colors">
-              ABOUT
             </a>
             <a
               href="https://docs.opendota.com"
