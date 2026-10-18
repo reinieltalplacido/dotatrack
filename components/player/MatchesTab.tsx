@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   ExternalLink,
   Copy,
@@ -12,6 +13,7 @@ import {
   Zap,
   Clock,
   Skull,
+  ArrowRight,
 } from "lucide-react";
 import { EnrichedRecentMatch } from "@/lib/opendota/types";
 
@@ -105,16 +107,23 @@ export function MatchesTab({ matches }: MatchesTabProps) {
         {filteredMatches.map((match) => (
           <div
             key={match.matchId}
-            className={`tactical-panel p-4 rounded-sm border transition-all ${
+            className={`group relative tactical-panel p-4 rounded-sm border transition-all ${
               match.isWin
-                ? "border-emerald-500/20 hover:border-emerald-500/50"
-                : "border-rose-500/20 hover:border-rose-500/50"
+                ? "border-emerald-500/20 hover:border-emerald-500/60 hover:bg-[#0c1614]"
+                : "border-rose-500/20 hover:border-rose-500/60 hover:bg-[#160c10]"
             }`}
           >
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            {/* Clickable Area Overlay to Match Data */}
+            <Link
+              href={`/match-data?id=${match.matchId}`}
+              className="absolute inset-0 z-0"
+              aria-label={`View match breakdown for ${match.heroLocalizedName}`}
+            />
+
+            <div className="relative z-10 pointer-events-none flex flex-col lg:flex-row lg:items-center justify-between gap-4">
               {/* Left: Hero Portrait, Name, Outcome */}
               <div className="flex items-center gap-3.5 min-w-[260px]">
-                <div className="relative h-12 w-20 overflow-hidden rounded bg-black shrink-0 border border-white/[0.12] shadow-md">
+                <div className="relative h-12 w-20 overflow-hidden rounded bg-black shrink-0 border border-white/[0.12] shadow-md group-hover:scale-105 transition-transform">
                   <Image
                     src={match.heroImageUrl}
                     alt={match.heroLocalizedName}
@@ -126,7 +135,7 @@ export function MatchesTab({ matches }: MatchesTabProps) {
 
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="text-base font-bold text-white truncate">
+                    <span className="text-base font-bold text-white group-hover:text-rose-300 transition-colors truncate">
                       {match.heroLocalizedName}
                     </span>
                     <span
@@ -198,15 +207,18 @@ export function MatchesTab({ matches }: MatchesTabProps) {
                 </div>
               </div>
 
-              {/* Right: Match ID and External Links */}
-              <div className="flex lg:flex-col items-center lg:items-end justify-between gap-2 border-t lg:border-t-0 border-white/[0.04] pt-2 lg:pt-0 shrink-0">
+              {/* Right: Match ID and Action Link */}
+              <div className="flex lg:flex-col items-center lg:items-end justify-between gap-2.5 border-t lg:border-t-0 border-white/[0.04] pt-2 lg:pt-0 shrink-0 pointer-events-auto">
                 <div className="flex items-center gap-1.5 text-xs font-mono text-zinc-400">
                   <span className="text-zinc-500 text-[11px]">ID:</span>
                   <span className="text-zinc-300 font-bold">{match.matchId}</span>
                   <button
                     type="button"
-                    onClick={() => handleCopyMatchId(match.matchId)}
-                    className="text-zinc-500 hover:text-white transition-colors"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleCopyMatchId(match.matchId);
+                    }}
+                    className="text-zinc-500 hover:text-white transition-colors cursor-pointer p-0.5"
                     title="Copy Match ID"
                     aria-label="Copy Match ID"
                   >
@@ -218,27 +230,13 @@ export function MatchesTab({ matches }: MatchesTabProps) {
                   </button>
                 </div>
 
-                <div className="flex items-center gap-2">
-                  <a
-                    href={`https://www.opendota.com/matches/${match.matchId}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-[11px] font-mono text-rose-400 hover:text-rose-300 transition-colors uppercase font-bold"
-                  >
-                    <span>OpenDota</span>
-                    <ExternalLink className="h-3 w-3" />
-                  </a>
-                  <span className="text-zinc-600">|</span>
-                  <a
-                    href={`https://www.dotabuff.com/matches/${match.matchId}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-[11px] font-mono text-zinc-400 hover:text-white transition-colors uppercase font-bold"
-                  >
-                    <span>Dotabuff</span>
-                    <ExternalLink className="h-3 w-3" />
-                  </a>
-                </div>
+                <Link
+                  href={`/match-data?id=${match.matchId}`}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xs text-xs font-mono font-bold text-rose-400 hover:text-white bg-white/[0.04] hover:bg-rose-600 transition-all uppercase"
+                >
+                  <span>Match Details</span>
+                  <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
+                </Link>
               </div>
             </div>
           </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import {
   Flame,
   Activity,
@@ -420,12 +421,13 @@ export function OverviewTab({
         ) : (
           <div className="space-y-2">
             {recentMatches.slice(0, 5).map((match) => (
-              <div
+              <Link
                 key={match.matchId}
-                className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-sm border border-white/[0.04] bg-[#0A0C13] hover:border-white/[0.12] transition-colors"
+                href={`/match-data?id=${match.matchId}`}
+                className="group flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-sm border border-white/[0.04] bg-[#0A0C13] hover:border-rose-500/40 hover:bg-white/[0.02] transition-all cursor-pointer"
               >
                 <div className="flex items-center gap-3">
-                  <div className="relative h-9 w-14 overflow-hidden rounded bg-black shrink-0 border border-white/[0.08]">
+                  <div className="relative h-9 w-14 overflow-hidden rounded bg-black shrink-0 border border-white/[0.08] group-hover:scale-105 transition-transform">
                     <Image
                       src={match.heroImageUrl}
                       alt={match.heroLocalizedName}
@@ -436,7 +438,7 @@ export function OverviewTab({
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-bold text-white">
+                      <span className="text-sm font-bold text-white group-hover:text-rose-300 transition-colors">
                         {match.heroLocalizedName}
                       </span>
                       <span
@@ -468,8 +470,9 @@ export function OverviewTab({
                     <span className="text-zinc-500 text-[10px] block">PLAYED</span>
                     <span className="text-zinc-400">{match.timeAgo}</span>
                   </div>
+                  <ChevronRight className="h-4 w-4 text-zinc-600 group-hover:text-rose-400 group-hover:translate-x-0.5 transition-all hidden sm:block" />
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         )}
