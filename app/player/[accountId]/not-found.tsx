@@ -20,7 +20,7 @@ export default function NotFound() {
           </div>
 
           <h1 className="text-2xl font-mono font-black text-white mb-2">
-            No Match Telemetry Found
+            No Player Stats Found
           </h1>
 
           <p className="text-xs font-mono text-zinc-400 leading-relaxed mb-6">

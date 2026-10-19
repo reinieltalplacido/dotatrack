@@ -29,7 +29,7 @@ export function MetaTrendsDashboard({ initialData }: MetaTrendsDashboardProps) {
     try {
       const res = await fetch(`/api/meta-trends?bracket=${bracket}`);
       if (!res.ok) {
-        throw new Error(`Upstream telemetry service returned status ${res.status}`);
+        throw new Error(`Stats service returned status ${res.status}`);
       }
       const json: MetaTrendsPayload = await res.json();
       setData(json);
@@ -61,7 +61,7 @@ export function MetaTrendsDashboard({ initialData }: MetaTrendsDashboardProps) {
           <div className="flex items-center gap-2">
             <AlertCircle className="h-4 w-4 text-red-400 shrink-0" />
             <span>
-              Could not refresh bracket data: {fetchError}. Preserving previous telemetry cache.
+              Could not refresh bracket data: {fetchError}. Preserving previous stats.
             </span>
           </div>
           <button

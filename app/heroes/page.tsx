@@ -10,7 +10,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Hero Compendium & Matrix — DotaTrack",
   description:
-    "Explore 127 Dota 2 heroes, analyze win rates, meta pick rates, competitive rank brackets, counter matchups, and item build telemetry.",
+    "Explore 127 Dota 2 heroes, analyze win rates, meta pick rates, competitive rank brackets, counter matchups, and popular item builds.",
 };
 
 export default async function HeroesPage() {
@@ -58,7 +58,7 @@ export default async function HeroesPage() {
                 className="inline-flex items-center gap-2 rounded-sm bg-rose-600 px-4 py-2 text-xs font-mono font-bold text-white hover:bg-rose-500 transition-colors"
               >
                 <RefreshCw className="h-3.5 w-3.5" />
-                <span>RETRY TELEMETRY FEED</span>
+                <span>RETRY</span>
               </Link>
 
               <Link

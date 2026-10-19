@@ -73,7 +73,7 @@ async function fetchWithTimeout<T>(endpoint: string, revalidateSeconds = 3600): 
     if (err instanceof Error && err.name === "TimeoutError") {
       throw new HeroTelemetryError("Upstream OpenDota request timed out.", 504);
     }
-    throw new HeroTelemetryError("Failed to connect to OpenDota telemetry service.", 502);
+    throw new HeroTelemetryError("Failed to connect to OpenDota hero stats service.", 502);
   }
 
   if (response.status === 429) {
@@ -270,7 +270,7 @@ function processHeroStats(rawHeroes: RawHeroStatEntry[], isCached = false): Hero
     totalPubMatches,
     totalPubPicks,
     lastUpdated: new Date().toISOString(),
-    source: isCached ? "Cached Telemetry Archive" : "OpenDota Live Telemetry",
+    source: isCached ? "Cached Stats Archive" : "OpenDota Live Stats",
     isCachedFallback: isCached,
   };
 

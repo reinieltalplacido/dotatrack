@@ -4,7 +4,7 @@ export function FeatureHighlights() {
   const highlights = [
     {
       icon: <Swords className="h-5 w-5 text-rose-500" aria-hidden="true" />,
-      tag: "COMBAT_TELEMETRY",
+      tag: "MATCH_STATS",
       title: "Match History",
       description: "Review your recent games, results, and match performance.",
       details: [
@@ -44,7 +44,7 @@ export function FeatureHighlights() {
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10 pb-4 border-b border-white/[0.06]">
           <div>
             <div className="text-[11px] font-mono uppercase tracking-widest text-rose-500 font-bold mb-1">
-              PLATFORM_CAPABILITIES // TELEMETRY MODULES
+              PLATFORM_CAPABILITIES // STATS &amp; ANALYTICS
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white font-mono">
               Designed for Competitive Dota 2 Players

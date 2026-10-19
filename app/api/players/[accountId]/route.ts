@@ -49,7 +49,7 @@ export async function GET(
 
     return NextResponse.json(
       {
-        error: "An unexpected error occurred while processing player telemetry.",
+        error: "An unexpected error occurred while processing player stats.",
         statusCode: 500,
       },
       {

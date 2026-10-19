@@ -228,9 +228,9 @@ export async function getMatchAnalysis(
     });
   } catch (err) {
     if (err instanceof Error && err.name === "TimeoutError") {
-      throw new Error("Match telemetry request timed out. OpenDota upstream is slow to respond.");
+      throw new Error("Match request timed out. OpenDota is taking too long to respond.");
     }
-    throw new Error("Could not connect to OpenDota match telemetry service.");
+    throw new Error("Could not connect to OpenDota match service.");
   }
 
   if (res.status === 404) {

@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!accountId || !/^\d+$/.test(accountId)) {
     return {
       title: "Player Profile — DotaTrack",
-      description: "Dota 2 player telemetry and performance analytics.",
+      description: "Dota 2 player stats and match analytics.",
     };
   }
 
@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   } catch {
     return {
       title: `Player #${accountId} — DotaTrack Profile`,
-      description: `Dota 2 player telemetry profile for account #${accountId}.`,
+      description: `Dota 2 player profile for account #${accountId}.`,
     };
   }
 }
@@ -89,7 +89,7 @@ export default async function PlayerPage({ params }: PageProps) {
             <h1 className="text-xl font-mono font-bold text-white mb-2">
               {isRateLimited
                 ? "OpenDota Rate Limit Reached"
-                : "Telemetry Service Unavailable"}
+                : "Stats Service Unavailable"}
             </h1>
 
             <p className="text-xs font-mono text-zinc-400 leading-relaxed mb-6">
@@ -102,7 +102,7 @@ export default async function PlayerPage({ params }: PageProps) {
                 className="inline-flex items-center gap-2 rounded-sm bg-rose-600 px-4 py-2 text-xs font-mono font-bold text-white hover:bg-rose-500 transition-colors"
               >
                 <RefreshCw className="h-3.5 w-3.5" />
-                <span>RETRY QUERY</span>
+                <span>RETRY</span>
               </Link>
 
               <Link

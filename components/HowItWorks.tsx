@@ -14,16 +14,16 @@ export function HowItWorks() {
     {
       step: "02",
       icon: <DatabaseZap className="h-5 w-5 text-rose-500" aria-hidden="true" />,
-      tag: "DATA_INGESTION",
+      tag: "FETCH_MATCHES",
       title: "Retrieve your available Dota 2 player data",
       description:
         "DotaTrack queries public Valve matchmaking records and parses match results via the OpenDota API protocol.",
-      spec: "Public match history & combat logs ingestion",
+      spec: "Public match history & combat stats",
     },
     {
       step: "03",
       icon: <LineChart className="h-5 w-5 text-rose-500" aria-hidden="true" />,
-      tag: "TELEMETRY_ENGINE",
+      tag: "STATS_ENGINE",
       title: "Explore your statistics and recent matches",
       description:
         "Gain comprehensive insights across hero win rates, lane efficiency, KDA trajectories, and individual game performances.",
@@ -37,7 +37,7 @@ export function HowItWorks() {
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10 pb-4 border-b border-white/[0.06]">
           <div>
             <div className="text-[11px] font-mono uppercase tracking-widest text-rose-500 font-bold mb-1">
-              SYSTEM_PIPELINE // EXECUTION FLOW
+              HOW_IT_WORKS // 3 SIMPLE STEPS
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white font-mono">
               How DotaTrack Works

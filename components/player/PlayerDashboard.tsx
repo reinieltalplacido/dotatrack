@@ -7,6 +7,7 @@ import {
   Flame,
   Activity,
   Users,
+  UserCheck,
   Search,
   X,
 } from "lucide-react";
@@ -17,17 +18,21 @@ import { MatchesTab } from "./MatchesTab";
 import { HeroesTab } from "./HeroesTab";
 import { PerformanceTab } from "./PerformanceTab";
 import { MatchupsTab } from "./MatchupsTab";
+import { TeammatesTab } from "./TeammatesTab";
 import { SteamIdSearch } from "../SteamIdSearch";
 
 interface PlayerDashboardProps {
   initialData: PlayerDashboardData;
 }
 
-type TabType = "overview" | "matches" | "heroes" | "performance" | "matchups";
+type TabType = "overview" | "matches" | "heroes" | "performance" | "matchups" | "teammates";
 
 export function PlayerDashboard({ initialData }: PlayerDashboardProps) {
   const [activeTab, setActiveTab] = useState<TabType>("overview");
   const [searchModalOpen, setSearchModalOpen] = useState(false);
+  const [teammatesCount, setTeammatesCount] = useState<number | undefined>(
+    initialData.peers && initialData.peers.length > 0 ? initialData.peers.length : undefined
+  );
 
   const tabs: { id: TabType; label: string; icon: typeof LayoutDashboard; count?: number }[] = [
     { id: "overview", label: "Overview", icon: LayoutDashboard },
@@ -45,6 +50,12 @@ export function PlayerDashboard({ initialData }: PlayerDashboardProps) {
     },
     { id: "performance", label: "Performance", icon: Activity },
     { id: "matchups", label: "Matchups", icon: Users },
+    {
+      id: "teammates",
+      label: "Teammates",
+      icon: UserCheck,
+      count: teammatesCount,
+    },
   ];
 
   return (
@@ -57,7 +68,7 @@ export function PlayerDashboard({ initialData }: PlayerDashboardProps) {
 
       {/* Navigation Tabs Bar */}
       <div className="sticky top-16 z-30 border-b border-white/[0.08] bg-[#0A0C13]/95 backdrop-blur-md">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl 2xl:max-w-[1520px] px-4 sm:px-6 lg:px-8">
           <nav className="flex space-x-1 sm:space-x-2 overflow-x-auto py-2 no-scrollbar" aria-label="Player Tabs">
             {tabs.map((tab) => {
               const Icon = tab.icon;
@@ -95,7 +106,7 @@ export function PlayerDashboard({ initialData }: PlayerDashboardProps) {
       </div>
 
       {/* Main Tab Content Viewport */}
-      <main className="flex-1 mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-1 mx-auto max-w-7xl 2xl:max-w-[1560px] 3xl:max-w-[1680px] w-full px-4 sm:px-6 lg:px-8 py-8">
         {activeTab === "overview" && (
           <OverviewTab
             data={initialData}
@@ -118,6 +129,13 @@ export function PlayerDashboard({ initialData }: PlayerDashboardProps) {
 
         {activeTab === "matchups" && (
           <MatchupsTab data={initialData} />
+        )}
+
+        {activeTab === "teammates" && (
+          <TeammatesTab
+            data={initialData}
+            onTeammatesLoaded={(count) => setTeammatesCount(count)}
+          />
         )}
       </main>
 

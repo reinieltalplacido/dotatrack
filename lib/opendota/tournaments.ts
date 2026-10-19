@@ -58,7 +58,7 @@ async function fetchWithTimeout<T>(endpoint: string, revalidateSeconds = 300): P
     if (err instanceof Error && err.name === "TimeoutError") {
       throw new TournamentTelemetryError("OpenDota request timed out.", 504);
     }
-    throw new TournamentTelemetryError("Failed to connect to OpenDota tournament telemetry.", 502);
+    throw new TournamentTelemetryError("Failed to connect to OpenDota tournament stats.", 502);
   }
 
   if (response.status === 404) {
@@ -418,7 +418,7 @@ export async function fetchTournamentsList(): Promise<TournamentsCatalogPayload>
       completedCount,
       liveMatchesCount,
     },
-    source: isCached ? "Cached Esports Telemetry" : "OpenDota Esports Telemetry",
+    source: isCached ? "Cached Esports Stats" : "OpenDota Esports Stats",
     fetchedAt: new Date().toISOString(),
     isCached,
   };
@@ -789,7 +789,7 @@ export async function fetchTournamentDetail(leagueId: number): Promise<Tournamen
     logo: enrichment.logo || null,
     organizer: enrichment.organizer,
     officialWebsite: enrichment.officialWebsite,
-    description: `Complete Dota 2 competitive telemetry details for ${cleanName}.`,
+    description: `Complete Dota 2 competitive tournament details for ${cleanName}.`,
   };
 
   const finalTeams = participatingTeams.length > 0 ? participatingTeams : Array.from(teamMap.values());

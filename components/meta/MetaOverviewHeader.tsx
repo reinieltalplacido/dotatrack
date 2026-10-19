@@ -170,8 +170,8 @@ export function MetaOverviewHeader({
           <div className="mt-2 text-[11px] font-mono text-zinc-400 bg-black/40 border border-white/[0.06] px-2.5 py-1 rounded-sm flex items-center gap-2">
             <span className="text-amber-400 font-bold">NOTE:</span>
             <span>
-              OpenDota telemetry combines Divine and Immortal into Rank Tier 7 (4620+ MMR).
-              Bracket 8 is reserved in schema but unpopulated by upstream; all elite games are tracked under this tier.
+              OpenDota combines Divine and Immortal into Rank Tier 7 (4620+ MMR).
+              All high-rank matchmaking games are tracked under this tier.
             </span>
           </div>
         )}

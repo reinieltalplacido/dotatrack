@@ -119,28 +119,28 @@ function TeamScoreboardTable({
 
       {/* Responsive Horizontal Scroll Table */}
       <div className="overflow-x-auto">
-        <table className="w-full text-left border-collapse text-xs font-mono min-w-[950px]">
+        <table className="w-full text-left border-collapse text-xs font-mono min-w-[1240px]">
           <thead>
             <tr className="border-b border-white/[0.06] bg-black/40 text-[10px] uppercase text-zinc-400 tracking-wider">
-              <th className="py-2.5 px-3">Hero / Player</th>
-              <th className="py-2.5 px-2 text-center">LVL</th>
-              <th className="py-2.5 px-2 text-center">K / D / A</th>
-              <th className="py-2.5 px-2 text-center">KDA</th>
-              <th className="py-2.5 px-2 text-right">NET WORTH</th>
-              <th className="py-2.5 px-2 text-center">LH / DN</th>
-              <th className="py-2.5 px-2 text-center">GPM / XPM</th>
-              <th className="py-2.5 px-2 text-right">HERO DMG</th>
-              <th className="py-2.5 px-2 text-right">BLDG DMG</th>
-              <th className="py-2.5 px-2 text-right">HEAL</th>
-              <th className="py-2.5 px-2 text-center">WARDS</th>
-              <th className="py-2.5 px-3 text-center">ITEMS &amp; BACKPACK</th>
+              <th className="py-2.5 px-3 whitespace-nowrap min-w-[210px] max-w-[240px]">Hero / Player</th>
+              <th className="py-2.5 px-2 text-center whitespace-nowrap min-w-[45px]">LVL</th>
+              <th className="py-2.5 px-2 text-center whitespace-nowrap min-w-[115px]">K / D / A</th>
+              <th className="py-2.5 px-2 text-center whitespace-nowrap min-w-[55px]">KDA</th>
+              <th className="py-2.5 px-2 text-right whitespace-nowrap min-w-[95px]">NET WORTH</th>
+              <th className="py-2.5 px-2 text-center whitespace-nowrap min-w-[95px]">LH / DN</th>
+              <th className="py-2.5 px-2 text-center whitespace-nowrap min-w-[110px]">GPM / XPM</th>
+              <th className="py-2.5 px-2 text-right whitespace-nowrap min-w-[100px]">HERO DMG</th>
+              <th className="py-2.5 px-2 text-right whitespace-nowrap min-w-[85px]">BLDG DMG</th>
+              <th className="py-2.5 px-2 text-right whitespace-nowrap min-w-[70px]">HEAL</th>
+              <th className="py-2.5 px-2 text-center whitespace-nowrap min-w-[85px]">WARDS</th>
+              <th className="py-2.5 px-3 text-center whitespace-nowrap min-w-[280px]">ITEMS &amp; BACKPACK</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-white/[0.04]">
             {players.map((player) => (
               <tr key={player.playerSlot} className="hover:bg-white/[0.02] transition-colors">
                 {/* Hero Portrait & Player Name */}
-                <td className="py-2.5 px-3">
+                <td className="py-2.5 px-3 whitespace-nowrap min-w-[210px] max-w-[240px]">
                   <div className="flex items-center gap-2.5">
                     <div className="relative w-11 h-7 rounded-xs overflow-hidden border border-white/[0.1] bg-zinc-900 shrink-0">
                       <Image
@@ -151,17 +151,18 @@ function TeamScoreboardTable({
                         className="object-cover"
                       />
                     </div>
-                    <div className="min-w-0">
+                    <div className="min-w-0 max-w-[170px]">
                       <div className="flex items-center gap-1.5">
                         {player.accountId ? (
                           <Link
                             href={`/player/${player.accountId}`}
                             className="font-bold text-white hover:text-rose-400 truncate block transition-colors text-xs"
+                            title={player.personaName}
                           >
                             {player.personaName}
                           </Link>
                         ) : (
-                          <span className="font-bold text-zinc-300 truncate block text-xs">
+                          <span className="font-bold text-zinc-300 truncate block text-xs" title={player.personaName}>
                             {player.personaName}
                           </span>
                         )}
@@ -174,10 +175,10 @@ function TeamScoreboardTable({
                           <span
                             className={
                               player.laneOutcome === "Won"
-                                ? "text-emerald-400 font-bold ml-0.5"
+                                ? "text-emerald-400 font-bold ml-0.5 shrink-0"
                                 : player.laneOutcome === "Lost"
-                                ? "text-rose-400 font-bold ml-0.5"
-                                : "text-zinc-500 font-medium ml-0.5"
+                                ? "text-rose-400 font-bold ml-0.5 shrink-0"
+                                : "text-zinc-500 font-medium ml-0.5 shrink-0"
                             }
                           >
                             {player.laneOutcome}
@@ -189,12 +190,12 @@ function TeamScoreboardTable({
                 </td>
 
                 {/* Level */}
-                <td className="py-2.5 px-2 text-center font-bold text-zinc-300">
+                <td className="py-2.5 px-2 text-center font-bold text-zinc-300 whitespace-nowrap">
                   {player.level}
                 </td>
 
                 {/* K/D/A */}
-                <td className="py-2.5 px-2 text-center">
+                <td className="py-2.5 px-2 text-center whitespace-nowrap">
                   <span className="text-emerald-400 font-bold">{player.kills}</span>
                   <span className="text-zinc-600"> / </span>
                   <span className="text-rose-400 font-bold">{player.deaths}</span>
@@ -203,54 +204,56 @@ function TeamScoreboardTable({
                 </td>
 
                 {/* KDA Ratio */}
-                <td className="py-2.5 px-2 text-center text-zinc-300">
+                <td className="py-2.5 px-2 text-center text-zinc-300 whitespace-nowrap">
                   {player.kda.toFixed(2)}
                 </td>
 
                 {/* Net Worth */}
-                <td className="py-2.5 px-2 text-right font-bold text-amber-400">
+                <td className="py-2.5 px-2 text-right font-bold text-amber-400 whitespace-nowrap">
                   {player.netWorth.toLocaleString()}
                 </td>
 
                 {/* LH / DN */}
-                <td className="py-2.5 px-2 text-center text-zinc-300">
-                  {player.lastHits} <span className="text-zinc-600">/</span> {player.denies}
+                <td className="py-2.5 px-2 text-center text-zinc-300 whitespace-nowrap">
+                  <span>{player.lastHits}</span>
+                  <span className="text-zinc-600"> / </span>
+                  <span>{player.denies}</span>
                 </td>
 
                 {/* GPM / XPM */}
-                <td className="py-2.5 px-2 text-center text-zinc-300">
+                <td className="py-2.5 px-2 text-center text-zinc-300 whitespace-nowrap">
                   <span className="text-amber-300">{player.goldPerMin}</span>
                   <span className="text-zinc-600"> / </span>
                   <span className="text-blue-300">{player.xpPerMin}</span>
                 </td>
 
                 {/* Hero Damage */}
-                <td className="py-2.5 px-2 text-right text-zinc-200">
-                  {player.heroDamage.toLocaleString()}
-                  <span className="text-[9px] text-zinc-500 block">
+                <td className="py-2.5 px-2 text-right text-zinc-200 whitespace-nowrap">
+                  <div>{player.heroDamage.toLocaleString()}</div>
+                  <div className="text-[9px] text-zinc-500 whitespace-nowrap">
                     {player.damageShare}% team
-                  </span>
+                  </div>
                 </td>
 
                 {/* Tower Damage */}
-                <td className="py-2.5 px-2 text-right text-zinc-300">
+                <td className="py-2.5 px-2 text-right text-zinc-300 whitespace-nowrap">
                   {player.towerDamage.toLocaleString()}
                 </td>
 
                 {/* Healing */}
-                <td className="py-2.5 px-2 text-right text-zinc-400">
+                <td className="py-2.5 px-2 text-right text-zinc-400 whitespace-nowrap">
                   {player.heroHealing > 0 ? player.heroHealing.toLocaleString() : "—"}
                 </td>
 
                 {/* Wards (Observer / Sentry) */}
-                <td className="py-2.5 px-2 text-center text-zinc-400">
+                <td className="py-2.5 px-2 text-center text-zinc-400 whitespace-nowrap">
                   <span className="text-amber-300 font-medium">{player.obsPlaced || "-"}</span>
                   <span className="text-zinc-600"> / </span>
                   <span className="text-sky-300 font-medium">{player.senPlaced || "-"}</span>
                 </td>
 
                 {/* Items & Backpack */}
-                <td className="py-2.5 px-3">
+                <td className="py-2.5 px-3 whitespace-nowrap">
                   <div className="flex items-center gap-1.5 justify-center">
                     {/* 6 Main Items */}
                     <div className="grid grid-cols-6 gap-0.5 bg-black/60 p-0.5 rounded-xs border border-white/[0.06]">
@@ -323,7 +326,7 @@ function TeamScoreboardTable({
           {/* Team Totals Footer Row */}
           <tfoot>
             <tr className="border-t border-white/[0.08] bg-black/60 font-bold text-zinc-300">
-              <td className="py-2.5 px-3">
+              <td className="py-2.5 px-3 whitespace-nowrap">
                 <div className="text-zinc-300 font-bold">TEAM TOTALS</div>
                 {teamLaneOutcome !== "Unavailable" && (
                   <div className="text-[10px] font-mono text-zinc-400 mt-0.5 font-normal">
@@ -342,21 +345,21 @@ function TeamScoreboardTable({
                   </div>
                 )}
               </td>
-              <td className="py-2.5 px-2 text-center">—</td>
-              <td className="py-2.5 px-2 text-center">{score} Kills</td>
-              <td className="py-2.5 px-2 text-center">—</td>
-              <td className="py-2.5 px-2 text-right text-amber-400">{totalNetWorth.toLocaleString()}</td>
-              <td className="py-2.5 px-2 text-center">—</td>
-              <td className="py-2.5 px-2 text-center">—</td>
-              <td className="py-2.5 px-2 text-right">{totalDamage.toLocaleString()}</td>
-              <td className="py-2.5 px-2 text-right">{totalTowerDamage.toLocaleString()}</td>
-              <td className="py-2.5 px-2 text-right">—</td>
-              <td className="py-2.5 px-2 text-center">
+              <td className="py-2.5 px-2 text-center whitespace-nowrap">—</td>
+              <td className="py-2.5 px-2 text-center whitespace-nowrap">{score} Kills</td>
+              <td className="py-2.5 px-2 text-center whitespace-nowrap">—</td>
+              <td className="py-2.5 px-2 text-right text-amber-400 whitespace-nowrap">{totalNetWorth.toLocaleString()}</td>
+              <td className="py-2.5 px-2 text-center whitespace-nowrap">—</td>
+              <td className="py-2.5 px-2 text-center whitespace-nowrap">—</td>
+              <td className="py-2.5 px-2 text-right whitespace-nowrap">{totalDamage.toLocaleString()}</td>
+              <td className="py-2.5 px-2 text-right whitespace-nowrap">{totalTowerDamage.toLocaleString()}</td>
+              <td className="py-2.5 px-2 text-right whitespace-nowrap">—</td>
+              <td className="py-2.5 px-2 text-center whitespace-nowrap">
                 <span className="text-amber-300">{totalObs}</span>
                 <span className="text-zinc-600"> / </span>
                 <span className="text-sky-300">{totalSen}</span>
               </td>
-              <td className="py-2.5 px-3 text-center text-zinc-500">—</td>
+              <td className="py-2.5 px-3 text-center text-zinc-500 whitespace-nowrap">—</td>
             </tr>
           </tfoot>
         </table>

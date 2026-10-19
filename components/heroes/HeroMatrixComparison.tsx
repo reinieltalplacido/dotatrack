@@ -73,7 +73,7 @@ export function HeroMatrixComparison({
             Performance Matrix &amp; Multi-Hero Comparator
           </h2>
           <p className="text-xs font-mono text-zinc-400 mt-0.5">
-            Plot win rates against meta pick rates across {heroes.length} heroes, or compare combat telemetry head-to-head.
+            Plot win rates against meta pick rates across {heroes.length} heroes, or compare hero stats head-to-head.
           </p>
         </div>
 
@@ -307,7 +307,7 @@ export function HeroMatrixComparison({
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-white/[0.06]">
             <div>
               <h3 className="text-sm font-mono font-bold text-white uppercase tracking-wider">
-                Head-to-Head Telemetry Comparison ({comparedHeroes.length} / 4 Selected)
+                Head-to-Head Comparison ({comparedHeroes.length} / 4 Selected)
               </h3>
               <p className="text-xs font-mono text-zinc-400">
                 Compare base attributes, damage, armor, and competitive rank brackets.
@@ -369,7 +369,7 @@ export function HeroMatrixComparison({
               <table className="w-full text-left font-mono text-xs border-collapse">
                 <thead>
                   <tr className="border-b border-white/[0.08] text-zinc-400 uppercase text-[10px] tracking-wider">
-                    <th className="py-3 px-4 w-44">Telemetry Metric</th>
+                    <th className="py-3 px-4 w-44">Metric</th>
                     {comparedHeroes.map((hero) => (
                       <th key={hero.id} className="py-3 px-4 min-w-[200px]">
                         <div className="flex items-center justify-between">

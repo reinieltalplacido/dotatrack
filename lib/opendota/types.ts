@@ -156,6 +156,46 @@ export interface PlayerHeroMatchup {
   nemesisIndex: number;
 }
 
+export interface OpenDotaPeer {
+  account_id: number;
+  last_played: number | null;
+  win: number;
+  games: number;
+  with_win: number;
+  with_games: number;
+  against_win: number;
+  against_games: number;
+  with_gpm_sum?: number;
+  with_xpm_sum?: number;
+  personaname?: string | null;
+  name?: string | null;
+  is_contributor?: boolean;
+  is_subscriber?: boolean;
+  last_login?: string | null;
+  avatar?: string | null;
+  avatarfull?: string | null;
+}
+
+export interface EnrichedTeammate {
+  accountId: number;
+  personaName: string;
+  avatarUrl: string;
+  games: number;
+  withGames: number;
+  withWin: number;
+  withLoss: number;
+  withWinRate: number;
+  synergyAdvantage: number;
+  againstGames: number;
+  againstWin: number;
+  againstLoss: number;
+  againstWinRate: number;
+  lastPlayed: number | null;
+  lastPlayedFormatted: string;
+  withAvgGpm?: number;
+  withAvgXpm?: number;
+}
+
 export interface PlayerDashboardData {
   accountId: number;
   steamId64: string | null;
@@ -208,6 +248,7 @@ export interface PlayerDashboardData {
     allies: PlayerHeroMatchup[];
     enemies: PlayerHeroMatchup[];
   };
+  peers?: EnrichedTeammate[];
 
   isPartial: boolean;
   warningMessage?: string;

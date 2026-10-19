@@ -106,9 +106,9 @@ export function MetaShiftsTracker({
       <div className="mb-6 flex items-start gap-2.5 p-3 rounded-sm bg-black/40 border border-white/[0.06] text-xs font-mono text-zinc-400">
         <ShieldCheck className="h-4 w-4 text-emerald-400 shrink-0 mt-0.5" />
         <div>
-          <strong className="text-zinc-200">Zero-Fabrication Guarantee:</strong> Win rate and pick rate shifts
-          are computed strictly from OpenDota interval telemetry sequences and server-side snapshot baselines.
-          No simulated numbers or placeholder percentage shifts are displayed.
+          <strong className="text-zinc-200">Verified Data:</strong> Win rate and pick rate shifts
+          are computed directly from OpenDota match records and snapshot history.
+          No simulated numbers or placeholder percentages are displayed.
         </div>
       </div>
 

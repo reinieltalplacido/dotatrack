@@ -8,6 +8,8 @@ import {
   EnrichedRecentMatch,
   EnrichedHeroStat,
   PlayerHeroMatchup,
+  OpenDotaPeer,
+  EnrichedTeammate,
 } from "./types";
 import { getHeroById, formatGameMode, formatLobbyType, formatDuration, formatTimeAgo } from "./heroes";
 import { formatRank } from "./rank";
@@ -27,7 +29,11 @@ export class OpenDotaError extends Error {
 /**
  * Executes a fetch request with timeout and error handling.
  */
-async function fetchWithTimeout<T>(endpoint: string, revalidateSeconds = 120): Promise<T> {
+async function fetchWithTimeout<T>(
+  endpoint: string,
+  revalidateSeconds = 120,
+  timeoutMs = REQUEST_TIMEOUT_MS
+): Promise<T> {
   const apiKey = process.env.OPENDOTA_API_KEY;
   const separator = endpoint.includes("?") ? "&" : "?";
   const url = `${OPENDOTA_BASE_URL}${endpoint}${apiKey ? `${separator}api_key=${apiKey}` : ""}`;
@@ -35,7 +41,7 @@ async function fetchWithTimeout<T>(endpoint: string, revalidateSeconds = 120): P
   let response: Response;
   try {
     response = await fetch(url, {
-      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+      signal: AbortSignal.timeout(timeoutMs),
       headers: {
         Accept: "application/json",
       },
@@ -47,7 +53,7 @@ async function fetchWithTimeout<T>(endpoint: string, revalidateSeconds = 120): P
     if (err instanceof Error && err.name === "TimeoutError") {
       throw new OpenDotaError("Request to OpenDota timed out. Please try again.", 504);
     }
-    throw new OpenDotaError("Failed to connect to OpenDota telemetry service.", 502);
+    throw new OpenDotaError("Failed to connect to OpenDota match data service.", 502);
   }
 
   if (response.status === 404) {
@@ -147,7 +153,7 @@ export async function fetchOpenDotaPlayerData(accountId: string | number): Promi
   }
 
   if (isPartial) {
-    warningMessage = "Some secondary statistical endpoints were temporarily unavailable. Primary telemetry is displayed.";
+    warningMessage = "Some secondary stats were temporarily unavailable. Main stats are displayed.";
   }
 
   // Validate that we have at least profile or some matches
@@ -415,6 +421,7 @@ export async function fetchOpenDotaPlayerData(accountId: string | number): Promi
       allies: allyMatchups,
       enemies: enemyMatchups,
     },
+    peers: [],
     isPartial,
     warningMessage,
     fetchedAt: (() => {
@@ -425,4 +432,77 @@ export async function fetchOpenDotaPlayerData(accountId: string | number): Promi
       }
     })(),
   };
+}
+
+/**
+ * Dedicated fetcher for player peers (teammates).
+ */
+export async function fetchPlayerPeers(accountId: string | number): Promise<EnrichedTeammate[]> {
+  const numericId = typeof accountId === "string" ? parseInt(accountId, 10) : accountId;
+
+  if (isNaN(numericId) || numericId <= 0 || numericId > 4294967295) {
+    throw new OpenDotaError("Invalid Account ID.", 400);
+  }
+
+  const [wlResult, peersResult] = await Promise.allSettled([
+    fetchWithTimeout<OpenDotaWinLoss>(`/players/${numericId}/wl`),
+    fetchWithTimeout<OpenDotaPeer[]>(`/players/${numericId}/peers`, 300, 45000),
+  ]);
+
+  const wlData =
+    wlResult.status === "fulfilled" && wlResult.value && typeof wlResult.value.win === "number"
+      ? wlResult.value
+      : { win: 0, lose: 0 };
+  const totalMatches = wlData.win + wlData.lose;
+  const lifetimeWinRate = totalMatches > 0 ? Number(((wlData.win / totalMatches) * 100).toFixed(2)) : 50.0;
+
+  const rawPeers: OpenDotaPeer[] =
+    peersResult.status === "fulfilled" && Array.isArray(peersResult.value)
+      ? peersResult.value
+      : [];
+
+  return rawPeers
+    .filter((p) => p && typeof p.account_id === "number" && (p.with_games > 0 || p.games > 0))
+    .map((p) => {
+      const withGames = p.with_games || 0;
+      const withWin = p.with_win || 0;
+      const withLoss = Math.max(0, withGames - withWin);
+      const withWinRate = withGames > 0 ? Number(((withWin / withGames) * 100).toFixed(1)) : 0;
+      const synergyAdvantage = withGames > 0 ? Number((withWinRate - lifetimeWinRate).toFixed(1)) : 0;
+
+      const againstGames = p.against_games || 0;
+      const againstWin = p.against_win || 0;
+      const againstLoss = Math.max(0, againstGames - againstWin);
+      const againstWinRate = againstGames > 0 ? Number(((againstWin / againstGames) * 100).toFixed(1)) : 0;
+
+      const withAvgGpm = withGames > 0 && typeof p.with_gpm_sum === "number" ? Math.round(p.with_gpm_sum / withGames) : undefined;
+      const withAvgXpm = withGames > 0 && typeof p.with_xpm_sum === "number" ? Math.round(p.with_xpm_sum / withGames) : undefined;
+
+      const personaName = p.personaname || p.name || `Player #${p.account_id}`;
+      const avatarUrl =
+        p.avatarfull ||
+        p.avatar ||
+        "https://avatars.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg";
+
+      return {
+        accountId: p.account_id,
+        personaName,
+        avatarUrl,
+        games: p.games || withGames,
+        withGames,
+        withWin,
+        withLoss,
+        withWinRate,
+        synergyAdvantage,
+        againstGames,
+        againstWin,
+        againstLoss,
+        againstWinRate,
+        lastPlayed: p.last_played ?? null,
+        lastPlayedFormatted: p.last_played ? formatTimeAgo(p.last_played) : "Unknown",
+        withAvgGpm,
+        withAvgXpm,
+      };
+    })
+    .sort((a, b) => b.withGames - a.withGames);
 }

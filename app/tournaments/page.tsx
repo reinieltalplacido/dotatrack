@@ -30,7 +30,7 @@ export default async function TournamentsPage() {
     );
   } catch (error: unknown) {
     const message =
-      error instanceof Error ? error.message : "Failed to load tournaments telemetry";
+      error instanceof Error ? error.message : "Failed to load tournament data";
 
     return (
       <div className="min-h-screen bg-[#08090C] text-[#EDEDF0] flex flex-col font-sans">
@@ -42,11 +42,11 @@ export default async function TournamentsPage() {
             </div>
 
             <div className="inline-block rounded-sm bg-red-950/80 border border-red-800/60 px-2.5 py-0.5 text-[11px] font-mono text-red-300 uppercase tracking-wider mb-2">
-              [CIRCUIT_TELEMETRY_OFFLINE]
+              [TOURNAMENTS_OFFLINE]
             </div>
 
             <h1 className="text-xl font-mono font-bold text-white mb-2">
-              Tournaments Telemetry Unavailable
+              Tournaments Unavailable
             </h1>
 
             <p className="text-xs font-mono text-zinc-400 leading-relaxed mb-6">{message}</p>
@@ -57,7 +57,7 @@ export default async function TournamentsPage() {
                 className="inline-flex items-center gap-2 rounded-sm bg-rose-600 px-4 py-2 text-xs font-mono font-bold text-white hover:bg-rose-500 transition-colors"
               >
                 <RefreshCw className="h-3.5 w-3.5" />
-                <span>RETRY TELEMETRY FEED</span>
+                <span>RETRY</span>
               </Link>
 
               <Link

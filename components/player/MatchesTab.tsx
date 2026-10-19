@@ -102,6 +102,18 @@ export function MatchesTab({ matches }: MatchesTabProps) {
         </div>
       </div>
 
+      {/* Aligned Column Header for Desktop */}
+      <div className="hidden lg:grid grid-cols-[300px_1fr_170px] xl:grid-cols-[320px_1fr_180px] items-center gap-4 xl:gap-6 px-4 py-2 text-[10px] font-mono uppercase text-zinc-500 tracking-wider border-b border-white/[0.04]">
+        <div>HERO &amp; MATCH OUTCOME</div>
+        <div className="grid grid-cols-4 gap-4 xl:gap-6 px-4">
+          <div className="flex items-center gap-1"><Swords className="h-3 w-3 text-zinc-400 shrink-0" /><span>K / D / A</span></div>
+          <div className="flex items-center gap-1"><Coins className="h-3 w-3 text-zinc-400 shrink-0" /><span>GPM / XPM</span></div>
+          <div className="flex items-center gap-1"><Clock className="h-3 w-3 text-zinc-400 shrink-0" /><span>DURATION</span></div>
+          <div className="flex items-center gap-1"><Zap className="h-3 w-3 text-zinc-400 shrink-0" /><span>PLAYED</span></div>
+        </div>
+        <div className="text-right">MATCH ID &amp; ACTIONS</div>
+      </div>
+
       {/* Matches List / Table */}
       <div className="space-y-2">
         {filteredMatches.map((match) => (
@@ -120,9 +132,9 @@ export function MatchesTab({ matches }: MatchesTabProps) {
               aria-label={`View match breakdown for ${match.heroLocalizedName}`}
             />
 
-            <div className="relative z-10 pointer-events-none flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div className="relative z-10 pointer-events-none grid grid-cols-1 lg:grid-cols-[300px_1fr_170px] xl:grid-cols-[320px_1fr_180px] items-center gap-4 xl:gap-6">
               {/* Left: Hero Portrait, Name, Outcome */}
-              <div className="flex items-center gap-3.5 min-w-[260px]">
+              <div className="flex items-center gap-3.5 min-w-0 w-full overflow-hidden">
                 <div className="relative h-12 w-20 overflow-hidden rounded bg-black shrink-0 border border-white/[0.12] shadow-md group-hover:scale-105 transition-transform">
                   <Image
                     src={match.heroImageUrl}
@@ -133,13 +145,13 @@ export function MatchesTab({ matches }: MatchesTabProps) {
                   />
                 </div>
 
-                <div className="min-w-0">
+                <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <span className="text-base font-bold text-white group-hover:text-rose-300 transition-colors truncate">
+                    <span className="text-sm sm:text-base font-bold text-white group-hover:text-rose-300 transition-colors truncate max-w-[160px] xl:max-w-[180px]">
                       {match.heroLocalizedName}
                     </span>
                     <span
-                      className={`rounded px-1.5 py-0.2 text-[10px] font-mono font-bold uppercase border ${
+                      className={`shrink-0 rounded px-1.5 py-0.2 text-[10px] font-mono font-bold uppercase border ${
                         match.isWin
                           ? "bg-emerald-950/80 text-emerald-400 border-emerald-800/50"
                           : "bg-red-950/80 text-rose-400 border-rose-800/50"
@@ -150,9 +162,9 @@ export function MatchesTab({ matches }: MatchesTabProps) {
                   </div>
 
                   <div className="flex items-center gap-2 text-xs font-mono text-zinc-400 mt-0.5">
-                    <span className="text-zinc-300 font-medium">{match.gameModeName}</span>
-                    <span className="text-zinc-600">•</span>
-                    <span className={match.isRadiant ? "text-emerald-400" : "text-rose-400"}>
+                    <span className="text-zinc-300 font-medium truncate">{match.gameModeName}</span>
+                    <span className="text-zinc-600 shrink-0">•</span>
+                    <span className={`shrink-0 ${match.isRadiant ? "text-emerald-400" : "text-rose-400"}`}>
                       {match.isRadiant ? "Radiant" : "Dire"}
                     </span>
                   </div>
@@ -160,55 +172,55 @@ export function MatchesTab({ matches }: MatchesTabProps) {
               </div>
 
               {/* Center Metrics: KDA, GPM/XPM, Last Hits, Damage */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 lg:gap-6 bg-black/40 border border-white/[0.04] p-2.5 rounded-sm flex-1">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 xl:gap-6 bg-black/40 border border-white/[0.04] p-2.5 px-4 rounded-sm w-full">
                 {/* KDA */}
-                <div>
-                  <div className="flex items-center gap-1 text-[10px] font-mono text-zinc-500 uppercase">
-                    <Swords className="h-3 w-3 text-zinc-400" />
+                <div className="min-w-0">
+                  <div className="flex items-center gap-1 text-[10px] font-mono text-zinc-500 uppercase tracking-wider">
+                    <Swords className="h-3 w-3 text-zinc-400 shrink-0" />
                     <span>K / D / A</span>
                   </div>
-                  <div className="text-sm font-mono font-bold text-amber-400 mt-0.5">
+                  <div className="text-sm font-mono font-bold text-amber-400 mt-0.5 truncate whitespace-nowrap">
                     {match.kda}
                   </div>
                 </div>
 
                 {/* GPM / XPM */}
-                <div>
-                  <div className="flex items-center gap-1 text-[10px] font-mono text-zinc-500 uppercase">
-                    <Coins className="h-3 w-3 text-zinc-400" />
+                <div className="min-w-0">
+                  <div className="flex items-center gap-1 text-[10px] font-mono text-zinc-500 uppercase tracking-wider">
+                    <Coins className="h-3 w-3 text-zinc-400 shrink-0" />
                     <span>GPM / XPM</span>
                   </div>
-                  <div className="text-sm font-mono font-bold text-zinc-200 mt-0.5">
+                  <div className="text-sm font-mono font-bold text-zinc-200 mt-0.5 truncate whitespace-nowrap">
                     <span className="text-amber-300">{match.gpm}</span> /{" "}
                     <span className="text-blue-300">{match.xpm}</span>
                   </div>
                 </div>
 
                 {/* Duration */}
-                <div>
-                  <div className="flex items-center gap-1 text-[10px] font-mono text-zinc-500 uppercase">
-                    <Clock className="h-3 w-3 text-zinc-400" />
+                <div className="min-w-0">
+                  <div className="flex items-center gap-1 text-[10px] font-mono text-zinc-500 uppercase tracking-wider">
+                    <Clock className="h-3 w-3 text-zinc-400 shrink-0" />
                     <span>DURATION</span>
                   </div>
-                  <div className="text-sm font-mono font-bold text-zinc-200 mt-0.5">
+                  <div className="text-sm font-mono font-bold text-zinc-200 mt-0.5 truncate whitespace-nowrap">
                     {match.durationFormatted}
                   </div>
                 </div>
 
                 {/* Time Ago */}
-                <div>
-                  <div className="flex items-center gap-1 text-[10px] font-mono text-zinc-500 uppercase">
-                    <Zap className="h-3 w-3 text-zinc-400" />
+                <div className="min-w-0">
+                  <div className="flex items-center gap-1 text-[10px] font-mono text-zinc-500 uppercase tracking-wider">
+                    <Zap className="h-3 w-3 text-zinc-400 shrink-0" />
                     <span>PLAYED</span>
                   </div>
-                  <div className="text-sm font-mono font-bold text-zinc-400 mt-0.5">
+                  <div className="text-sm font-mono font-bold text-zinc-400 mt-0.5 truncate whitespace-nowrap">
                     {match.timeAgo}
                   </div>
                 </div>
               </div>
 
               {/* Right: Match ID and Action Link */}
-              <div className="flex lg:flex-col items-center lg:items-end justify-between gap-2.5 border-t lg:border-t-0 border-white/[0.04] pt-2 lg:pt-0 shrink-0 pointer-events-auto">
+              <div className="flex lg:flex-col items-center lg:items-end justify-between gap-2.5 w-full pointer-events-auto border-t lg:border-t-0 border-white/[0.04] pt-2 lg:pt-0 shrink-0">
                 <div className="flex items-center gap-1.5 text-xs font-mono text-zinc-400">
                   <span className="text-zinc-500 text-[11px]">ID:</span>
                   <span className="text-zinc-300 font-bold">{match.matchId}</span>
@@ -232,7 +244,7 @@ export function MatchesTab({ matches }: MatchesTabProps) {
 
                 <Link
                   href={`/match-data?id=${match.matchId}`}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xs text-xs font-mono font-bold text-rose-400 hover:text-white bg-white/[0.04] hover:bg-rose-600 transition-all uppercase"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xs text-xs font-mono font-bold text-rose-400 hover:text-white bg-white/[0.04] hover:bg-rose-600 transition-all uppercase whitespace-nowrap"
                 >
                   <span>Match Details</span>
                   <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />

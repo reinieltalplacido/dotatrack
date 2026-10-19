@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   } catch {
     return {
       title: `Tournament #${id} — DotaTrack Esports`,
-      description: `Dota 2 competitive tournament telemetry for event #${id}.`,
+      description: `Dota 2 competitive tournament details for event #${id}.`,
     };
   }
 }
@@ -81,7 +81,7 @@ export default async function TournamentDetailPage({ params }: PageProps) {
             </div>
 
             <h1 className="text-xl font-mono font-bold text-white mb-2">
-              Tournament Details Telemetry Error
+              Tournament Details Unavailable
             </h1>
 
             <p className="text-xs font-mono text-zinc-400 leading-relaxed mb-6">{message}</p>
@@ -92,7 +92,7 @@ export default async function TournamentDetailPage({ params }: PageProps) {
                 className="inline-flex items-center gap-2 rounded-sm bg-rose-600 px-4 py-2 text-xs font-mono font-bold text-white hover:bg-rose-500 transition-colors"
               >
                 <RefreshCw className="h-3.5 w-3.5" />
-                <span>RETRY QUERY</span>
+                <span>RETRY</span>
               </Link>
 
               <Link

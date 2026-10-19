@@ -6,7 +6,7 @@ export function AboutSection() {
       icon: <Target className="h-5 w-5 text-rose-500" />,
       tag: "COMPETITIVE_FOCUS",
       title: "Precision Matchmaking Insight",
-      desc: "Designed to provide ranked players with uncompromised telemetry on item timings, lane stage efficiency, and teamfight execution.",
+      desc: "Designed to provide ranked players with clear stats on item timings, lane stage efficiency, and teamfight execution.",
     },
     {
       icon: <Cpu className="h-5 w-5 text-rose-500" />,
@@ -36,7 +36,7 @@ export function AboutSection() {
             </h2>
             <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-sans">
               DotaTrack was conceived to eliminate clutter. Whether you are grinding ranked MMR, mastering Patch 7.37e
-              facets, or assessing lane trades, our mission is to deliver clean, actionable telemetry without marketing
+              facets, or assessing lane trades, our mission is to deliver clean, actionable stats without marketing
               gimmicks.
             </p>
             <div className="pt-2">

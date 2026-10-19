@@ -154,7 +154,7 @@ export function HeroStatsOverview({ metrics, onSelectHero }: HeroStatsOverviewPr
       <div className="tactical-panel corner-tick p-4 rounded-sm border border-white/[0.08] relative overflow-hidden flex flex-col justify-between">
         <div className="flex items-center justify-between mb-3">
           <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-400">
-            TELEMETRY // FEED
+            LIVE // STATS FEED
           </span>
           <div className="h-7 w-7 rounded bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-zinc-300">
             <Radio className="h-3.5 w-3.5 text-rose-500 animate-pulse" />

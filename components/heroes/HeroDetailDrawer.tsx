@@ -537,7 +537,7 @@ export function HeroDetailDrawer({
 
           {loadingDeepDive ? (
             <div className="py-6 text-center text-xs font-mono text-zinc-500">
-              Querying OpenDota item popularity telemetry...
+              Loading popular item builds...
             </div>
           ) : deepDive?.itemPopularity && deepDive.itemPopularity[activeItemTab]?.length > 0 ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -568,7 +568,7 @@ export function HeroDetailDrawer({
             </div>
           ) : (
             <div className="py-4 text-center text-xs font-mono text-zinc-500">
-              Item build telemetry currently unavailable from upstream for this phase.
+              Item build stats currently unavailable for this phase.
             </div>
           )}
         </div>

@@ -53,7 +53,7 @@ export function MatchupsTab({ data }: MatchupsTabProps) {
 
     fetch(`/api/players/${data.accountId}/matchups`)
       .then((res) => {
-        if (!res.ok) throw new Error("Could not load matchups telemetry");
+        if (!res.ok) throw new Error("Could not load matchups");
         return res.json();
       })
       .then((json) => {
@@ -153,10 +153,10 @@ export function MatchupsTab({ data }: MatchupsTabProps) {
       <div className="tactical-panel p-12 text-center rounded-sm border border-white/[0.08] flex flex-col items-center justify-center">
         <Loader2 className="h-8 w-8 text-rose-500 animate-spin mb-3" />
         <span className="text-xs font-mono font-bold text-white uppercase tracking-wider">
-          Compiling Hero Matchups & Synergy Matrix...
+          Loading Hero Matchups...
         </span>
         <span className="text-[11px] font-mono text-zinc-400 mt-1">
-          Parsing cross-hero win differentials from OpenDota records
+          Finding your best hero partners and counters...
         </span>
       </div>
     );
@@ -167,7 +167,7 @@ export function MatchupsTab({ data }: MatchupsTabProps) {
       <div className="tactical-panel p-8 text-center rounded-sm border border-red-800/60 bg-red-950/20">
         <ShieldAlert className="h-8 w-8 text-red-400 mx-auto mb-3" />
         <h3 className="text-sm font-mono font-bold text-white uppercase tracking-wider mb-1">
-          Telemetry Unavailable
+          Matchups Unavailable
         </h3>
         <p className="text-xs font-mono text-zinc-400 mb-4">{fallbackError}</p>
         <button
@@ -192,14 +192,14 @@ export function MatchupsTab({ data }: MatchupsTabProps) {
             <div className="flex items-center gap-2 mb-2">
               <span className="h-2 w-2 rounded-full bg-rose-500" />
               <span className="text-[11px] font-mono uppercase tracking-wider text-rose-400 font-bold">
-                COMPOSITION TELEMETRY
+                HERO MATCHUPS
               </span>
             </div>
             <h2 className="text-xl font-mono font-bold text-white uppercase tracking-tight">
-              Matchups &amp; Synergy Matrix
+              Hero Matchups &amp; Synergy
             </h2>
             <p className="text-xs font-sans text-zinc-300 mt-1.5 leading-relaxed">
-              Individual player win-rate delta when paired with specific allied heroes or drafting against enemy counters across all verified matchmaking records.
+              Win rates when playing with specific allied heroes or against enemy counters across all public matches.
             </p>
           </div>
 

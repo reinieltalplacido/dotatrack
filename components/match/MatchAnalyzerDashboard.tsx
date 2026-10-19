@@ -67,14 +67,14 @@ export function MatchAnalyzerDashboard({ initialMatch, initialError }: MatchAnal
       }
     } catch (err) {
       console.error("[MatchAnalyzer] Fetch failed:", err);
-      setError(err instanceof Error ? err.message : "Failed to load match telemetry");
+      setError(err instanceof Error ? err.message : "Failed to load match details");
     } finally {
       setIsLoading(false);
     }
   }, []);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative">
+    <div className="max-w-7xl 2xl:max-w-[1560px] 3xl:max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 relative">
       {/* Match Search Input */}
       <MatchSearchHeader
         currentMatchId={match?.matchId}

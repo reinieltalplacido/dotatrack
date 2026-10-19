@@ -37,7 +37,7 @@ export function PlayerHeader({ data, onOpenSearch }: PlayerHeaderProps) {
       {/* Background glow behind header */}
       <div className="absolute top-0 right-1/4 -z-10 h-48 w-96 rounded-full bg-rose-600/10 blur-3xl pointer-events-none" />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl 2xl:max-w-[1560px] 3xl:max-w-[1680px] px-4 sm:px-6 lg:px-8">
         {/* Top Action Bar */}
         <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
           <Link

@@ -21,7 +21,7 @@ export function PerformanceTab({ data }: PerformanceTabProps) {
           </h2>
         </div>
         <p className="text-xs font-mono text-zinc-400 leading-relaxed max-w-2xl">
-          Comparative analysis between recent match performance (last {recentSummary.sampleSize} games) and lifetime OpenDota aggregated baselines.
+          Compare your recent performance (last {recentSummary.sampleSize} games) with your lifetime averages.
         </p>
 
         {/* Comparison Table */}
@@ -205,7 +205,7 @@ export function PerformanceTab({ data }: PerformanceTabProps) {
       <div className="rounded-sm border border-white/[0.08] bg-[#0E1017] p-4 text-xs font-mono text-zinc-400 flex items-start gap-3">
         <Sparkles className="h-4 w-4 text-rose-500 shrink-0 mt-0.5" />
         <div>
-          <strong className="text-zinc-200 uppercase">Coming Soon: Deep Replay Telemetry </strong>
+          <strong className="text-zinc-200 uppercase">Coming Soon: Advanced Replay Stats </strong>
           <span>
             Upcoming releases will include ward map heatmaps, lane outcome win percentages, and net worth swing graphs directly parsed from Valve demo files.
           </span>

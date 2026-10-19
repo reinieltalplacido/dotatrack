@@ -79,7 +79,7 @@ export const RANK_BRACKET_DEFINITIONS: RankBracketDefinition[] = [
     numericId: 7,
     name: "Divine & Immortal",
     badge: "DIVINE / IMMORTAL",
-    description: "Rank 7 (4620+ MMR). OpenDota merges Divine & Immortal in Tier 7 telemetry.",
+    description: "Rank 7 (4620+ MMR). OpenDota merges Divine & Immortal in Tier 7 stats.",
     isAvailable: true,
   },
 ];
@@ -447,13 +447,13 @@ export async function getMetaTrendsData(bracket: MetaRankBracket = "all"): Promi
     averageWinRate: 50.0,
     averagePickRate: avgPickRate,
     lastUpdated: new Date().toISOString(),
-    source: isCached ? "Resilient Telemetry Snapshot" : "OpenDota Matchmaking Telemetry",
+    source: isCached ? "Saved Meta Snapshot" : "OpenDota Matchmaking Stats",
     isCached,
   };
 
   const deltaPeriodLabel = isSnapshotDeltaAvailable
     ? `Since snapshot from ${new Date(snapshotCollectionStartedAt).toLocaleDateString()}`
-    : "Based on OpenDota 7-interval telemetry sequence";
+    : "Based on recent OpenDota match data";
 
   return {
     overview,
