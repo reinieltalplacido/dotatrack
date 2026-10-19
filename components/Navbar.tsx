@@ -1,16 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { Search, Menu, X } from "lucide-react";
+import { SearchModal } from "@/components/SearchModal";
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchModalOpen, setSearchModalOpen] = useState(false);
   const pathname = usePathname();
 
-  const handleTrackPlayerClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  // Listen for Cmd+K / Ctrl+K keyboard shortcut
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setSearchModalOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  const handleTrackPlayerClick = (e: React.MouseEvent) => {
     setMobileMenuOpen(false);
     if (pathname === "/") {
       e.preventDefault();
@@ -22,6 +36,9 @@ export function Navbar() {
           input.focus();
         }
       }
+    } else {
+      e.preventDefault();
+      setSearchModalOpen(true);
     }
   };
 
@@ -90,14 +107,17 @@ export function Navbar() {
 
         {/* Right CTA */}
         <div className="hidden md:flex items-center gap-3">
-          <Link
-            href="/#search-section"
+          <button
+            type="button"
             onClick={handleTrackPlayerClick}
-            className="group relative inline-flex items-center gap-2 rounded-sm border border-rose-500/60 bg-rose-600 px-4 py-2 text-xs font-bold uppercase tracking-wider text-white shadow-md shadow-rose-950/50 transition-all hover:bg-rose-500 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-400"
+            className="group relative inline-flex items-center gap-2 rounded-sm border border-rose-500/60 bg-rose-600 px-4 py-2 text-xs font-bold uppercase tracking-wider text-white shadow-md shadow-rose-950/50 transition-all hover:bg-rose-500 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 cursor-pointer"
           >
             <Search className="h-3.5 w-3.5 text-rose-200 group-hover:text-white transition-colors" aria-hidden="true" />
             <span>Track Player</span>
-          </Link>
+            <kbd className="hidden lg:inline-flex items-center text-[9px] font-mono bg-black/30 border border-white/20 px-1 py-0.5 rounded text-rose-200 ml-1">
+              ⌘K
+            </kbd>
+          </button>
         </div>
 
         {/* Mobile menu button */}
@@ -139,17 +159,23 @@ export function Navbar() {
             );
           })}
           <div className="pt-2">
-            <Link
-              href="/#search-section"
+            <button
+              type="button"
               onClick={handleTrackPlayerClick}
-              className="flex w-full items-center justify-center gap-2 rounded bg-rose-600 px-4 py-2.5 text-center text-xs font-bold uppercase tracking-wider text-white shadow-md hover:bg-rose-500"
+              className="flex w-full items-center justify-center gap-2 rounded bg-rose-600 px-4 py-2.5 text-center text-xs font-bold uppercase tracking-wider text-white shadow-md hover:bg-rose-500 cursor-pointer"
             >
               <Search className="h-3.5 w-3.5" aria-hidden="true" />
               <span>Track Player</span>
-            </Link>
+            </button>
           </div>
         </div>
       )}
+
+      {/* Supabase-style Search and Command Palette Modal */}
+      <SearchModal
+        isOpen={searchModalOpen}
+        onClose={() => setSearchModalOpen(false)}
+      />
     </header>
   );
 }

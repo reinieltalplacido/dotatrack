@@ -210,7 +210,7 @@ export function SteamIdSearch({ onSearchSubmit, autoNavigate = true }: SteamIdSe
           <div className="relative flex flex-col sm:flex-row items-stretch sm:items-center rounded-sm border border-white/[0.12] bg-[#0E1017] p-1.5 shadow-2xl transition-all focus-within:border-rose-500 focus-within:ring-1 focus-within:ring-rose-500/50">
             {/* Input Prefix Indicator */}
             <div className="relative flex-1 flex items-center min-h-[48px] px-3">
-              <span className="font-mono text-xs text-rose-500 font-bold select-none mr-2">ID &gt;</span>
+              <span className="font-mono text-xs text-rose-500 font-bold select-none mr-2 shrink-0">&gt;</span>
               <input
                 id="steam-id-input"
                 type="text"
@@ -220,7 +220,7 @@ export function SteamIdSearch({ onSearchSubmit, autoNavigate = true }: SteamIdSe
                   if (errorMessage) setErrorMessage(null);
                 }}
                 disabled={isLoading}
-                placeholder="Enter Steam Account ID or Profile URL..."
+                placeholder="e.g. 70388657 or Steam profile URL..."
                 className="w-full bg-transparent text-sm sm:text-base font-mono text-white placeholder-zinc-500 focus:outline-none disabled:opacity-50"
                 aria-describedby="search-hint search-error"
                 autoComplete="off"
@@ -240,7 +240,7 @@ export function SteamIdSearch({ onSearchSubmit, autoNavigate = true }: SteamIdSe
                 </>
               ) : (
                 <>
-                  <span>TRACK PLAYER</span>
+                  <span>TRACK</span>
                   <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
                 </>
               )}
@@ -250,7 +250,7 @@ export function SteamIdSearch({ onSearchSubmit, autoNavigate = true }: SteamIdSe
 
         {/* Input Format Hint */}
         <p id="search-hint" className="text-[12px] text-zinc-400 text-left px-1">
-          Enter your 32-bit Dota 2 Account ID (e.g. <span className="font-mono text-zinc-300">70388657</span>), 64-bit Steam ID, or Steam profile URL.
+          Supports 32-bit Dota 2 ID, 64-bit Steam ID, or custom Steam profile URL.
         </p>
 
         {/* Error Notification */}
