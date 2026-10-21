@@ -100,14 +100,6 @@ export function SteamIdSearch({ onSearchSubmit, autoNavigate = true }: SteamIdSe
     }
   };
 
-  // Quick Top Pro Player Presets for Instant 1-Click Search
-  const quickPresets = [
-    { name: "Yatoro", id: "321580662", team: "Spirit", role: "Carry" },
-    { name: "Nisha", id: "201358612", team: "Liquid", role: "Mid" },
-    { name: "Pure~", id: "331855530", team: "BB", role: "Carry" },
-    { name: "No[o]ne-", id: "106573901", team: "Vision", role: "Mid" },
-    { name: "Ceb", id: "88271237", team: "OG", role: "Offlane" },
-  ];
 
   const handleSearch = async (e?: React.FormEvent, directId?: string) => {
     if (e) e.preventDefault();
@@ -328,42 +320,27 @@ export function SteamIdSearch({ onSearchSubmit, autoNavigate = true }: SteamIdSe
           </div>
         )}
 
-        {/* Quick Test Pro Player Presets & Modal Trigger */}
-        <div className="mt-2.5 flex flex-wrap items-center justify-between gap-2 pt-2.5 border-t border-white/[0.06]">
-          <div className="flex flex-wrap items-center gap-1.5">
-            <span className="text-[11px] font-mono text-zinc-400 uppercase tracking-wider mr-1 flex items-center gap-1">
-              <Trophy className="w-3 h-3 text-rose-500" />
-              Pro Presets:
-            </span>
-            {quickPresets.map((pro) => (
-              <button
-                key={pro.id}
-                type="button"
-                disabled={isLoading}
-                onClick={() => handleSelectPreset(pro.id)}
-                title={`Inspect ${pro.name} (${pro.role})`}
-                className="inline-flex items-center gap-1.5 rounded-sm border border-white/[0.08] bg-zinc-900/80 px-2 py-0.5 text-[11px] font-mono text-zinc-300 hover:border-rose-500/50 hover:bg-zinc-800 hover:text-white transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-              >
-                <span className="font-bold text-white">{pro.name}</span>
-                <span className="text-[10px] text-zinc-400">[{pro.team}]</span>
-              </button>
-            ))}
-          </div>
+        {/* Pro Profiles Modal Trigger */}
+        <div className="mt-2.5 flex flex-wrap items-center gap-2 pt-2.5 border-t border-white/[0.06]">
+          <span className="text-[11px] font-mono text-zinc-400 uppercase tracking-wider flex items-center gap-1.5 shrink-0">
+            <Trophy className="w-3.5 h-3.5 text-rose-500" />
+            <span>Pro Profiles:</span>
+          </span>
 
           <button
             type="button"
             disabled={isLoading}
             onClick={() => setProModalOpen(true)}
-            className="inline-flex items-center gap-1.5 rounded-sm border border-rose-500/30 bg-rose-950/40 hover:bg-rose-900/50 px-2.5 py-1 text-[11px] font-mono font-semibold text-rose-300 hover:text-white hover:border-rose-500/60 transition-all cursor-pointer shadow-xs active:scale-95"
+            className="inline-flex items-center gap-1.5 rounded-sm border border-rose-500/30 bg-rose-950/40 hover:bg-rose-900/50 px-2.5 py-1 text-[11px] font-mono font-semibold text-rose-300 hover:text-white hover:border-rose-500/60 transition-all cursor-pointer shadow-xs active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Sparkles className="w-3 h-3 text-rose-400" />
-            <span>Browse Pro Rosters (50+)</span>
+            <span>Browse Pro Profiles (50+)</span>
             <ChevronRight className="w-3 h-3 text-rose-400" />
           </button>
         </div>
       </form>
 
-      {/* Full Pro Players & Teams Modal */}
+      {/* Full Pro Players Modal */}
       <ProPresetsModal
         isOpen={proModalOpen}
         onClose={() => setProModalOpen(false)}

@@ -1,12 +1,14 @@
 export interface ProPresetPlayer {
   id: string;
   name: string;
-  team: string;
-  teamTag: string;
+  team?: string;
+  teamTag?: string;
   role: "Carry" | "Midlane" | "Offlane" | "Support" | "Hard Support";
   pos: 1 | 2 | 3 | 4 | 5;
   country?: string;
   badgeColor?: string;
+  avatar?: string;
+  personaname?: string;
 }
 
 export interface ProTeamGroup {
@@ -144,4 +146,7 @@ export const PRO_TEAMS: ProTeamGroup[] = [
   },
 ];
 
-export const ALL_PRO_PRESETS: ProPresetPlayer[] = PRO_TEAMS.flatMap((t) => t.players);
+const rawPresets: ProPresetPlayer[] = PRO_TEAMS.flatMap((t) => t.players);
+export const ALL_PRO_PRESETS: ProPresetPlayer[] = Array.from(
+  new Map(rawPresets.map((p) => [p.id, p])).values()
+);
