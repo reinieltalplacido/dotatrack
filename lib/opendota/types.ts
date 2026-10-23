@@ -242,6 +242,8 @@ export interface PlayerDashboardData {
   } | null;
 
   recentMatches: EnrichedRecentMatch[];
+  matchHistory?: PlayerMatchHistoryItem[];
+  dailyActivity?: Record<string, DailyMatchActivity>;
   topHeroes: EnrichedHeroStat[];
   allHeroes: EnrichedHeroStat[];
   matchups?: {
@@ -253,6 +255,33 @@ export interface PlayerDashboardData {
   isPartial: boolean;
   warningMessage?: string;
   fetchedAt: string;
+}
+
+export interface PlayerMatchHistoryItem {
+  matchId: number;
+  heroId: number;
+  heroName: string;
+  heroLocalizedName: string;
+  heroImageUrl: string;
+  isRadiant: boolean;
+  isWin: boolean;
+  kills: number;
+  deaths: number;
+  assists: number;
+  kda: string;
+  durationSeconds: number;
+  durationFormatted: string;
+  startTime: number;
+  dateStr: string; // "YYYY-MM-DD"
+}
+
+export interface DailyMatchActivity {
+  date: string; // "YYYY-MM-DD"
+  wins: number;
+  losses: number;
+  total: number;
+  winRate: number;
+  matches: PlayerMatchHistoryItem[];
 }
 
 export interface ApiErrorResponse {

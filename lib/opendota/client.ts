@@ -10,6 +10,8 @@ import {
   PlayerHeroMatchup,
   OpenDotaPeer,
   EnrichedTeammate,
+  PlayerMatchHistoryItem,
+  DailyMatchActivity,
 } from "./types";
 import { getHeroById, formatGameMode, formatLobbyType, formatDuration, formatTimeAgo } from "./heroes";
 import { formatRank } from "./rank";
@@ -106,11 +108,12 @@ export async function fetchOpenDotaPlayerData(accountId: string | number): Promi
   }
 
   // 2. Concurrently fetch optional statistical endpoints
-  const [wlResult, matchesResult, heroesResult, totalsResult] = await Promise.allSettled([
+  const [wlResult, matchesResult, heroesResult, totalsResult, historyResult] = await Promise.allSettled([
     fetchWithTimeout<OpenDotaWinLoss>(`/players/${numericId}/wl`),
     fetchWithTimeout<OpenDotaRecentMatch[]>(`/players/${numericId}/recentMatches`),
     fetchWithTimeout<OpenDotaPlayerHero[]>(`/players/${numericId}/heroes`),
     fetchWithTimeout<OpenDotaTotal[]>(`/players/${numericId}/totals`),
+    fetchWithTimeout<any[]>(`/players/${numericId}/matches?limit=100`),
   ]);
 
   let isPartial = false;
@@ -267,6 +270,68 @@ export async function fetchOpenDotaPlayerData(accountId: string | number): Promi
     }
   }
 
+  // 5b. Process Match History and Daily Activity (up to 100 historical matches)
+  const rawHistoryList: any[] =
+    historyResult.status === "fulfilled" && Array.isArray(historyResult.value) && historyResult.value.length > 0
+      ? historyResult.value
+      : rawMatches;
+
+  const matchHistoryItems: PlayerMatchHistoryItem[] = rawHistoryList.map((m: any) => {
+    const isRadiant = m.player_slot < 128;
+    const isWin = isRadiant ? Boolean(m.radiant_win) : !m.radiant_win;
+    const hero = getHeroById(m.hero_id);
+    const d = new Date(m.start_time * 1000);
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, "0");
+    const dd = String(d.getDate()).padStart(2, "0");
+    const dateStr = `${yyyy}-${mm}-${dd}`;
+
+    return {
+      matchId: m.match_id,
+      heroId: m.hero_id,
+      heroName: hero.name,
+      heroLocalizedName: hero.localized_name,
+      heroImageUrl: hero.img,
+      isRadiant,
+      isWin,
+      kills: m.kills ?? 0,
+      deaths: m.deaths ?? 0,
+      assists: m.assists ?? 0,
+      kda: `${m.kills ?? 0} / ${m.deaths ?? 0} / ${m.assists ?? 0}`,
+      durationSeconds: m.duration ?? 0,
+      durationFormatted: formatDuration(m.duration ?? 0),
+      startTime: m.start_time,
+      dateStr,
+    };
+  });
+
+  const dailyActivity: Record<string, DailyMatchActivity> = {};
+  for (const m of matchHistoryItems) {
+    if (!dailyActivity[m.dateStr]) {
+      dailyActivity[m.dateStr] = {
+        date: m.dateStr,
+        wins: 0,
+        losses: 0,
+        total: 0,
+        winRate: 0,
+        matches: [],
+      };
+    }
+    const day = dailyActivity[m.dateStr];
+    day.total += 1;
+    if (m.isWin) {
+      day.wins += 1;
+    } else {
+      day.losses += 1;
+    }
+    day.matches.push(m);
+  }
+
+  for (const key of Object.keys(dailyActivity)) {
+    const day = dailyActivity[key];
+    day.winRate = day.total > 0 ? Number(((day.wins / day.total) * 100).toFixed(1)) : 0;
+  }
+
   // 6. Process Heroes
   const enrichedHeroes: EnrichedHeroStat[] = rawHeroes
     .filter((h) => h.games > 0)
@@ -415,6 +480,8 @@ export async function fetchOpenDotaPlayerData(accountId: string | number): Promi
     },
     lifetimeTotals: lifetimeTotalsSummary,
     recentMatches: enrichedMatches,
+    matchHistory: matchHistoryItems,
+    dailyActivity,
     topHeroes,
     allHeroes: enrichedHeroes,
     matchups: {

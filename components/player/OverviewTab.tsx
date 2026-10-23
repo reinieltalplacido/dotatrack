@@ -14,6 +14,7 @@ import {
   ShieldAlert,
 } from "lucide-react";
 import { PlayerDashboardData } from "@/lib/opendota/types";
+import { MatchCalendar } from "./MatchCalendar";
 
 interface OverviewTabProps {
   data: PlayerDashboardData;
@@ -307,6 +308,12 @@ export function OverviewTab({
         </div>
       </div>
 
+      {/* Match Activity Calendar (Daily Win/Loss History) */}
+      <MatchCalendar
+        dailyActivity={data.dailyActivity}
+        matchHistory={data.matchHistory}
+      />
+
       {/* Most Played Heroes Section */}
       <div className="tactical-panel p-5 rounded-sm border border-white/[0.08]">
         <div className="flex items-center justify-between border-b border-white/[0.08] pb-3 mb-4">
@@ -379,14 +386,24 @@ export function OverviewTab({
                     <span>{hero.loss}L</span>
                   </div>
 
-                  {/* Visual Win-rate mini progress */}
-                  <div className="mt-1 h-1.5 w-full bg-zinc-800 rounded-full overflow-hidden">
-                    <div
-                      className={`h-full ${
-                        hero.winRate >= 50 ? "bg-emerald-500" : "bg-rose-500"
-                      }`}
-                      style={{ width: `${Math.min(100, Math.max(0, hero.winRate))}%` }}
-                    />
+                  {/* Visual Win-rate mini progress (Green for Wins, Red for Losses) */}
+                  <div className="mt-1 h-1.5 w-full bg-zinc-800 rounded-full overflow-hidden flex">
+                    {hero.games > 0 ? (
+                      <>
+                        <div
+                          className="h-full bg-emerald-500 transition-all duration-300"
+                          style={{ width: `${Math.min(100, Math.max(0, hero.winRate))}%` }}
+                          title={`${hero.winRate}% Win`}
+                        />
+                        <div
+                          className="h-full bg-rose-500 transition-all duration-300"
+                          style={{ width: `${Math.max(0, 100 - hero.winRate)}%` }}
+                          title={`${(100 - hero.winRate).toFixed(1)}% Loss`}
+                        />
+                      </>
+                    ) : (
+                      <div className="h-full w-full bg-zinc-800" />
+                    )}
                   </div>
                 </div>
               </div>

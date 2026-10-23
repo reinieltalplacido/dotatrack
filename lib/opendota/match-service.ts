@@ -51,22 +51,192 @@ export function resolveItemById(itemId?: number | null): MatchPlayerItem | null 
   };
 }
 
+// Reverse map item slug (extracted from image URL) to item metadata
+const itemSlugMap: Record<string, ItemSnapshotEntry> = {};
+for (const entry of Object.values(itemsDict)) {
+  if (entry.img) {
+    const match = entry.img.match(/\/items\/([^\/\?]+)\.png/);
+    if (match) {
+      itemSlugMap[match[1].toLowerCase()] = entry;
+    }
+  }
+}
+
+// Well-known Valve internal item code aliases and fallback mappings
+const ITEM_ALIASES: Record<string, string> = {
+  cyclone: "Eul's Scepter of Divinity",
+  sheepstick: "Scythe of Vyse",
+  sphere: "Linken's Sphere",
+  greater_crit: "Daedalus",
+  lesser_crit: "Crystalys",
+  invis_sword: "Shadow Blade",
+  cuirass: "Assault Cuirass",
+  assault: "Assault Cuirass",
+  heart: "Heart of Tarrasque",
+  skadi: "Eye of Skadi",
+  bfury: "Battle Fury",
+  ancient_janggo: "Drum of Endurance",
+  vladmir: "Vladmir's Offering",
+  ultimate_scepter: "Aghanim's Scepter",
+  travel_boots: "Boots of Travel",
+  travel_boots_2: "Boots of Travel 2",
+  pers: "Perseverance",
+  flask: "Healing Salve",
+  tpscroll: "Town Portal Scroll",
+  ward_observer: "Observer Ward",
+  ward_sentry: "Sentry Ward",
+  ward_dispenser: "Dispenser (Sentry & Observer)",
+  branches: "Iron Branch",
+  gauntlets: "Gauntlets of Strength",
+  slippers: "Slippers of Agility",
+  mantle: "Mantle of Intelligence",
+  robe: "Robe of the Magi",
+  gloves: "Gloves of Haste",
+  boots: "Boots of Speed",
+  blink: "Blink Dagger",
+  magic_stick: "Magic Stick",
+  magic_wand: "Magic Wand",
+  clarity: "Clarity",
+  smoke_of_deceit: "Smoke of Deceit",
+  dust: "Dust of Appearance",
+  gem: "Gem of True Sight",
+  tango: "Tango",
+  tango_single: "Tango (Shared)",
+  headdress: "Headdress",
+  urn_of_shadows: "Urn of Shadows",
+  tranquil_boots: "Tranquil Boots",
+  phase_boots: "Phase Boots",
+  power_treads: "Power Treads",
+  arcane_boots: "Arcane Boots",
+  ring_of_basilius: "Ring of Basilius",
+  buckler: "Buckler",
+  medallion_of_courage: "Medallion of Courage",
+  solar_crest: "Solar Crest",
+  spirit_vessel: "Spirit Vessel",
+  pipe: "Pipe of Insight",
+  hood_of_defiance: "Hood of Defiance",
+  glimmer_cape: "Glimmer Cape",
+  force_staff: "Force Staff",
+  hurricane_pike: "Hurricane Pike",
+  aether_lens: "Aether Lens",
+  witch_blade: "Witch Blade",
+  heavy_blade: "Witch Blade",
+  phylactery: "Phylactery",
+  harpoon: "Harpoon",
+  disperser: "Disperser",
+  parasma: "Parasma",
+  khanda: "Khanda",
+  revenants_brooch: "Revenant's Brooch",
+  gungir: "Gleipnir",
+  veil_of_discord: "Veil of Discord",
+  diffusal_blade: "Diffusal Blade",
+  diffusal_blade_2: "Diffusal Blade Level 2",
+  dagon: "Dagon",
+  dagon_2: "Dagon Level 2",
+  dagon_3: "Dagon Level 3",
+  dagon_4: "Dagon Level 4",
+  dagon_5: "Dagon Level 5",
+  necronomicon: "Necronomicon",
+  necronomicon_2: "Necronomicon Level 2",
+  necronomicon_3: "Necronomicon Level 3",
+  manta: "Manta Style",
+  sange: "Sange",
+  yasha: "Yasha",
+  kaya: "Kaya",
+  sange_and_yasha: "Sange and Yasha",
+  yasha_and_kaya: "Yasha and Kaya",
+  kaya_and_sange: "Kaya and Sange",
+  black_king_bar: "Black King Bar",
+  bkb: "Black King Bar",
+  lotus_orb: "Lotus Orb",
+  aeon_disk: "Aeon Disk",
+  shivas_guard: "Shiva's Guard",
+  bloodstone: "Bloodstone",
+  refresher: "Refresher Orb",
+  satanic: "Satanic",
+  silver_edge: "Silver Edge",
+  monkey_king_bar: "Monkey King Bar",
+  mkb: "Monkey King Bar",
+  radiance: "Radiance",
+  butterfly: "Butterfly",
+  rapier: "Divine Rapier",
+  abyssal_blade: "Abyssal Blade",
+  basher: "Skull Basher",
+  armlet: "Armlet of Mordiggian",
+  desolator: "Desolator",
+  mjollnir: "Mjollnir",
+  maelstrom: "Maelstrom",
+  assault_cuirass: "Assault Cuirass",
+  nullifier: "Nullifier",
+  octarine_core: "Octarine Core",
+  overwhelming_blink: "Overwhelming Blink",
+  swift_blink: "Swift Blink",
+  arcane_blink: "Arcane Blink",
+  wind_waker: "Wind Waker",
+  boots_of_bearing: "Boots of Bearing",
+  holy_locket: "Holy Locket",
+  guardian_greaves: "Guardian Greaves",
+  ethereal_blade: "Ethereal Blade",
+  moon_shard: "Moon Shard",
+  soul_booster: "Soul Booster",
+  blood_grenade: "Blood Grenade",
+  consecrated_wraps: "Consecrated Wraps",
+  shawl: "Nether Shawl",
+};
+
 /**
- * Resolves item slug (e.g. "blink", "magic_wand") from purchase_log to readable item.
+ * Resolves item slug (e.g. "cyclone", "blink", "magic_wand") from purchase_log to real Dota 2 name and asset.
  */
 export function resolveItemBySlug(slug: string, cost?: number): { name: string; img: string } {
-  const formattedName = slug
-    .replace(/^item_/, "")
+  if (!slug) {
+    return {
+      name: "Unknown Item",
+      img: `${STEAM_CDN_BASE}/apps/dota2/images/dota_react/items/recipe.png`,
+    };
+  }
+
+  const cleanSlug = slug.toLowerCase().replace(/^item_/, "");
+
+  // Handle recipe purchases (e.g. "recipe_cyclone", "recipe_force_staff")
+  if (cleanSlug.startsWith("recipe_") || cleanSlug.startsWith("recipe")) {
+    const baseSlug = cleanSlug.replace(/^recipe_?/, "");
+    const baseItem = resolveItemBySlug(baseSlug);
+    return {
+      name: `Recipe: ${baseItem.name}`,
+      img: `${STEAM_CDN_BASE}/apps/dota2/images/dota_react/items/recipe.png`,
+    };
+  }
+
+  // 1. Check exact match in itemsSnapshot via reverse slug index
+  const snapshotMatch = itemSlugMap[cleanSlug];
+  if (snapshotMatch) {
+    const cleanImg = snapshotMatch.img.startsWith("http")
+      ? snapshotMatch.img
+      : `${STEAM_CDN_BASE}${snapshotMatch.img.startsWith("/") ? "" : "/"}${snapshotMatch.img.split("?")[0]}`;
+
+    return {
+      name: snapshotMatch.name,
+      img: cleanImg,
+    };
+  }
+
+  // 2. Check explicit known aliases
+  if (ITEM_ALIASES[cleanSlug]) {
+    return {
+      name: ITEM_ALIASES[cleanSlug],
+      img: `${STEAM_CDN_BASE}/apps/dota2/images/dota_react/items/${cleanSlug}.png`,
+    };
+  }
+
+  // 3. Fallback: nicely format the slug title case (e.g. "void_stone" -> "Void Stone")
+  const formattedName = cleanSlug
     .split("_")
     .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
     .join(" ");
 
-  const cleanSlug = slug.replace(/^item_/, "");
-  const img = `${STEAM_CDN_BASE}/apps/dota2/images/dota_react/items/${cleanSlug}.png`;
-
   return {
     name: formattedName,
-    img,
+    img: `${STEAM_CDN_BASE}/apps/dota2/images/dota_react/items/${cleanSlug}.png`,
   };
 }
 

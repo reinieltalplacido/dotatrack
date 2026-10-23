@@ -190,11 +190,15 @@ export function PlayerHeader({ data, onOpenSearch }: PlayerHeaderProps) {
               <div className={`text-lg font-mono font-black mt-0.5 ${winRate >= 50 ? "text-emerald-400" : "text-rose-400"}`}>
                 {winRate}%
               </div>
-              {/* Mini visual win-rate meter */}
-              <div className="mt-1 h-1.5 w-full bg-zinc-800 rounded-full overflow-hidden">
+              {/* Mini visual win-rate meter (Green for Wins, Red for Losses) */}
+              <div className="mt-1 h-1.5 w-full bg-zinc-800 rounded-full overflow-hidden flex">
                 <div
-                  className={`h-full ${winRate >= 50 ? "bg-emerald-500" : "bg-rose-500"}`}
+                  className="h-full bg-emerald-500 transition-all duration-300"
                   style={{ width: `${Math.min(100, Math.max(0, winRate))}%` }}
+                />
+                <div
+                  className="h-full bg-rose-500 transition-all duration-300"
+                  style={{ width: `${Math.max(0, 100 - winRate)}%` }}
                 />
               </div>
             </div>

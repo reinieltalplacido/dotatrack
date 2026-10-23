@@ -222,15 +222,25 @@ export function HeroesTab({ heroes }: HeroesTabProps) {
                 </div>
               </div>
 
-              {/* Visual Win-rate progress bar */}
+              {/* Visual Win-rate progress bar (Green for Wins, Red for Losses) */}
               <div className="mt-3 pt-2 border-t border-white/[0.04]">
-                <div className="h-1.5 w-full bg-zinc-800 rounded-full overflow-hidden">
-                  <div
-                    className={`h-full ${
-                      hero.winRate >= 50 ? "bg-emerald-500" : "bg-rose-500"
-                    }`}
-                    style={{ width: `${Math.min(100, Math.max(0, hero.winRate))}%` }}
-                  />
+                <div className="h-1.5 w-full bg-zinc-800 rounded-full overflow-hidden flex">
+                  {hero.games > 0 ? (
+                    <>
+                      <div
+                        className="h-full bg-emerald-500 transition-all duration-300"
+                        style={{ width: `${Math.min(100, Math.max(0, hero.winRate))}%` }}
+                        title={`${hero.winRate}% Win`}
+                      />
+                      <div
+                        className="h-full bg-rose-500 transition-all duration-300"
+                        style={{ width: `${Math.max(0, 100 - hero.winRate)}%` }}
+                        title={`${(100 - hero.winRate).toFixed(1)}% Loss`}
+                      />
+                    </>
+                  ) : (
+                    <div className="h-full w-full bg-zinc-800" />
+                  )}
                 </div>
               </div>
             </div>
