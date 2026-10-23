@@ -12,7 +12,6 @@ export function Navbar() {
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const pathname = usePathname();
 
-  // Listen for Cmd+K / Ctrl+K keyboard shortcut
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
@@ -43,61 +42,59 @@ export function Navbar() {
   };
 
   const navLinks = [
-    { label: "Hero", href: "/heroes" },
+    { label: "Heroes", href: "/heroes" },
     { label: "Tournaments", href: "/tournaments" },
-    { label: "Meta Trends", href: "/meta-trends" },
-    { label: "Match Data", href: "/match-data" },
+    { label: "Meta trends", href: "/meta-trends" },
+    { label: "Match data", href: "/match-data" },
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/[0.08] bg-[#08090C]/90 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        {/* Left: Brand Identity with Dota 2 Ancient Emblem */}
-        <div className="flex items-center gap-6">
-          <Link
-            href="/"
-            className="flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 rounded"
-            aria-label="DotaTrack - Esports Analytics"
+    <header
+      className="sticky top-0 z-50 w-full backdrop-blur-md"
+      style={{
+        borderBottom: "1px solid var(--lp-border)",
+        backgroundColor: "rgba(12, 13, 18, 0.9)",
+      }}
+    >
+      <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        {/* Brand */}
+        <Link
+          href="/"
+          className="flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20 rounded"
+          aria-label="DotaTrack home"
+        >
+          <div className="relative flex h-6 w-6 items-center justify-center overflow-hidden rounded-sm">
+            <Image
+              src="/dotatrack.png"
+              alt="DotaTrack Logo"
+              width={24}
+              height={24}
+              className="h-full w-full object-cover"
+              priority
+            />
+          </div>
+          <span
+            className="text-sm font-semibold tracking-tight"
+            style={{ color: "var(--lp-fg-strong)" }}
           >
-            {/* DotaTrack Brand Logo */}
-            <div className="relative flex h-8 w-8 items-center justify-center rounded-sm bg-[#12080C] border border-rose-800/40 p-[1px] shadow-sm shadow-rose-950/60 overflow-hidden">
-              <Image
-                src="/dotatrack.png"
-                alt="DotaTrack Logo"
-                width={32}
-                height={32}
-                className="h-full w-full object-cover transition-transform group-hover:scale-105"
-                priority
-              />
-            </div>
+            DotaTrack
+          </span>
+        </Link>
 
-            <div className="flex flex-col">
-              <div className="flex items-center gap-1.5">
-                <span className="text-base font-extrabold tracking-tight text-white font-mono">
-                  DOTA<span className="text-rose-500">TRACK</span>
-                </span>
-                <span className="hidden sm:inline-block rounded-[3px] bg-white/[0.06] border border-white/[0.08] px-1.5 py-0.2 text-[9px] font-mono uppercase tracking-wider text-zinc-400">
-                  v7.37e
-                </span>
-              </div>
-            </div>
-          </Link>
-
-        </div>
-
-        {/* Center: Desktop Navigation Links pointing to their respective pages */}
-        <nav className="hidden md:flex items-center gap-7 text-xs font-semibold uppercase tracking-wider" aria-label="Main Navigation">
+        {/* Desktop nav */}
+        <nav className="hidden md:flex items-center gap-6 text-sm" aria-label="Main Navigation">
           {navLinks.map((link) => {
             const isActive = pathname === link.href || (link.href === "/heroes" && pathname === "/hero");
             return (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`py-1 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-rose-500 rounded ${
-                  isActive
-                    ? "text-rose-400 font-bold border-b border-rose-500 pb-0.5"
-                    : "text-zinc-300 hover:text-white"
-                }`}
+                className="py-1 transition-opacity focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/20 rounded"
+                style={{
+                  color: isActive ? "var(--lp-fg-strong)" : "var(--lp-fg)",
+                  opacity: isActive ? 1 : 0.6,
+                  fontWeight: isActive ? 600 : 400,
+                }}
               >
                 {link.label}
               </Link>
@@ -105,16 +102,21 @@ export function Navbar() {
           })}
         </nav>
 
-        {/* Right CTA */}
-        <div className="hidden md:flex items-center gap-3">
+        {/* Search trigger */}
+        <div className="hidden md:flex items-center">
           <button
             type="button"
             onClick={handleTrackPlayerClick}
-            className="group relative inline-flex items-center gap-2 rounded-sm border border-rose-500/60 bg-rose-600 px-4 py-2 text-xs font-bold uppercase tracking-wider text-white shadow-md shadow-rose-950/50 transition-all hover:bg-rose-500 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 cursor-pointer"
+            className="inline-flex items-center gap-2 rounded px-3 py-1.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 cursor-pointer"
+            style={{
+              backgroundColor: "rgba(212, 54, 75, 0.12)",
+              border: "1px solid rgba(212, 54, 75, 0.25)",
+              color: "var(--lp-fg-strong)",
+            }}
           >
-            <Search className="h-3.5 w-3.5 text-rose-200 group-hover:text-white transition-colors" aria-hidden="true" />
-            <span>Track Player</span>
-            <kbd className="hidden lg:inline-flex items-center text-[9px] font-mono bg-black/30 border border-white/20 px-1 py-0.5 rounded text-rose-200 ml-1">
+            <Search className="h-3.5 w-3.5 opacity-60" aria-hidden="true" />
+            <span>Track player</span>
+            <kbd className="hidden lg:inline-flex items-center text-[10px] bg-black/30 border border-white/10 px-1 py-0.5 rounded opacity-50 ml-1">
               ⌘K
             </kbd>
           </button>
@@ -125,22 +127,29 @@ export function Navbar() {
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="inline-flex items-center justify-center rounded p-2 text-zinc-400 hover:bg-zinc-800 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
+            className="inline-flex items-center justify-center rounded p-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20"
+            style={{ color: "var(--lp-fg)" }}
             aria-expanded={mobileMenuOpen}
             aria-label="Toggle navigation menu"
           >
             {mobileMenuOpen ? (
-              <X className="h-5 w-5 text-white" aria-hidden="true" />
+              <X className="h-5 w-5" aria-hidden="true" />
             ) : (
-              <Menu className="h-5 w-5 text-zinc-300" aria-hidden="true" />
+              <Menu className="h-5 w-5" aria-hidden="true" />
             )}
           </button>
         </div>
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Mobile drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-b border-white/[0.08] bg-[#0D0E15] px-4 pt-3 pb-5 space-y-3">
+        <div
+          className="md:hidden px-4 pt-3 pb-5 space-y-2"
+          style={{
+            borderBottom: "1px solid var(--lp-border)",
+            backgroundColor: "var(--lp-bg)",
+          }}
+        >
           {navLinks.map((link) => {
             const isActive = pathname === link.href || (link.href === "/heroes" && pathname === "/hero");
             return (
@@ -148,11 +157,13 @@ export function Navbar() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`block rounded px-3 py-2 text-sm font-semibold transition-colors ${
-                  isActive
-                    ? "bg-rose-950/60 text-rose-400 font-bold border border-rose-800/40"
-                    : "text-zinc-300 hover:bg-white/[0.05] hover:text-white"
-                }`}
+                className="block rounded px-3 py-2 text-sm transition-opacity"
+                style={{
+                  color: isActive ? "var(--lp-fg-strong)" : "var(--lp-fg)",
+                  opacity: isActive ? 1 : 0.6,
+                  fontWeight: isActive ? 600 : 400,
+                  backgroundColor: isActive ? "rgba(255,255,255,0.04)" : "transparent",
+                }}
               >
                 {link.label}
               </Link>
@@ -162,16 +173,16 @@ export function Navbar() {
             <button
               type="button"
               onClick={handleTrackPlayerClick}
-              className="flex w-full items-center justify-center gap-2 rounded bg-rose-600 px-4 py-2.5 text-center text-xs font-bold uppercase tracking-wider text-white shadow-md hover:bg-rose-500 cursor-pointer"
+              className="flex w-full items-center justify-center gap-2 rounded px-4 py-2.5 text-sm font-medium text-white cursor-pointer"
+              style={{ backgroundColor: "var(--lp-accent)" }}
             >
               <Search className="h-3.5 w-3.5" aria-hidden="true" />
-              <span>Track Player</span>
+              <span>Track player</span>
             </button>
           </div>
         </div>
       )}
 
-      {/* Supabase-style Search and Command Palette Modal */}
       <SearchModal
         isOpen={searchModalOpen}
         onClose={() => setSearchModalOpen(false)}

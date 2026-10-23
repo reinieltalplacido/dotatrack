@@ -142,22 +142,7 @@ export function PipelineArchitecture() {
               );
             })}
 
-            {/* Development Architecture Callout */}
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.45, delay: 0.28, ease: [0.21, 0.47, 0.32, 0.98] }}
-              className="rounded-sm border border-emerald-900/40 bg-emerald-950/20 p-4 text-xs font-mono text-zinc-300 flex items-center justify-between gap-4"
-            >
-              <div className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-emerald-400 shrink-0" />
-                <span>
-                  <strong className="text-white">Live Status:</strong> OpenDota API protocol &amp; Valve matchmaking connector fully operational.
-                </span>
-              </div>
-              <span className="text-[11px] text-emerald-400 font-bold shrink-0">[ONLINE]</span>
-            </motion.div>
+
           </div>
         </div>
       </div>

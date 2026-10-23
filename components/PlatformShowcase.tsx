@@ -18,10 +18,10 @@ export function PlatformShowcase() {
         >
           <div>
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white font-sans">
-              Esports-Grade Analytics Engine
+              Match &amp; Player Analytics
             </h2>
             <p className="text-xs sm:text-sm text-zinc-400 mt-1 max-w-2xl font-sans">
-              Precision combat analytics, replay advantage curves, and verified tier metrics engineered specifically for competitive Dota 2 matchmaking.
+              Match breakdowns, win advantage curves, and verified stats for Dota 2 players.
             </p>
           </div>
           <Link
@@ -50,7 +50,7 @@ export function PlatformShowcase() {
                     <Activity className="h-4 w-4" />
                   </div>
                   <span className="text-xs font-mono uppercase tracking-wider text-rose-400 font-bold">
-                    COMBAT &amp; REPLAY INSIGHTS
+                    MATCH &amp; COMBAT INSIGHTS
                   </span>
                 </div>
                 <span className="text-[10px] font-mono px-2 py-0.5 rounded-sm bg-white/[0.04] border border-white/[0.08] text-zinc-400">
@@ -59,10 +59,10 @@ export function PlatformShowcase() {
               </div>
 
               <h3 className="text-xl sm:text-2xl font-bold text-white font-sans mb-3">
-                Advantage Curves &amp; Lane Phase Dissection
+                Advantage Curves &amp; Early Game Breakdown
               </h3>
               <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-sans mb-6">
-                Parse combat logs into actionable timeline insights. Pinpoint the exact moments game momentum shifted, from Roshan pit contests and buyback usage to CS@10 lane trade differentials.
+                Understand how the match played out. See the exact moments the game shifted, from Roshan pit fights and buyback timing to early lane performance.
               </p>
 
               {/* Realistic Match Preview Card (Dota 2 Net Worth Graph & Combat Breakdown) */}
