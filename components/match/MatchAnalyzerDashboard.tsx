@@ -303,6 +303,7 @@ export function MatchAnalyzerDashboard({ initialId, initialMatch, initialError }
               wards={match.wards || []}
               durationSeconds={match.durationSeconds}
               isParsed={match.isParsed}
+              objectives={match.objectives}
             />
           )}
 

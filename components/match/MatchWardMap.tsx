@@ -16,20 +16,280 @@ import {
   Flame,
   CheckCircle2,
   Crosshair,
+  Castle,
 } from "lucide-react";
-import { MatchWardEvent } from "@/lib/opendota/match-types";
+import { MatchWardEvent, MatchObjectiveEvent } from "@/lib/opendota/match-types";
 
 interface MatchWardMapProps {
   wards: MatchWardEvent[];
   durationSeconds: number;
   isParsed: boolean;
+  objectives?: MatchObjectiveEvent[];
+}
+
+export interface MapStructure {
+  id: string;
+  name: string;
+  shortName: string;
+  lane: "Top" | "Mid" | "Bot" | "Base";
+  type: "tower" | "t4" | "ancient" | "barracks";
+  tier?: number;
+  isRadiant: boolean;
+  x: number;
+  y: number;
+  barracksType?: "melee" | "ranged";
+}
+
+// Authentic Dota 2 in-game minimap structures: 22 towers, 12 barracks, 2 ancients
+export const DOTA_STRUCTURES: MapStructure[] = [
+  // --- Radiant Structures ---
+  // Top Lane
+  { id: "rad_t1_top", name: "Radiant Tier 1 Top Tower", shortName: "T1 Top", lane: "Top", type: "tower", tier: 1, isRadiant: true, x: 12.5, y: 53.5 },
+  { id: "rad_t2_top", name: "Radiant Tier 2 Top Tower", shortName: "T2 Top", lane: "Top", type: "tower", tier: 2, isRadiant: true, x: 10.0, y: 64.0 },
+  { id: "rad_t3_top", name: "Radiant Tier 3 Top Tower", shortName: "T3 Top", lane: "Top", type: "tower", tier: 3, isRadiant: true, x: 8.5, y: 71.0 },
+  { id: "rad_rax_m_top", name: "Radiant Melee Barracks (Top)", shortName: "Melee Rax", lane: "Top", type: "barracks", barracksType: "melee", isRadiant: true, x: 6.8, y: 73.0 },
+  { id: "rad_rax_r_top", name: "Radiant Ranged Barracks (Top)", shortName: "Ranged Rax", lane: "Top", type: "barracks", barracksType: "ranged", isRadiant: true, x: 11.2, y: 73.0 },
+
+  // Mid Lane
+  { id: "rad_t1_mid", name: "Radiant Tier 1 Mid Tower", shortName: "T1 Mid", lane: "Mid", type: "tower", tier: 1, isRadiant: true, x: 40.5, y: 55.0 },
+  { id: "rad_t2_mid", name: "Radiant Tier 2 Mid Tower", shortName: "T2 Mid", lane: "Mid", type: "tower", tier: 2, isRadiant: true, x: 28.0, y: 64.5 },
+  { id: "rad_t3_mid", name: "Radiant Tier 3 Mid Tower", shortName: "T3 Mid", lane: "Mid", type: "tower", tier: 3, isRadiant: true, x: 19.5, y: 73.5 },
+  { id: "rad_rax_m_mid", name: "Radiant Melee Barracks (Mid)", shortName: "Melee Rax", lane: "Mid", type: "barracks", barracksType: "melee", isRadiant: true, x: 21.5, y: 76.0 },
+  { id: "rad_rax_r_mid", name: "Radiant Ranged Barracks (Mid)", shortName: "Ranged Rax", lane: "Mid", type: "barracks", barracksType: "ranged", isRadiant: true, x: 23.5, y: 78.0 },
+
+  // Bot Lane
+  { id: "rad_t1_bot", name: "Radiant Tier 1 Bot Tower", shortName: "T1 Bot", lane: "Bot", type: "tower", tier: 1, isRadiant: true, x: 76.5, y: 83.5 },
+  { id: "rad_t2_bot", name: "Radiant Tier 2 Bot Tower", shortName: "T2 Bot", lane: "Bot", type: "tower", tier: 2, isRadiant: true, x: 45.0, y: 83.5 },
+  { id: "rad_t3_bot", name: "Radiant Tier 3 Bot Tower", shortName: "T3 Bot", lane: "Bot", type: "tower", tier: 3, isRadiant: true, x: 24.5, y: 85.5 },
+  { id: "rad_rax_m_bot", name: "Radiant Melee Barracks (Bot)", shortName: "Melee Rax", lane: "Bot", type: "barracks", barracksType: "melee", isRadiant: true, x: 23.0, y: 88.5 },
+  { id: "rad_rax_r_bot", name: "Radiant Ranged Barracks (Bot)", shortName: "Ranged Rax", lane: "Bot", type: "barracks", barracksType: "ranged", isRadiant: true, x: 26.0, y: 89.0 },
+
+  // Base Towers & Ancient
+  { id: "rad_t4_top", name: "Radiant Tier 4 Tower (Top)", shortName: "T4 Top", lane: "Base", type: "t4", tier: 4, isRadiant: true, x: 14.0, y: 79.0 },
+  { id: "rad_t4_bot", name: "Radiant Tier 4 Tower (Bot)", shortName: "T4 Bot", lane: "Base", type: "t4", tier: 4, isRadiant: true, x: 16.5, y: 81.5 },
+  { id: "rad_ancient", name: "Radiant Ancient Fortress", shortName: "Ancient", lane: "Base", type: "ancient", isRadiant: true, x: 12.0, y: 82.5 },
+
+  // --- Dire Structures ---
+  // Top Lane
+  { id: "dire_t1_top", name: "Dire Tier 1 Top Tower", shortName: "T1 Top", lane: "Top", type: "tower", tier: 1, isRadiant: false, x: 20.5, y: 10.5 },
+  { id: "dire_t2_top", name: "Dire Tier 2 Top Tower", shortName: "T2 Top", lane: "Top", type: "tower", tier: 2, isRadiant: false, x: 48.0, y: 10.5 },
+  { id: "dire_t3_top", name: "Dire Tier 3 Top Tower", shortName: "T3 Top", lane: "Top", type: "tower", tier: 3, isRadiant: false, x: 69.5, y: 11.5 },
+  { id: "dire_rax_m_top", name: "Dire Melee Barracks (Top)", shortName: "Melee Rax", lane: "Top", type: "barracks", barracksType: "melee", isRadiant: false, x: 72.0, y: 13.0 },
+  { id: "dire_rax_r_top", name: "Dire Ranged Barracks (Top)", shortName: "Ranged Rax", lane: "Top", type: "barracks", barracksType: "ranged", isRadiant: false, x: 73.5, y: 14.5 },
+
+  // Mid Lane
+  { id: "dire_t1_mid", name: "Dire Tier 1 Mid Tower", shortName: "T1 Mid", lane: "Mid", type: "tower", tier: 1, isRadiant: false, x: 54.0, y: 44.0 },
+  { id: "dire_t2_mid", name: "Dire Tier 2 Mid Tower", shortName: "T2 Mid", lane: "Mid", type: "tower", tier: 2, isRadiant: false, x: 63.0, y: 33.0 },
+  { id: "dire_t3_mid", name: "Dire Tier 3 Mid Tower", shortName: "T3 Mid", lane: "Mid", type: "tower", tier: 3, isRadiant: false, x: 72.0, y: 22.0 },
+  { id: "dire_rax_m_mid", name: "Dire Melee Barracks (Mid)", shortName: "Melee Rax", lane: "Mid", type: "barracks", barracksType: "melee", isRadiant: false, x: 75.0, y: 24.5 },
+  { id: "dire_rax_r_mid", name: "Dire Ranged Barracks (Mid)", shortName: "Ranged Rax", lane: "Mid", type: "barracks", barracksType: "ranged", isRadiant: false, x: 77.5, y: 26.0 },
+
+  // Bot Lane
+  { id: "dire_t1_bot", name: "Dire Tier 1 Bot Tower", shortName: "T1 Bot", lane: "Bot", type: "tower", tier: 1, isRadiant: false, x: 84.5, y: 56.5 },
+  { id: "dire_t2_bot", name: "Dire Tier 2 Bot Tower", shortName: "T2 Bot", lane: "Bot", type: "tower", tier: 2, isRadiant: false, x: 85.0, y: 45.5 },
+  { id: "dire_t3_bot", name: "Dire Tier 3 Bot Tower", shortName: "T3 Bot", lane: "Bot", type: "tower", tier: 3, isRadiant: false, x: 85.5, y: 27.5 },
+  { id: "dire_rax_m_bot", name: "Dire Melee Barracks (Bot)", shortName: "Melee Rax", lane: "Bot", type: "barracks", barracksType: "melee", isRadiant: false, x: 88.0, y: 28.5 },
+  { id: "dire_rax_r_bot", name: "Dire Ranged Barracks (Bot)", shortName: "Ranged Rax", lane: "Bot", type: "barracks", barracksType: "ranged", isRadiant: false, x: 90.0, y: 29.5 },
+
+  // Base Towers & Ancient
+  { id: "dire_t4_top", name: "Dire Tier 4 Tower (Top)", shortName: "T4 Top", lane: "Base", type: "t4", tier: 4, isRadiant: false, x: 77.5, y: 17.5 },
+  { id: "dire_t4_bot", name: "Dire Tier 4 Tower (Bot)", shortName: "T4 Bot", lane: "Base", type: "t4", tier: 4, isRadiant: false, x: 79.5, y: 20.0 },
+  { id: "dire_ancient", name: "Dire Ancient Fortress", shortName: "Ancient", lane: "Base", type: "ancient", isRadiant: false, x: 81.5, y: 17.5 },
+];
+
+function findStructureDestroyEvent(s: MapStructure, objectives: MatchObjectiveEvent[] = []) {
+  if (s.type === "ancient") {
+    return objectives.find((o) => {
+      const d = o.description.toLowerCase();
+      return (
+        d.includes("ancient") &&
+        ((s.isRadiant && (o.team === "Dire" || d.includes("dire destroyed"))) ||
+         (!s.isRadiant && (o.team === "Radiant" || d.includes("radiant destroyed"))))
+      );
+    });
+  }
+
+  if (s.type === "barracks") {
+    return objectives.find((o) => {
+      const d = o.description.toLowerCase();
+      const byEnemy = s.isRadiant
+        ? o.team === "Dire" || d.startsWith("dire destroyed")
+        : o.team === "Radiant" || d.startsWith("radiant destroyed");
+
+      if (!byEnemy) return false;
+      const laneMatch = d.includes(s.lane.toLowerCase());
+      const typeMatch = s.barracksType === "melee" ? d.includes("melee") : d.includes("range");
+      return laneMatch && typeMatch && d.includes("barracks");
+    });
+  }
+
+  return objectives.find((o) => {
+    const d = o.description.toLowerCase();
+    const byEnemy = s.isRadiant
+      ? o.team === "Dire" || d.startsWith("dire destroyed")
+      : o.team === "Radiant" || d.startsWith("radiant destroyed");
+
+    if (!byEnemy) return false;
+
+    if (s.type === "t4" || s.tier === 4) {
+      return d.includes("tier 4");
+    }
+
+    return d.includes(`tier ${s.tier}`) && d.includes(s.lane.toLowerCase());
+  });
+}
+
+// Authentic 3D Isometric Dota 2 Minimap Building
+function IsometricStructure({
+  type,
+  isRadiant,
+  isAlive,
+  isHovered,
+}: {
+  type: "tower" | "t4" | "ancient" | "barracks";
+  isRadiant: boolean;
+  isAlive: boolean;
+  isHovered?: boolean;
+}) {
+  let width = 10;
+  let height = 14;
+  let capH = 2.4;
+
+  if (type === "t4") {
+    width = 11;
+    height = 16;
+    capH = 2.7;
+  } else if (type === "barracks") {
+    width = 8;
+    height = 5;
+    capH = 1.9;
+  } else if (type === "ancient") {
+    width = 18;
+    height = 10;
+    capH = 4.2;
+  }
+
+  const halfW = width / 2;
+  const totalH = height + capH * 2;
+
+  // Ruin footprint if destroyed
+  if (!isAlive) {
+    const footprintW = Math.max(9, width);
+    const footprintH = capH * 2 + 1;
+    return (
+      <svg
+        width={footprintW}
+        height={footprintH}
+        viewBox={`0 0 ${footprintW} ${footprintH}`}
+        className={`overflow-visible pointer-events-none transition-opacity duration-200 ${
+          isHovered ? "opacity-75" : "opacity-30"
+        }`}
+      >
+        <polygon
+          points={`${footprintW / 2},0.5 ${footprintW - 0.5},${footprintH / 2} ${footprintW / 2},${footprintH - 0.5} 0.5,${footprintH / 2}`}
+          fill="#141417"
+          stroke="#52525b"
+          strokeWidth="0.75"
+        />
+        <line
+          x1={footprintW / 2 - 2}
+          y1={footprintH / 2 - 1.5}
+          x2={footprintW / 2 + 2}
+          y2={footprintH / 2 + 1.5}
+          stroke="#71717a"
+          strokeWidth="0.8"
+        />
+        <line
+          x1={footprintW / 2 + 2}
+          y1={footprintH / 2 - 1.5}
+          x2={footprintW / 2 - 2}
+          y2={footprintH / 2 + 1.5}
+          stroke="#71717a"
+          strokeWidth="0.8"
+        />
+      </svg>
+    );
+  }
+
+  // Radiant: Pure neon green 3D isometric pillar (#00ff22, #00d618, #009e10)
+  // Dire: Jet black with neon red top & stroke (#ff0022, #0c0c0c, #161616, stroke: #ff0022)
+  // Dire T4: Glowing neon red pillars (#ff0022)
+  const isDireT4 = !isRadiant && type === "t4";
+
+  const topColor = isRadiant
+    ? "#00ff26"
+    : isDireT4
+    ? "#ff0026"
+    : "#ff0026";
+
+  const leftColor = isRadiant
+    ? "#00d618"
+    : isDireT4
+    ? "#ff0026"
+    : "#0c0c0c";
+
+  const rightColor = isRadiant
+    ? "#009e10"
+    : isDireT4
+    ? "#cc001e"
+    : "#161616";
+
+  const strokeColor = isRadiant
+    ? "#003b07"
+    : "#ff0026";
+
+  const strokeWidth = isRadiant ? 0.75 : 0.85;
+
+  const dropShadow = isRadiant
+    ? "drop-shadow(0 0 2.5px rgba(0, 255, 38, 0.9))"
+    : "drop-shadow(0 0 2.5px rgba(255, 0, 38, 0.9))";
+
+  const topPoints = `${halfW},0 ${width},${capH} ${halfW},${capH * 2} 0,${capH}`;
+  const leftPoints = `0,${capH} ${halfW},${capH * 2} ${halfW},${totalH} 0,${totalH - capH}`;
+  const rightPoints = `${halfW},${capH * 2} ${width},${capH} ${width},${totalH - capH} ${halfW},${totalH}`;
+
+  return (
+    <svg
+      width={width}
+      height={totalH}
+      viewBox={`0 0 ${width} ${totalH}`}
+      className="overflow-visible pointer-events-none transition-transform duration-150"
+      style={{
+        filter: isHovered
+          ? `${dropShadow} brightness(1.3)`
+          : dropShadow,
+      }}
+    >
+      <polygon
+        points={leftPoints}
+        fill={leftColor}
+        stroke={strokeColor}
+        strokeWidth={strokeWidth}
+        strokeLinejoin="round"
+      />
+      <polygon
+        points={rightPoints}
+        fill={rightColor}
+        stroke={strokeColor}
+        strokeWidth={strokeWidth}
+        strokeLinejoin="round"
+      />
+      <polygon
+        points={topPoints}
+        fill={topColor}
+        stroke={strokeColor}
+        strokeWidth={strokeWidth}
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
 }
 
 type ViewMode = "pins" | "heatmap" | "all";
 type TeamFilter = "all" | "radiant" | "dire";
 type TypeFilter = "all" | "observer" | "sentry";
 
-export function MatchWardMap({ wards, durationSeconds, isParsed }: MatchWardMapProps) {
+export function MatchWardMap({ wards, durationSeconds, isParsed, objectives = [] }: MatchWardMapProps) {
   // Scrubber time in seconds
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
@@ -37,7 +297,9 @@ export function MatchWardMap({ wards, durationSeconds, isParsed }: MatchWardMapP
   const [viewMode, setViewMode] = useState<ViewMode>("pins");
   const [teamFilter, setTeamFilter] = useState<TeamFilter>("all");
   const [typeFilter, setTypeFilter] = useState<TypeFilter>("all");
+  const [showTowers, setShowTowers] = useState<boolean>(true);
   const [hoveredWard, setHoveredWard] = useState<MatchWardEvent | null>(null);
+  const [hoveredStructure, setHoveredStructure] = useState<(MapStructure & { isAlive: boolean; destroyEvent?: MatchObjectiveEvent }) | null>(null);
 
   const animationFrameRef = useRef<number | null>(null);
   const lastTickRef = useRef<number>(Date.now());
@@ -101,6 +363,34 @@ export function MatchWardMap({ wards, durationSeconds, isParsed }: MatchWardMapP
       return currentTime >= w.time && currentTime <= w.leftTime;
     });
   }, [filteredWards, currentTime, viewMode]);
+
+  // Structure status calculation based on objectives and timeline
+  const structureStates = useMemo(() => {
+    return DOTA_STRUCTURES.map((s) => {
+      const destroyEvent = findStructureDestroyEvent(s, objectives);
+      const isDestroyed = destroyEvent
+        ? viewMode === "all"
+          ? true
+          : currentTime >= destroyEvent.time
+        : false;
+      const isAlive = !isDestroyed;
+
+      return {
+        ...s,
+        isAlive,
+        destroyEvent,
+      };
+    });
+  }, [objectives, currentTime, viewMode]);
+
+  const visibleStructures = useMemo(() => {
+    if (!showTowers) return [];
+    return structureStates.filter((s) => {
+      if (teamFilter === "radiant" && !s.isRadiant) return false;
+      if (teamFilter === "dire" && s.isRadiant) return false;
+      return true;
+    });
+  }, [showTowers, structureStates, teamFilter]);
 
   // Stats computation
   const stats = useMemo(() => {
@@ -311,6 +601,23 @@ export function MatchWardMap({ wards, durationSeconds, isParsed }: MatchWardMapP
                 Sentries ({wards.filter((w) => w.type === "sentry").length})
               </button>
             </div>
+
+            {/* Structures / Towers Toggle */}
+            <div className="flex items-center gap-1 bg-black/40 p-1 rounded-sm border border-white/[0.06]">
+              <button
+                type="button"
+                onClick={() => setShowTowers(!showTowers)}
+                className={`px-2.5 py-1 rounded-xs uppercase font-bold text-xs transition-all flex items-center gap-1.5 border ${
+                  showTowers
+                    ? "bg-amber-600/25 text-amber-300 border-amber-500/50 shadow-sm"
+                    : "bg-black/40 text-zinc-500 border-white/[0.06] hover:text-white"
+                }`}
+                title="Toggle towers, barracks, and ancients on the map"
+              >
+                <Castle className="h-3.5 w-3.5" />
+                <span>Towers &amp; Bases ({visibleStructures.filter((s) => s.isAlive).length})</span>
+              </button>
+            </div>
           </div>
 
           {/* Minimap Tactical Canvas Container */}
@@ -329,7 +636,7 @@ export function MatchWardMap({ wards, durationSeconds, isParsed }: MatchWardMapP
             {/* Tactical Map Vignette & Ambient Glow for high contrast */}
             <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_28px_rgba(0,0,0,0.65)] ring-1 ring-inset ring-white/[0.08]" />
 
-            {/* SVG Overlay: Vision Heatmap & True Sight Fields */}
+            {/* SVG Overlay: Vision Heatmap & Structure Range Circles */}
             <svg
               viewBox="0 0 100 100"
               className="absolute inset-0 w-full h-full pointer-events-none select-none z-10"
@@ -356,6 +663,32 @@ export function MatchWardMap({ wards, durationSeconds, isParsed }: MatchWardMapP
                   <stop offset="100%" stopColor="#38BDF8" stopOpacity="0" />
                 </radialGradient>
               </defs>
+
+              {/* Hovered Structure Range Indicators (Attack & True Sight for Towers/Ancients) */}
+              {hoveredStructure && (hoveredStructure.type === "tower" || hoveredStructure.type === "t4" || hoveredStructure.type === "ancient") && (
+                <g>
+                  {/* True Sight Range 900 */}
+                  <circle
+                    cx={hoveredStructure.x}
+                    cy={hoveredStructure.y}
+                    r="11"
+                    fill="rgba(56, 189, 248, 0.08)"
+                    stroke="#38BDF8"
+                    strokeWidth="0.8"
+                    strokeDasharray="2 2"
+                    className="animate-pulse"
+                  />
+                  {/* Attack Range 700 */}
+                  <circle
+                    cx={hoveredStructure.x}
+                    cy={hoveredStructure.y}
+                    r="8.5"
+                    fill={hoveredStructure.isRadiant ? "rgba(0, 255, 38, 0.14)" : "rgba(255, 0, 38, 0.14)"}
+                    stroke={hoveredStructure.isRadiant ? "#00ff26" : "#ff0026"}
+                    strokeWidth="1"
+                  />
+                </g>
+              )}
 
               {/* VIEW: Vision Heatmap Circles */}
               {viewMode === "heatmap" && (
@@ -385,8 +718,36 @@ export function MatchWardMap({ wards, durationSeconds, isParsed }: MatchWardMapP
               )}
             </svg>
 
+            {/* 3D Isometric Structures Layer (Towers, Barracks, Ancients) */}
+            {showTowers && (
+              <div className="absolute inset-0 z-15 pointer-events-none">
+                {visibleStructures.map((s) => {
+                  const isHovered = hoveredStructure?.id === s.id;
+
+                  return (
+                    <div
+                      key={s.id}
+                      style={{ left: `${s.x}%`, top: `${s.y}%` }}
+                      className={`absolute -translate-x-1/2 -translate-y-full cursor-pointer pointer-events-auto transition-transform duration-150 ${
+                        isHovered ? "scale-140 z-30" : "hover:scale-125 z-15"
+                      }`}
+                      onMouseEnter={() => setHoveredStructure(s)}
+                      onMouseLeave={() => setHoveredStructure(null)}
+                    >
+                      <IsometricStructure
+                        type={s.type}
+                        isRadiant={s.isRadiant}
+                        isAlive={s.isAlive}
+                        isHovered={isHovered}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
             {/* Ward Pin Markers Layer */}
-            <div className="absolute inset-0 z-20">
+            <div className="absolute inset-0 z-20 pointer-events-none">
               {activeWards.map((ward) => {
                 const isHovered = hoveredWard?.id === ward.id;
                 const isObs = ward.type === "observer";
@@ -395,7 +756,7 @@ export function MatchWardMap({ wards, durationSeconds, isParsed }: MatchWardMapP
                   <div
                     key={ward.id}
                     style={{ left: `${ward.x}%`, top: `${ward.y}%` }}
-                    className="absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer z-20 transition-transform duration-150 hover:scale-130 drop-shadow-[0_3px_5px_rgba(0,0,0,0.8)]"
+                    className="absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer pointer-events-auto z-20 transition-transform duration-150 hover:scale-130 drop-shadow-[0_3px_5px_rgba(0,0,0,0.8)]"
                     onMouseEnter={() => setHoveredWard(ward)}
                     onMouseLeave={() => setHoveredWard(null)}
                   >
@@ -436,6 +797,83 @@ export function MatchWardMap({ wards, durationSeconds, isParsed }: MatchWardMapP
                 );
               })}
             </div>
+
+            {/* Structure Hover Tooltip */}
+            {hoveredStructure && (
+              <div
+                className="absolute z-40 pointer-events-none bg-[#090C14]/95 border border-white/[0.2] p-2.5 rounded-sm shadow-2xl backdrop-blur-md text-xs font-mono max-w-[230px] animate-in fade-in zoom-in-95 duration-100"
+                style={{
+                  left: `${Math.min(72, Math.max(10, hoveredStructure.x))}%`,
+                  top: `${Math.min(72, Math.max(10, hoveredStructure.y))}%`,
+                }}
+              >
+                <div className="flex items-center gap-2 mb-1.5 border-b border-white/[0.08] pb-1.5">
+                  <div
+                    className={`h-5 w-5 rounded-[2px] flex items-center justify-center shrink-0 font-black text-[9px] ${
+                      hoveredStructure.isAlive
+                        ? hoveredStructure.isRadiant
+                          ? "bg-emerald-500 text-black shadow-sm"
+                          : "bg-rose-600 text-white shadow-sm"
+                        : "bg-zinc-800 text-zinc-500 border border-zinc-700"
+                    }`}
+                  >
+                    <Castle className="h-3 w-3" />
+                  </div>
+                  <div className="min-w-0">
+                    <span className="font-bold text-white block truncate text-[11px]">
+                      {hoveredStructure.name}
+                    </span>
+                    <span
+                      className={`text-[10px] font-bold ${
+                        hoveredStructure.isRadiant ? "text-emerald-400" : "text-rose-400"
+                      }`}
+                    >
+                      {hoveredStructure.isRadiant ? "Radiant" : "Dire"}{" "}
+                      {hoveredStructure.type === "ancient"
+                        ? "Ancient Fortress"
+                        : hoveredStructure.type === "barracks"
+                        ? `${hoveredStructure.lane} ${hoveredStructure.barracksType === "melee" ? "Melee" : "Ranged"} Barracks`
+                        : `${hoveredStructure.lane} Lane Tower`}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="space-y-1 text-[10px] text-zinc-300">
+                  <div className="flex justify-between">
+                    <span className="text-zinc-500">Status:</span>
+                    <span
+                      className={
+                        hoveredStructure.isAlive
+                          ? "text-emerald-400 font-bold uppercase"
+                          : "text-rose-400 font-bold uppercase"
+                      }
+                    >
+                      {hoveredStructure.isAlive ? "Standing (Alive)" : "Destroyed"}
+                    </span>
+                  </div>
+                  {hoveredStructure.destroyEvent && (
+                    <div className="flex justify-between">
+                      <span className="text-zinc-500">Fell at:</span>
+                      <span className="text-amber-400 font-bold">
+                        {hoveredStructure.destroyEvent.timeFormatted}
+                      </span>
+                    </div>
+                  )}
+                  {(hoveredStructure.type === "tower" || hoveredStructure.type === "t4" || hoveredStructure.type === "ancient") && (
+                    <>
+                      <div className="flex justify-between pt-1 border-t border-white/[0.04]">
+                        <span className="text-zinc-500">Vision Range:</span>
+                        <span className="text-sky-300 font-bold">1900 Day / 800 Night</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-zinc-500">True Sight:</span>
+                        <span className="text-sky-400 font-bold">900 Radius</span>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+            )}
 
             {/* Hover Tooltip Overlay on Map */}
             {hoveredWard && (
