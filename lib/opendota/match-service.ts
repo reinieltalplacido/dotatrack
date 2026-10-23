@@ -8,6 +8,7 @@ import {
   MatchKillEvent,
   MatchTeamfight,
   MatchObjectiveEvent,
+  MatchWardEvent,
 } from "./match-types";
 import { getHeroById, formatGameMode, formatLobbyType, formatDuration } from "./heroes";
 import itemsSnapshot from "./items-snapshot.json";
@@ -680,6 +681,9 @@ function normalizeMatch(raw: RawMatchResponse): NormalizedMatchData {
   // Objectives
   const objectives = extractObjectives(raw.objectives, allPlayers);
 
+  // Wards (Vision & Map Control)
+  const wards = extractMatchWards(allPlayers, rawPlayers, durationSeconds);
+
   // Gold & XP timelines
   const rawGoldAdv = Array.isArray(raw.radiant_gold_adv) ? raw.radiant_gold_adv : [];
   const rawXpAdv = Array.isArray(raw.radiant_xp_adv) ? raw.radiant_xp_adv : [];
@@ -729,6 +733,7 @@ function normalizeMatch(raw: RawMatchResponse): NormalizedMatchData {
     killEvents,
     teamfights,
     objectives,
+    wards,
     goldAdvantageTimeline,
     xpAdvantageTimeline,
   };
@@ -922,6 +927,126 @@ function extractCombatKills(
   // Sort chronologically
   events.sort((a, b) => a.time - b.time);
   return events.slice(0, 150); // Keep reasonable cap for performance
+}
+
+/**
+ * Extracts and maps all placed wards with coordinates, placement time, and duration.
+ */
+function extractMatchWards(
+  allPlayers: MatchPlayerDetailed[],
+  rawPlayers: RawMatchPlayer[],
+  matchDuration: number
+): MatchWardEvent[] {
+  const wards: MatchWardEvent[] = [];
+
+  for (const rawP of rawPlayers) {
+    const player = allPlayers.find((p) => p.playerSlot === rawP.player_slot);
+    if (!player) continue;
+
+    const obsLog = Array.isArray(rawP.obs_log) ? rawP.obs_log : [];
+    const senLog = Array.isArray(rawP.sen_log) ? rawP.sen_log : [];
+    const obsLeftLog = Array.isArray(rawP.obs_left_log) ? rawP.obs_left_log : [];
+    const senLeftLog = Array.isArray(rawP.sen_left_log) ? rawP.sen_left_log : [];
+
+    const processWardList = (
+      list: any[],
+      type: "observer" | "sentry",
+      leftList: any[]
+    ) => {
+      const defaultDuration = type === "observer" ? 360 : 420;
+
+      list.forEach((item, idx) => {
+        let x: number | null = null;
+        let y: number | null = null;
+
+        if (typeof item.x === "number" && typeof item.y === "number") {
+          x = item.x;
+          y = item.y;
+        } else if (typeof item.key === "string") {
+          try {
+            const parsed = JSON.parse(item.key);
+            if (Array.isArray(parsed) && parsed.length >= 2) {
+              x = Number(parsed[0]);
+              y = Number(parsed[1]);
+            }
+          } catch {
+            const parts = item.key.replace(/[\[\]]/g, "").split(",").map((s: string) => Number(s.trim()));
+            if (parts.length >= 2 && !isNaN(parts[0]) && !isNaN(parts[1])) {
+              x = parts[0];
+              y = parts[1];
+            }
+          }
+        } else if (Array.isArray(item.key) && item.key.length >= 2) {
+          x = Number(item.key[0]);
+          y = Number(item.key[1]);
+        }
+
+        if (x === null || y === null || isNaN(x) || isNaN(y)) return;
+
+        // Normalize coordinates to 0..100% percentage
+        let normX = 50;
+        let normY = 50;
+
+        if (Math.abs(x) > 256 || Math.abs(y) > 256) {
+          // Source Engine coordinates (approx -8200 to +8200)
+          normX = Math.max(2, Math.min(98, ((x + 8200) / 16400) * 100));
+          normY = Math.max(2, Math.min(98, ((8200 - y) / 16400) * 100));
+        } else {
+          // Standard cell grid (64 to 192)
+          normX = Math.max(2, Math.min(98, ((x - 64) / 128) * 100));
+          normY = Math.max(2, Math.min(98, (1 - (y - 64) / 128) * 100));
+        }
+
+        const placeTime = Number(item.time) || 0;
+        
+        // Find corresponding left log if available
+        let leftTime = placeTime + defaultDuration;
+        let isDewarded = false;
+
+        const matchingLeft = leftList.find(
+          (l) => l.time >= placeTime && l.time <= placeTime + defaultDuration + 10
+        );
+
+        if (matchingLeft && typeof matchingLeft.time === "number") {
+          leftTime = matchingLeft.time;
+          if (leftTime - placeTime < defaultDuration - 20) {
+            isDewarded = true;
+          }
+        }
+
+        if (leftTime > matchDuration) {
+          leftTime = matchDuration;
+        }
+
+        const duration = Math.max(1, leftTime - placeTime);
+
+        wards.push({
+          id: `${player.playerSlot}-${type}-${placeTime}-${idx}`,
+          type,
+          time: placeTime,
+          timeFormatted: formatGameTimestamp(placeTime),
+          leftTime,
+          leftTimeFormatted: formatGameTimestamp(leftTime),
+          duration,
+          x: Number(normX.toFixed(2)),
+          y: Number(normY.toFixed(2)),
+          playerSlot: player.playerSlot,
+          isRadiant: player.isRadiant,
+          heroId: player.heroId,
+          heroName: player.heroName,
+          heroLocalizedName: player.heroLocalizedName,
+          heroImg: player.heroImg,
+          isDewarded,
+        });
+      });
+    };
+
+    processWardList(obsLog, "observer", obsLeftLog);
+    processWardList(senLog, "sentry", senLeftLog);
+  }
+
+  wards.sort((a, b) => a.time - b.time);
+  return wards;
 }
 
 /**

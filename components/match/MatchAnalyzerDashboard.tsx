@@ -12,6 +12,7 @@ import {
   Trophy,
   BarChart3,
   AlertCircle,
+  Eye,
 } from "lucide-react";
 import { NormalizedMatchData } from "@/lib/opendota/match-types";
 import { MatchSearchHeader } from "./MatchSearchHeader";
@@ -24,6 +25,7 @@ import { MatchCombatTimeline } from "./MatchCombatTimeline";
 import { MatchHeroNetWorthChart } from "./MatchHeroNetWorthChart";
 import { MatchObjectivesTimeline } from "./MatchObjectivesTimeline";
 import { MatchAdvancedStats } from "./MatchAdvancedStats";
+import { MatchWardMap } from "./MatchWardMap";
 import { MatchSkeleton } from "./MatchSkeleton";
 
 interface MatchAnalyzerDashboardProps {
@@ -39,6 +41,7 @@ type AnalysisTab =
   | "combat"
   | "networth"
   | "objectives"
+  | "vision"
   | "advanced";
 
 export function MatchAnalyzerDashboard({ initialMatch, initialError }: MatchAnalyzerDashboardProps) {
@@ -152,6 +155,12 @@ export function MatchAnalyzerDashboard({ initialMatch, initialError }: MatchAnal
               label="Objectives"
             />
             <TabButton
+              active={activeTab === "vision"}
+              onClick={() => setActiveTab("vision")}
+              icon={<Eye className="h-3.5 w-3.5" />}
+              label="Vision &amp; Wards"
+            />
+            <TabButton
               active={activeTab === "advanced"}
               onClick={() => setActiveTab("advanced")}
               icon={<BarChart3 className="h-3.5 w-3.5" />}
@@ -210,6 +219,14 @@ export function MatchAnalyzerDashboard({ initialMatch, initialError }: MatchAnal
           {activeTab === "objectives" && (
             <MatchObjectivesTimeline
               objectives={match.objectives}
+              isParsed={match.isParsed}
+            />
+          )}
+
+          {activeTab === "vision" && (
+            <MatchWardMap
+              wards={match.wards || []}
+              durationSeconds={match.durationSeconds}
               isParsed={match.isParsed}
             />
           )}

@@ -170,6 +170,25 @@ export interface MatchObjectiveEvent {
   };
 }
 
+export interface MatchWardEvent {
+  id: string;
+  type: "observer" | "sentry";
+  time: number; // in seconds
+  timeFormatted: string;
+  leftTime: number; // in seconds
+  leftTimeFormatted: string;
+  duration: number; // seconds lived
+  x: number; // 0 to 100 percentage
+  y: number; // 0 to 100 percentage
+  playerSlot: number;
+  isRadiant: boolean;
+  heroId: number;
+  heroName: string;
+  heroLocalizedName: string;
+  heroImg: string;
+  isDewarded: boolean;
+}
+
 export interface NormalizedMatchData {
   matchId: string;
   startTime: number;
@@ -205,6 +224,7 @@ export interface NormalizedMatchData {
   killEvents: MatchKillEvent[];
   teamfights: MatchTeamfight[];
   objectives: MatchObjectiveEvent[];
+  wards: MatchWardEvent[];
   
   // Time-series advantage
   goldAdvantageTimeline: { minute: number; advantage: number }[]; // Positive = Radiant

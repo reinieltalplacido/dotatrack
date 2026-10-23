@@ -43,6 +43,7 @@ export function Navbar() {
 
   const navLinks = [
     { label: "Heroes", href: "/heroes" },
+    { label: "Draft lab", href: "/draft" },
     { label: "Tournaments", href: "/tournaments" },
     { label: "Meta trends", href: "/meta-trends" },
     { label: "Match data", href: "/match-data" },
