@@ -41,60 +41,61 @@ export interface MapStructure {
 }
 
 // Authentic Dota 2 in-game minimap structures: 22 towers, 12 barracks, 2 ancients
+// Coordinates measured precisely against authentic in-game minimap
 export const DOTA_STRUCTURES: MapStructure[] = [
   // --- Radiant Structures ---
   // Top Lane
-  { id: "rad_t1_top", name: "Radiant Tier 1 Top Tower", shortName: "T1 Top", lane: "Top", type: "tower", tier: 1, isRadiant: true, x: 12.5, y: 53.5 },
-  { id: "rad_t2_top", name: "Radiant Tier 2 Top Tower", shortName: "T2 Top", lane: "Top", type: "tower", tier: 2, isRadiant: true, x: 10.0, y: 64.0 },
-  { id: "rad_t3_top", name: "Radiant Tier 3 Top Tower", shortName: "T3 Top", lane: "Top", type: "tower", tier: 3, isRadiant: true, x: 8.5, y: 71.0 },
-  { id: "rad_rax_m_top", name: "Radiant Melee Barracks (Top)", shortName: "Melee Rax", lane: "Top", type: "barracks", barracksType: "melee", isRadiant: true, x: 6.8, y: 73.0 },
-  { id: "rad_rax_r_top", name: "Radiant Ranged Barracks (Top)", shortName: "Ranged Rax", lane: "Top", type: "barracks", barracksType: "ranged", isRadiant: true, x: 11.2, y: 73.0 },
+  { id: "rad_t1_top", name: "Radiant Tier 1 Top Tower", shortName: "T1 Top", lane: "Top", type: "tower", tier: 1, isRadiant: true, x: 7.2, y: 38.7 },
+  { id: "rad_t2_top", name: "Radiant Tier 2 Top Tower", shortName: "T2 Top", lane: "Top", type: "tower", tier: 2, isRadiant: true, x: 7.5, y: 56.1 },
+  { id: "rad_t3_top", name: "Radiant Tier 3 Top Tower", shortName: "T3 Top", lane: "Top", type: "tower", tier: 3, isRadiant: true, x: 5.5, y: 72.1 },
+  { id: "rad_rax_m_top", name: "Radiant Melee Barracks (Top)", shortName: "Melee Rax", lane: "Top", type: "barracks", barracksType: "melee", isRadiant: true, x: 3.6, y: 74.6 },
+  { id: "rad_rax_r_top", name: "Radiant Ranged Barracks (Top)", shortName: "Ranged Rax", lane: "Top", type: "barracks", barracksType: "ranged", isRadiant: true, x: 7.2, y: 75.0 },
 
   // Mid Lane
-  { id: "rad_t1_mid", name: "Radiant Tier 1 Mid Tower", shortName: "T1 Mid", lane: "Mid", type: "tower", tier: 1, isRadiant: true, x: 40.5, y: 55.0 },
-  { id: "rad_t2_mid", name: "Radiant Tier 2 Mid Tower", shortName: "T2 Mid", lane: "Mid", type: "tower", tier: 2, isRadiant: true, x: 28.0, y: 64.5 },
-  { id: "rad_t3_mid", name: "Radiant Tier 3 Mid Tower", shortName: "T3 Mid", lane: "Mid", type: "tower", tier: 3, isRadiant: true, x: 19.5, y: 73.5 },
-  { id: "rad_rax_m_mid", name: "Radiant Melee Barracks (Mid)", shortName: "Melee Rax", lane: "Mid", type: "barracks", barracksType: "melee", isRadiant: true, x: 21.5, y: 76.0 },
-  { id: "rad_rax_r_mid", name: "Radiant Ranged Barracks (Mid)", shortName: "Ranged Rax", lane: "Mid", type: "barracks", barracksType: "ranged", isRadiant: true, x: 23.5, y: 78.0 },
+  { id: "rad_t1_mid", name: "Radiant Tier 1 Mid Tower", shortName: "T1 Mid", lane: "Mid", type: "tower", tier: 1, isRadiant: true, x: 38.0, y: 58.9 },
+  { id: "rad_t2_mid", name: "Radiant Tier 2 Mid Tower", shortName: "T2 Mid", lane: "Mid", type: "tower", tier: 2, isRadiant: true, x: 26.4, y: 67.7 },
+  { id: "rad_t3_mid", name: "Radiant Tier 3 Mid Tower", shortName: "T3 Mid", lane: "Mid", type: "tower", tier: 3, isRadiant: true, x: 18.0, y: 76.3 },
+  { id: "rad_rax_m_mid", name: "Radiant Melee Barracks (Mid)", shortName: "Melee Rax", lane: "Mid", type: "barracks", barracksType: "melee", isRadiant: true, x: 14.9, y: 77.3 },
+  { id: "rad_rax_r_mid", name: "Radiant Ranged Barracks (Mid)", shortName: "Ranged Rax", lane: "Mid", type: "barracks", barracksType: "ranged", isRadiant: true, x: 17.4, y: 79.7 },
 
   // Bot Lane
-  { id: "rad_t1_bot", name: "Radiant Tier 1 Bot Tower", shortName: "T1 Bot", lane: "Bot", type: "tower", tier: 1, isRadiant: true, x: 76.5, y: 83.5 },
-  { id: "rad_t2_bot", name: "Radiant Tier 2 Bot Tower", shortName: "T2 Bot", lane: "Bot", type: "tower", tier: 2, isRadiant: true, x: 45.0, y: 83.5 },
-  { id: "rad_t3_bot", name: "Radiant Tier 3 Bot Tower", shortName: "T3 Bot", lane: "Bot", type: "tower", tier: 3, isRadiant: true, x: 24.5, y: 85.5 },
-  { id: "rad_rax_m_bot", name: "Radiant Melee Barracks (Bot)", shortName: "Melee Rax", lane: "Bot", type: "barracks", barracksType: "melee", isRadiant: true, x: 23.0, y: 88.5 },
-  { id: "rad_rax_r_bot", name: "Radiant Ranged Barracks (Bot)", shortName: "Ranged Rax", lane: "Bot", type: "barracks", barracksType: "ranged", isRadiant: true, x: 26.0, y: 89.0 },
+  { id: "rad_t1_bot", name: "Radiant Tier 1 Bot Tower", shortName: "T1 Bot", lane: "Bot", type: "tower", tier: 1, isRadiant: true, x: 79.8, y: 89.1 },
+  { id: "rad_t2_bot", name: "Radiant Tier 2 Bot Tower", shortName: "T2 Bot", lane: "Bot", type: "tower", tier: 2, isRadiant: true, x: 45.6, y: 90.2 },
+  { id: "rad_t3_bot", name: "Radiant Tier 3 Bot Tower", shortName: "T3 Bot", lane: "Bot", type: "tower", tier: 3, isRadiant: true, x: 22.6, y: 89.4 },
+  { id: "rad_rax_m_bot", name: "Radiant Melee Barracks (Bot)", shortName: "Melee Rax", lane: "Bot", type: "barracks", barracksType: "melee", isRadiant: true, x: 20.1, y: 87.6 },
+  { id: "rad_rax_r_bot", name: "Radiant Ranged Barracks (Bot)", shortName: "Ranged Rax", lane: "Bot", type: "barracks", barracksType: "ranged", isRadiant: true, x: 20.1, y: 91.0 },
 
   // Base Towers & Ancient
-  { id: "rad_t4_top", name: "Radiant Tier 4 Tower (Top)", shortName: "T4 Top", lane: "Base", type: "t4", tier: 4, isRadiant: true, x: 14.0, y: 79.0 },
-  { id: "rad_t4_bot", name: "Radiant Tier 4 Tower (Bot)", shortName: "T4 Bot", lane: "Base", type: "t4", tier: 4, isRadiant: true, x: 16.5, y: 81.5 },
-  { id: "rad_ancient", name: "Radiant Ancient Fortress", shortName: "Ancient", lane: "Base", type: "ancient", isRadiant: true, x: 12.0, y: 82.5 },
+  { id: "rad_t4_top", name: "Radiant Tier 4 Tower (Top)", shortName: "T4 Top", lane: "Base", type: "t4", tier: 4, isRadiant: true, x: 11.1, y: 80.8 },
+  { id: "rad_t4_bot", name: "Radiant Tier 4 Tower (Bot)", shortName: "T4 Bot", lane: "Base", type: "t4", tier: 4, isRadiant: true, x: 13.2, y: 82.9 },
+  { id: "rad_ancient", name: "Radiant Ancient Fortress", shortName: "Ancient", lane: "Base", type: "ancient", isRadiant: true, x: 9.6, y: 84.2 },
 
   // --- Dire Structures ---
   // Top Lane
-  { id: "dire_t1_top", name: "Dire Tier 1 Top Tower", shortName: "T1 Top", lane: "Top", type: "tower", tier: 1, isRadiant: false, x: 20.5, y: 10.5 },
-  { id: "dire_t2_top", name: "Dire Tier 2 Top Tower", shortName: "T2 Top", lane: "Top", type: "tower", tier: 2, isRadiant: false, x: 48.0, y: 10.5 },
-  { id: "dire_t3_top", name: "Dire Tier 3 Top Tower", shortName: "T3 Top", lane: "Top", type: "tower", tier: 3, isRadiant: false, x: 69.5, y: 11.5 },
-  { id: "dire_rax_m_top", name: "Dire Melee Barracks (Top)", shortName: "Melee Rax", lane: "Top", type: "barracks", barracksType: "melee", isRadiant: false, x: 72.0, y: 13.0 },
-  { id: "dire_rax_r_top", name: "Dire Ranged Barracks (Top)", shortName: "Ranged Rax", lane: "Top", type: "barracks", barracksType: "ranged", isRadiant: false, x: 73.5, y: 14.5 },
+  { id: "dire_t1_top", name: "Dire Tier 1 Top Tower", shortName: "T1 Top", lane: "Top", type: "tower", tier: 1, isRadiant: false, x: 17.8, y: 12.2 },
+  { id: "dire_t2_top", name: "Dire Tier 2 Top Tower", shortName: "T2 Top", lane: "Top", type: "tower", tier: 2, isRadiant: false, x: 47.2, y: 12.2 },
+  { id: "dire_t3_top", name: "Dire Tier 3 Top Tower", shortName: "T3 Top", lane: "Top", type: "tower", tier: 3, isRadiant: false, x: 70.9, y: 13.8 },
+  { id: "dire_rax_m_top", name: "Dire Melee Barracks (Top)", shortName: "Melee Rax", lane: "Top", type: "barracks", barracksType: "melee", isRadiant: false, x: 73.0, y: 12.0 },
+  { id: "dire_rax_r_top", name: "Dire Ranged Barracks (Top)", shortName: "Ranged Rax", lane: "Top", type: "barracks", barracksType: "ranged", isRadiant: false, x: 73.8, y: 14.5 },
 
   // Mid Lane
-  { id: "dire_t1_mid", name: "Dire Tier 1 Mid Tower", shortName: "T1 Mid", lane: "Mid", type: "tower", tier: 1, isRadiant: false, x: 54.0, y: 44.0 },
-  { id: "dire_t2_mid", name: "Dire Tier 2 Mid Tower", shortName: "T2 Mid", lane: "Mid", type: "tower", tier: 2, isRadiant: false, x: 63.0, y: 33.0 },
-  { id: "dire_t3_mid", name: "Dire Tier 3 Mid Tower", shortName: "T3 Mid", lane: "Mid", type: "tower", tier: 3, isRadiant: false, x: 72.0, y: 22.0 },
-  { id: "dire_rax_m_mid", name: "Dire Melee Barracks (Mid)", shortName: "Melee Rax", lane: "Mid", type: "barracks", barracksType: "melee", isRadiant: false, x: 75.0, y: 24.5 },
-  { id: "dire_rax_r_mid", name: "Dire Ranged Barracks (Mid)", shortName: "Ranged Rax", lane: "Mid", type: "barracks", barracksType: "ranged", isRadiant: false, x: 77.5, y: 26.0 },
+  { id: "dire_t1_mid", name: "Dire Tier 1 Mid Tower", shortName: "T1 Mid", lane: "Mid", type: "tower", tier: 1, isRadiant: false, x: 51.3, y: 45.8 },
+  { id: "dire_t2_mid", name: "Dire Tier 2 Mid Tower", shortName: "T2 Mid", lane: "Mid", type: "tower", tier: 2, isRadiant: false, x: 64.0, y: 36.5 },
+  { id: "dire_t3_mid", name: "Dire Tier 3 Mid Tower", shortName: "T3 Mid", lane: "Mid", type: "tower", tier: 3, isRadiant: false, x: 75.5, y: 26.0 },
+  { id: "dire_rax_m_mid", name: "Dire Melee Barracks (Mid)", shortName: "Melee Rax", lane: "Mid", type: "barracks", barracksType: "melee", isRadiant: false, x: 75.6, y: 23.8 },
+  { id: "dire_rax_r_mid", name: "Dire Ranged Barracks (Mid)", shortName: "Ranged Rax", lane: "Mid", type: "barracks", barracksType: "ranged", isRadiant: false, x: 78.1, y: 26.1 },
 
   // Bot Lane
-  { id: "dire_t1_bot", name: "Dire Tier 1 Bot Tower", shortName: "T1 Bot", lane: "Bot", type: "tower", tier: 1, isRadiant: false, x: 84.5, y: 56.5 },
-  { id: "dire_t2_bot", name: "Dire Tier 2 Bot Tower", shortName: "T2 Bot", lane: "Bot", type: "tower", tier: 2, isRadiant: false, x: 85.0, y: 45.5 },
-  { id: "dire_t3_bot", name: "Dire Tier 3 Bot Tower", shortName: "T3 Bot", lane: "Bot", type: "tower", tier: 3, isRadiant: false, x: 85.5, y: 27.5 },
-  { id: "dire_rax_m_bot", name: "Dire Melee Barracks (Bot)", shortName: "Melee Rax", lane: "Bot", type: "barracks", barracksType: "melee", isRadiant: false, x: 88.0, y: 28.5 },
-  { id: "dire_rax_r_bot", name: "Dire Ranged Barracks (Bot)", shortName: "Ranged Rax", lane: "Bot", type: "barracks", barracksType: "ranged", isRadiant: false, x: 90.0, y: 29.5 },
+  { id: "dire_t1_bot", name: "Dire Tier 1 Bot Tower", shortName: "T1 Bot", lane: "Bot", type: "tower", tier: 1, isRadiant: false, x: 88.3, y: 64.6 },
+  { id: "dire_t2_bot", name: "Dire Tier 2 Bot Tower", shortName: "T2 Bot", lane: "Bot", type: "tower", tier: 2, isRadiant: false, x: 89.3, y: 48.1 },
+  { id: "dire_t3_bot", name: "Dire Tier 3 Bot Tower", shortName: "T3 Bot", lane: "Bot", type: "tower", tier: 3, isRadiant: false, x: 88.9, y: 31.2 },
+  { id: "dire_rax_m_bot", name: "Dire Melee Barracks (Bot)", shortName: "Melee Rax", lane: "Bot", type: "barracks", barracksType: "melee", isRadiant: false, x: 90.3, y: 28.9 },
+  { id: "dire_rax_r_bot", name: "Dire Ranged Barracks (Bot)", shortName: "Ranged Rax", lane: "Bot", type: "barracks", barracksType: "ranged", isRadiant: false, x: 87.0, y: 28.7 },
 
   // Base Towers & Ancient
-  { id: "dire_t4_top", name: "Dire Tier 4 Tower (Top)", shortName: "T4 Top", lane: "Base", type: "t4", tier: 4, isRadiant: false, x: 77.5, y: 17.5 },
-  { id: "dire_t4_bot", name: "Dire Tier 4 Tower (Bot)", shortName: "T4 Bot", lane: "Base", type: "t4", tier: 4, isRadiant: false, x: 79.5, y: 20.0 },
-  { id: "dire_ancient", name: "Dire Ancient Fortress", shortName: "Ancient", lane: "Base", type: "ancient", isRadiant: false, x: 81.5, y: 17.5 },
+  { id: "dire_t4_top", name: "Dire Tier 4 Tower (Top)", shortName: "T4 Top", lane: "Base", type: "t4", tier: 4, isRadiant: false, x: 79.8, y: 19.6 },
+  { id: "dire_t4_bot", name: "Dire Tier 4 Tower (Bot)", shortName: "T4 Bot", lane: "Base", type: "t4", tier: 4, isRadiant: false, x: 82.0, y: 21.8 },
+  { id: "dire_ancient", name: "Dire Ancient Fortress", shortName: "Ancient", lane: "Base", type: "ancient", isRadiant: false, x: 83.3, y: 18.7 },
 ];
 
 function findStructureDestroyEvent(s: MapStructure, objectives: MatchObjectiveEvent[] = []) {
@@ -139,7 +140,7 @@ function findStructureDestroyEvent(s: MapStructure, objectives: MatchObjectiveEv
   });
 }
 
-// Authentic 3D Isometric Dota 2 Minimap Building
+// Authentic 3D Isometric Dota 2 Minimap Building (Pure isometric cubes as in Dota 2)
 function IsometricStructure({
   type,
   isRadiant,
@@ -151,22 +152,22 @@ function IsometricStructure({
   isAlive: boolean;
   isHovered?: boolean;
 }) {
-  let width = 10;
-  let height = 14;
-  let capH = 2.4;
+  let width = 11;
+  let height = 8;
+  let capH = 3.2;
 
   if (type === "t4") {
-    width = 11;
-    height = 16;
-    capH = 2.7;
+    width = 12;
+    height = 9;
+    capH = 3.5;
   } else if (type === "barracks") {
-    width = 8;
-    height = 5;
-    capH = 1.9;
+    width = 8.5;
+    height = 5.5;
+    capH = 2.4;
   } else if (type === "ancient") {
     width = 18;
-    height = 10;
-    capH = 4.2;
+    height = 12;
+    capH = 4.8;
   }
 
   const halfW = width / 2;
@@ -211,38 +212,17 @@ function IsometricStructure({
     );
   }
 
-  // Radiant: Pure neon green 3D isometric pillar (#00ff22, #00d618, #009e10)
-  // Dire: Jet black with neon red top & stroke (#ff0022, #0c0c0c, #161616, stroke: #ff0022)
-  // Dire T4: Glowing neon red pillars (#ff0022)
-  const isDireT4 = !isRadiant && type === "t4";
-
-  const topColor = isRadiant
-    ? "#00ff26"
-    : isDireT4
-    ? "#ff0026"
-    : "#ff0026";
-
-  const leftColor = isRadiant
-    ? "#00d618"
-    : isDireT4
-    ? "#ff0026"
-    : "#0c0c0c";
-
-  const rightColor = isRadiant
-    ? "#009e10"
-    : isDireT4
-    ? "#cc001e"
-    : "#161616";
-
-  const strokeColor = isRadiant
-    ? "#003b07"
-    : "#ff0026";
-
-  const strokeWidth = isRadiant ? 0.75 : 0.85;
+  // Radiant: Pure neon green 3D isometric cube
+  // Dire: Vibrant crimson red 3D isometric cube
+  const topColor = isRadiant ? "#2df540" : "#ff2a3f";
+  const leftColor = isRadiant ? "#12c224" : "#d60f24";
+  const rightColor = isRadiant ? "#0b8c18" : "#990616";
+  const strokeColor = isRadiant ? "#033308" : "#400008";
+  const strokeWidth = 0.8;
 
   const dropShadow = isRadiant
-    ? "drop-shadow(0 0 2.5px rgba(0, 255, 38, 0.9))"
-    : "drop-shadow(0 0 2.5px rgba(255, 0, 38, 0.9))";
+    ? "drop-shadow(0 0 2.5px rgba(45, 245, 64, 0.85))"
+    : "drop-shadow(0 0 2.5px rgba(255, 42, 63, 0.85))";
 
   const topPoints = `${halfW},0 ${width},${capH} ${halfW},${capH * 2} 0,${capH}`;
   const leftPoints = `0,${capH} ${halfW},${capH * 2} ${halfW},${totalH} 0,${totalH - capH}`;
@@ -728,7 +708,7 @@ export function MatchWardMap({ wards, durationSeconds, isParsed, objectives = []
                     <div
                       key={s.id}
                       style={{ left: `${s.x}%`, top: `${s.y}%` }}
-                      className={`absolute -translate-x-1/2 -translate-y-full cursor-pointer pointer-events-auto transition-transform duration-150 ${
+                      className={`absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer pointer-events-auto transition-transform duration-150 ${
                         isHovered ? "scale-140 z-30" : "hover:scale-125 z-15"
                       }`}
                       onMouseEnter={() => setHoveredStructure(s)}
