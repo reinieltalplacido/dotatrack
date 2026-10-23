@@ -14,7 +14,6 @@ import {
   ShieldAlert,
 } from "lucide-react";
 import { PlayerDashboardData } from "@/lib/opendota/types";
-import { MatchCalendar } from "./MatchCalendar";
 
 interface OverviewTabProps {
   data: PlayerDashboardData;
@@ -307,12 +306,6 @@ export function OverviewTab({
           </div>
         </div>
       </div>
-
-      {/* Match Activity Calendar (Daily Win/Loss History) */}
-      <MatchCalendar
-        dailyActivity={data.dailyActivity}
-        matchHistory={data.matchHistory}
-      />
 
       {/* Most Played Heroes Section */}
       <div className="tactical-panel p-5 rounded-sm border border-white/[0.08]">
