@@ -170,6 +170,16 @@ export interface MatchObjectiveEvent {
   };
 }
 
+export interface MatchWardDewardedBy {
+  heroId?: number;
+  heroName: string;
+  heroLocalizedName: string;
+  heroImg?: string;
+  playerName?: string;
+  isRadiant?: boolean;
+  isCreep?: boolean;
+}
+
 export interface MatchWardEvent {
   id: string;
   type: "observer" | "sentry";
@@ -187,6 +197,7 @@ export interface MatchWardEvent {
   heroLocalizedName: string;
   heroImg: string;
   isDewarded: boolean;
+  dewardedBy?: MatchWardDewardedBy;
 }
 
 export interface NormalizedMatchData {

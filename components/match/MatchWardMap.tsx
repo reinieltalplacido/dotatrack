@@ -17,6 +17,7 @@ import {
   CheckCircle2,
   Crosshair,
   Castle,
+  Swords,
 } from "lucide-react";
 import { MatchWardEvent, MatchObjectiveEvent } from "@/lib/opendota/match-types";
 
@@ -278,6 +279,7 @@ export function MatchWardMap({ wards, durationSeconds, isParsed, objectives = []
   const [teamFilter, setTeamFilter] = useState<TeamFilter>("all");
   const [typeFilter, setTypeFilter] = useState<TypeFilter>("all");
   const [showTowers, setShowTowers] = useState<boolean>(true);
+  const [sidebarTab, setSidebarTab] = useState<"active" | "dewards">("active");
   const [hoveredWard, setHoveredWard] = useState<MatchWardEvent | null>(null);
   const [hoveredStructure, setHoveredStructure] = useState<(MapStructure & { isAlive: boolean; destroyEvent?: MatchObjectiveEvent }) | null>(null);
 
@@ -343,6 +345,11 @@ export function MatchWardMap({ wards, durationSeconds, isParsed, objectives = []
       return currentTime >= w.time && currentTime <= w.leftTime;
     });
   }, [filteredWards, currentTime, viewMode]);
+
+  // All dewarded wards matching team and type filters
+  const dewardedWards = useMemo(() => {
+    return filteredWards.filter((w) => w.isDewarded).sort((a, b) => a.leftTime - b.leftTime);
+  }, [filteredWards]);
 
   // Structure status calculation based on objectives and timeline
   const structureStates = useMemo(() => {
@@ -914,6 +921,50 @@ export function MatchWardMap({ wards, durationSeconds, isParsed, objectives = []
                       {hoveredWard.isDewarded ? "Dewarded by Enemy" : "Natural Expiry"}
                     </span>
                   </div>
+
+                  {hoveredWard.isDewarded && (
+                    <div className="pt-1.5 mt-1 border-t border-white/[0.06] space-y-1 bg-black/40 -mx-2.5 px-2.5 py-1.5 rounded-b-xs">
+                      <div className="flex items-center justify-between text-[10px]">
+                        <span className="text-zinc-400 font-medium">Dewarded by:</span>
+                        {hoveredWard.dewardedBy ? (
+                          <div className="flex items-center gap-1.5">
+                            {hoveredWard.dewardedBy.heroImg && (
+                              <div className="relative h-4 w-6 rounded-xs overflow-hidden border border-rose-500/40 bg-black shrink-0">
+                                <Image
+                                  src={hoveredWard.dewardedBy.heroImg}
+                                  alt={hoveredWard.dewardedBy.heroLocalizedName}
+                                  fill
+                                  className="object-cover"
+                                  unoptimized
+                                />
+                              </div>
+                            )}
+                            <span
+                              className={`font-bold text-[10.5px] ${
+                                hoveredWard.dewardedBy.isRadiant ? "text-emerald-400" : "text-rose-400"
+                              }`}
+                            >
+                              {hoveredWard.dewardedBy.heroLocalizedName}
+                            </span>
+                          </div>
+                        ) : (
+                          <span className="text-rose-400 font-bold">Enemy Unit</span>
+                        )}
+                      </div>
+                      {hoveredWard.dewardedBy?.playerName && (
+                        <div className="flex items-center justify-between text-[9px] text-zinc-400">
+                          <span className="text-zinc-500">Player:</span>
+                          <span className="font-semibold text-zinc-300 truncate max-w-[120px]">
+                            {hoveredWard.dewardedBy.playerName}
+                          </span>
+                        </div>
+                      )}
+                      <div className="flex items-center justify-between text-[9px]">
+                        <span className="text-zinc-500">Fell at:</span>
+                        <span className="text-amber-400 font-bold">{hoveredWard.leftTimeFormatted}</span>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -1050,62 +1101,185 @@ export function MatchWardMap({ wards, durationSeconds, isParsed, objectives = []
             </p>
           </div>
 
-          {/* Active Wards Feed at Current Scrubber Time */}
+          {/* Wards & Dewards Feed Sidebar Panel */}
           <div className="tactical-panel p-4 rounded-sm border border-white/[0.08] bg-[#0A0C14]">
+            {/* Feed Tab Switcher */}
             <div className="flex items-center justify-between border-b border-white/[0.06] pb-2 mb-3">
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4 text-amber-400" />
-                <h3 className="text-xs font-mono font-bold text-white uppercase tracking-wider">
-                  Active Wards ({activeWards.length})
-                </h3>
+              <div className="flex items-center gap-1 bg-black/40 p-0.5 rounded-sm border border-white/[0.06]">
+                <button
+                  type="button"
+                  onClick={() => setSidebarTab("active")}
+                  className={`flex items-center gap-1.5 px-2.5 py-1 rounded-xs text-[11px] font-mono font-bold transition-all ${
+                    sidebarTab === "active"
+                      ? "bg-amber-600 text-white shadow-sm"
+                      : "text-zinc-400 hover:text-white"
+                  }`}
+                >
+                  <Clock className="h-3.5 w-3.5" />
+                  <span>Active ({activeWards.length})</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSidebarTab("dewards")}
+                  className={`flex items-center gap-1.5 px-2.5 py-1 rounded-xs text-[11px] font-mono font-bold transition-all ${
+                    sidebarTab === "dewards"
+                      ? "bg-rose-700 text-white shadow-sm"
+                      : "text-zinc-400 hover:text-white"
+                  }`}
+                >
+                  <Swords className="h-3.5 w-3.5" />
+                  <span>Dewarded ({dewardedWards.length})</span>
+                </button>
               </div>
-              <span className="text-[10px] font-mono text-zinc-500">at {formatTime(currentTime)}</span>
+              <span className="text-[10px] font-mono text-zinc-500">
+                {sidebarTab === "active" ? `at ${formatTime(currentTime)}` : "All Match"}
+              </span>
             </div>
 
-            {activeWards.length === 0 ? (
-              <div className="py-8 text-center text-xs font-mono text-zinc-500">
-                No active wards planted at this game time.
-              </div>
-            ) : (
-              <div className="space-y-2 max-h-[380px] overflow-y-auto pr-1 no-scrollbar">
-                {activeWards.map((w) => (
-                  <div
-                    key={w.id}
-                    onMouseEnter={() => setHoveredWard(w)}
-                    onMouseLeave={() => setHoveredWard(null)}
-                    className={`flex items-center justify-between gap-2.5 p-2 rounded-sm border transition-all cursor-pointer ${
-                      w.isRadiant
-                        ? "bg-emerald-950/20 border-emerald-900/40 hover:border-emerald-500/60"
-                        : "bg-rose-950/20 border-rose-900/40 hover:border-rose-500/60"
-                    } ${hoveredWard?.id === w.id ? "ring-1 ring-white" : ""}`}
-                  >
-                    <div className="flex items-center gap-2 min-w-0">
-                      <div className="relative h-6 w-9 rounded-xs overflow-hidden border border-white/[0.1] bg-black shrink-0">
-                        <Image
-                          src={w.heroImg}
-                          alt={w.heroLocalizedName}
-                          fill
-                          className="object-cover"
-                          unoptimized
-                        />
-                      </div>
-                      <div className="min-w-0">
-                        <div className="text-xs font-bold text-white truncate">
-                          {w.heroLocalizedName}
+            {/* Tab 1: Active Wards at Scrubber Time */}
+            {sidebarTab === "active" && (
+              activeWards.length === 0 ? (
+                <div className="py-8 text-center text-xs font-mono text-zinc-500">
+                  No active wards planted at this game time.
+                </div>
+              ) : (
+                <div className="space-y-2 max-h-[380px] overflow-y-auto pr-1 no-scrollbar">
+                  {activeWards.map((w) => (
+                    <div
+                      key={w.id}
+                      onMouseEnter={() => setHoveredWard(w)}
+                      onMouseLeave={() => setHoveredWard(null)}
+                      className={`flex items-center justify-between gap-2.5 p-2 rounded-sm border transition-all cursor-pointer ${
+                        w.isRadiant
+                          ? "bg-emerald-950/20 border-emerald-900/40 hover:border-emerald-500/60"
+                          : "bg-rose-950/20 border-rose-900/40 hover:border-rose-500/60"
+                      } ${hoveredWard?.id === w.id ? "ring-1 ring-white" : ""}`}
+                    >
+                      <div className="flex items-center gap-2 min-w-0">
+                        <div className="relative h-6 w-9 rounded-xs overflow-hidden border border-white/[0.1] bg-black shrink-0">
+                          <Image
+                            src={w.heroImg}
+                            alt={w.heroLocalizedName}
+                            fill
+                            className="object-cover"
+                            unoptimized
+                          />
                         </div>
-                        <div className="text-[10px] font-mono text-zinc-400">
-                          {w.type === "observer" ? "Observer Ward" : "Sentry Ward"}
+                        <div className="min-w-0">
+                          <div className="text-xs font-bold text-white truncate">
+                            {w.heroLocalizedName}
+                          </div>
+                          <div className="text-[10px] font-mono text-zinc-400">
+                            {w.type === "observer" ? "Observer Ward" : "Sentry Ward"}
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                    <div className="text-right shrink-0 text-[10px] font-mono">
-                      <div className="text-amber-400 font-bold">{w.timeFormatted}</div>
-                      <div className="text-zinc-500">{w.duration}s lifetime</div>
+                      <div className="text-right shrink-0 text-[10px] font-mono">
+                        <div className="text-amber-400 font-bold">{w.timeFormatted}</div>
+                        <div className="text-zinc-500">{w.duration}s lifetime</div>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )
+            )}
+
+            {/* Tab 2: Dewarded Wards Feed (Shows who dewarded it) */}
+            {sidebarTab === "dewards" && (
+              dewardedWards.length === 0 ? (
+                <div className="py-8 text-center text-xs font-mono text-zinc-500">
+                  No wards were dewarded matching active filters.
+                </div>
+              ) : (
+                <div className="space-y-2 max-h-[380px] overflow-y-auto pr-1 no-scrollbar">
+                  {dewardedWards.map((w) => (
+                    <div
+                      key={`deward-${w.id}`}
+                      onMouseEnter={() => setHoveredWard(w)}
+                      onMouseLeave={() => setHoveredWard(null)}
+                      onClick={() => {
+                        setCurrentTime(w.leftTime);
+                        if (isPlaying) setIsPlaying(false);
+                      }}
+                      title="Click to jump to deward moment on the timeline"
+                      className={`p-2 rounded-sm border transition-all cursor-pointer bg-black/40 hover:bg-black/60 ${
+                        hoveredWard?.id === w.id
+                          ? "border-rose-500 ring-1 ring-rose-500/40"
+                          : "border-white/[0.08] hover:border-white/[0.2]"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between gap-2 mb-1.5">
+                        {/* Ward Planter */}
+                        <div className="flex items-center gap-1.5 min-w-0">
+                          <div className="relative h-5 w-7 rounded-xs overflow-hidden border border-white/[0.1] bg-black shrink-0">
+                            <Image
+                              src={w.heroImg}
+                              alt={w.heroLocalizedName}
+                              fill
+                              className="object-cover"
+                              unoptimized
+                            />
+                          </div>
+                          <div className="min-w-0">
+                            <span className="text-[11px] font-bold text-white block truncate">
+                              {w.heroLocalizedName}
+                            </span>
+                            <span className="text-[9px] font-mono text-zinc-500">
+                              Planted {w.timeFormatted}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Swords / Versus Divider */}
+                        <div className="flex flex-col items-center shrink-0 px-1">
+                          <Swords className="h-3.5 w-3.5 text-rose-400" />
+                          <span className="text-[8px] font-mono text-rose-400/80 uppercase font-black">
+                            Dewarded
+                          </span>
+                        </div>
+
+                        {/* Dewarder / Killer */}
+                        <div className="flex items-center gap-1.5 min-w-0 justify-end text-right">
+                          <div className="min-w-0">
+                            <span
+                              className={`text-[11px] font-bold block truncate ${
+                                w.dewardedBy?.isRadiant ? "text-emerald-400" : "text-rose-400"
+                              }`}
+                            >
+                              {w.dewardedBy ? w.dewardedBy.heroLocalizedName : "Enemy Unit"}
+                            </span>
+                            <span className="text-[9px] font-mono text-amber-400 block">
+                              at {w.leftTimeFormatted}
+                            </span>
+                          </div>
+                          {w.dewardedBy?.heroImg && (
+                            <div className="relative h-5 w-7 rounded-xs overflow-hidden border border-rose-500/30 bg-black shrink-0">
+                              <Image
+                                src={w.dewardedBy.heroImg}
+                                alt={w.dewardedBy.heroLocalizedName}
+                                fill
+                                className="object-cover"
+                                unoptimized
+                              />
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Footer: duration and jump hint */}
+                      <div className="flex items-center justify-between text-[9px] font-mono text-zinc-500 pt-1 border-t border-white/[0.04]">
+                        <span>
+                          {w.type === "observer" ? "Observer" : "Sentry"} lived for {w.duration}s
+                        </span>
+                        <span className="text-zinc-400 hover:text-white flex items-center gap-1">
+                          Jump to {w.leftTimeFormatted} →
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )
             )}
           </div>
         </div>

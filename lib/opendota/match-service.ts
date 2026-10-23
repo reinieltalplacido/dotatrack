@@ -9,6 +9,7 @@ import {
   MatchTeamfight,
   MatchObjectiveEvent,
   MatchWardEvent,
+  MatchWardDewardedBy,
 } from "./match-types";
 import { getHeroById, formatGameMode, formatLobbyType, formatDuration } from "./heroes";
 import itemsSnapshot from "./items-snapshot.json";
@@ -999,17 +1000,57 @@ function extractMatchWards(
 
         const placeTime = Number(item.time) || 0;
         
-        // Find corresponding left log if available
+        // Find corresponding left log by ehandle, key, coordinate proximity, or timestamp
         let leftTime = placeTime + defaultDuration;
         let isDewarded = false;
+        let dewardedBy: MatchWardDewardedBy | undefined = undefined;
 
-        const matchingLeft = leftList.find(
-          (l) => l.time >= placeTime && l.time <= placeTime + defaultDuration + 10
-        );
+        const matchingLeft = leftList.find((l) => {
+          if (item.ehandle && l.ehandle && item.ehandle === l.ehandle) return true;
+          if (item.key && l.key && item.key === l.key && l.time >= placeTime) return true;
+          if (typeof item.x === "number" && typeof l.x === "number") {
+            return Math.abs(item.x - l.x) < 2 && Math.abs(item.y - l.y) < 2 && l.time >= placeTime;
+          }
+          return l.time >= placeTime && l.time <= placeTime + defaultDuration + 10;
+        });
 
         if (matchingLeft && typeof matchingLeft.time === "number") {
           leftTime = matchingLeft.time;
-          if (leftTime - placeTime < defaultDuration - 20) {
+          const attacker = matchingLeft.attackername ? String(matchingLeft.attackername) : "";
+
+          if (attacker) {
+            const killer = allPlayers.find((p) => p.heroName === attacker);
+            if (killer) {
+              isDewarded = true;
+              dewardedBy = {
+                heroId: killer.heroId,
+                heroName: killer.heroName,
+                heroLocalizedName: killer.heroLocalizedName,
+                heroImg: killer.heroImg,
+                playerName: killer.personaName,
+                isRadiant: killer.isRadiant,
+              };
+            } else if (attacker.includes("creep")) {
+              isDewarded = true;
+              const isRadCreep = attacker.includes("goodguys");
+              dewardedBy = {
+                heroName: attacker,
+                heroLocalizedName: isRadCreep ? "Radiant Creep" : "Dire Creep",
+                heroImg: isRadCreep ? "/images/map/goodguys_tower.png" : "/images/map/badguys_tower.png",
+                isRadiant: isRadCreep,
+                isCreep: true,
+              };
+            } else if (attacker.startsWith("npc_dota_hero_")) {
+              isDewarded = true;
+              const clean = attacker.replace("npc_dota_hero_", "").replace(/_/g, " ");
+              dewardedBy = {
+                heroName: attacker,
+                heroLocalizedName: clean.charAt(0).toUpperCase() + clean.slice(1),
+              };
+            }
+          }
+
+          if (!isDewarded && leftTime - placeTime < defaultDuration - 20) {
             isDewarded = true;
           }
         }
@@ -1037,6 +1078,7 @@ function extractMatchWards(
           heroLocalizedName: player.heroLocalizedName,
           heroImg: player.heroImg,
           isDewarded,
+          dewardedBy,
         });
       });
     };
