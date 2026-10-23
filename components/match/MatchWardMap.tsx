@@ -314,156 +314,61 @@ export function MatchWardMap({ wards, durationSeconds, isParsed }: MatchWardMapP
           </div>
 
           {/* Minimap Tactical Canvas Container */}
-          <div className="relative w-full aspect-square max-w-[560px] rounded-sm overflow-hidden border border-white/[0.12] shadow-2xl bg-[#0d1219]">
-            {/* SVG Tactical Map Geometry */}
+          <div className="relative w-full aspect-square max-w-[560px] rounded-sm overflow-hidden border border-white/[0.15] shadow-2xl bg-[#080B10]">
+            {/* Authentic Dota 2 Minimap Terrain */}
+            <picture className="absolute inset-0 w-full h-full pointer-events-none select-none">
+              <source srcSet="/images/map/dota_map.webp" type="image/webp" />
+              <img
+                src="/images/map/dota_map.jpg"
+                alt="Dota 2 Minimap Terrain"
+                className="w-full h-full object-cover"
+                loading="eager"
+              />
+            </picture>
+
+            {/* Tactical Map Vignette & Ambient Glow for high contrast */}
+            <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_28px_rgba(0,0,0,0.65)] ring-1 ring-inset ring-white/[0.08]" />
+
+            {/* SVG Overlay: Vision Heatmap & True Sight Fields */}
             <svg
               viewBox="0 0 100 100"
-              className="absolute inset-0 w-full h-full pointer-events-none select-none"
+              className="absolute inset-0 w-full h-full pointer-events-none select-none z-10"
             >
               <defs>
-                {/* River water gradient */}
-                <linearGradient id="riverGrad" x1="0%" y1="100%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#0B1E2E" stopOpacity="0.85" />
-                  <stop offset="50%" stopColor="#123B56" stopOpacity="0.9" />
-                  <stop offset="100%" stopColor="#0B1E2E" stopOpacity="0.85" />
-                </linearGradient>
-
-                {/* Radiant base glow */}
-                <radialGradient id="radBaseGlow" cx="15%" cy="85%" r="35%">
-                  <stop offset="0%" stopColor="#10B981" stopOpacity="0.3" />
-                  <stop offset="100%" stopColor="#10B981" stopOpacity="0" />
-                </radialGradient>
-
-                {/* Dire base glow */}
-                <radialGradient id="direBaseGlow" cx="85%" cy="15%" r="35%">
-                  <stop offset="0%" stopColor="#E11D48" stopOpacity="0.35" />
-                  <stop offset="100%" stopColor="#E11D48" stopOpacity="0" />
-                </radialGradient>
-
-                {/* Observer Vision Range Radial Gradient */}
+                {/* Radiant Observer Vision Gradient */}
                 <radialGradient id="obsRadVision" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stopColor="#10B981" stopOpacity="0.45" />
-                  <stop offset="60%" stopColor="#10B981" stopOpacity="0.2" />
+                  <stop offset="0%" stopColor="#10B981" stopOpacity="0.65" />
+                  <stop offset="50%" stopColor="#10B981" stopOpacity="0.3" />
                   <stop offset="100%" stopColor="#10B981" stopOpacity="0" />
                 </radialGradient>
 
+                {/* Dire Observer Vision Gradient */}
                 <radialGradient id="obsDireVision" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stopColor="#E11D48" stopOpacity="0.45" />
-                  <stop offset="60%" stopColor="#E11D48" stopOpacity="0.2" />
-                  <stop offset="100%" stopColor="#E11D48" stopOpacity="0" />
+                  <stop offset="0%" stopColor="#F43F5E" stopOpacity="0.65" />
+                  <stop offset="50%" stopColor="#F43F5E" stopOpacity="0.3" />
+                  <stop offset="100%" stopColor="#F43F5E" stopOpacity="0" />
                 </radialGradient>
 
                 {/* Sentry True Sight Radial Gradient */}
                 <radialGradient id="senVision" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stopColor="#38BDF8" stopOpacity="0.3" />
-                  <stop offset="70%" stopColor="#38BDF8" stopOpacity="0.1" />
+                  <stop offset="0%" stopColor="#38BDF8" stopOpacity="0.5" />
+                  <stop offset="65%" stopColor="#38BDF8" stopOpacity="0.18" />
                   <stop offset="100%" stopColor="#38BDF8" stopOpacity="0" />
                 </radialGradient>
               </defs>
-
-              {/* Map background grid */}
-              <rect x="0" y="0" width="100" height="100" fill="#0A0E17" />
-
-              {/* Radiant & Dire Base Ambient Glows */}
-              <rect x="0" y="0" width="100" height="100" fill="url(#radBaseGlow)" />
-              <rect x="0" y="0" width="100" height="100" fill="url(#direBaseGlow)" />
-
-              {/* Grid Lines */}
-              {[20, 40, 60, 80].map((coord) => (
-                <g key={`grid-${coord}`}>
-                  <line
-                    x1={coord}
-                    y1="0"
-                    x2={coord}
-                    y2="100"
-                    stroke="#ffffff"
-                    strokeOpacity="0.03"
-                    strokeWidth="0.5"
-                  />
-                  <line
-                    x1="0"
-                    y1={coord}
-                    x2="100"
-                    y2={coord}
-                    stroke="#ffffff"
-                    strokeOpacity="0.03"
-                    strokeWidth="0.5"
-                  />
-                </g>
-              ))}
-
-              {/* River Diagonal Cut */}
-              <polygon
-                points="0,20 18,0 42,0 100,58 100,82 82,100 58,100 0,42"
-                fill="url(#riverGrad)"
-              />
-              <path
-                d="M 10,32 Q 50,50 90,68"
-                fill="none"
-                stroke="#38BDF8"
-                strokeWidth="1.2"
-                strokeOpacity="0.3"
-                strokeDasharray="2 2"
-              />
-
-              {/* Lanes (Top, Mid, Bot) */}
-              {/* Mid Lane */}
-              <line
-                x1="16"
-                y1="84"
-                x2="84"
-                y2="16"
-                stroke="#64748B"
-                strokeOpacity="0.3"
-                strokeWidth="1.5"
-                strokeDasharray="1.5 1.5"
-              />
-              {/* Top Lane */}
-              <path
-                d="M 16,84 L 16,20 L 84,16"
-                fill="none"
-                stroke="#64748B"
-                strokeOpacity="0.3"
-                strokeWidth="1.2"
-                strokeDasharray="1.5 1.5"
-              />
-              {/* Bottom Lane */}
-              <path
-                d="M 16,84 L 84,80 L 84,16"
-                fill="none"
-                stroke="#64748B"
-                strokeOpacity="0.3"
-                strokeWidth="1.2"
-                strokeDasharray="1.5 1.5"
-              />
-
-              {/* Roshan Pit 1 (North-West) */}
-              <circle cx="28" cy="20" r="3.2" fill="#2E1015" stroke="#E11D48" strokeWidth="0.6" strokeOpacity="0.6" />
-              <text x="28" y="21" fill="#F43F5E" fontSize="2" fontFamily="monospace" textAnchor="middle" fontWeight="bold">R</text>
-
-              {/* Roshan Pit 2 (South-East) */}
-              <circle cx="72" cy="80" r="3.2" fill="#2E1015" stroke="#E11D48" strokeWidth="0.6" strokeOpacity="0.6" />
-              <text x="72" y="81" fill="#F43F5E" fontSize="2" fontFamily="monospace" textAnchor="middle" fontWeight="bold">R</text>
-
-              {/* Radiant Ancient Base Icon */}
-              <circle cx="16" cy="84" r="4.5" fill="#064E3B" stroke="#10B981" strokeWidth="0.8" />
-              <text x="16" y="85.2" fill="#A7F3D0" fontSize="2.2" fontFamily="monospace" textAnchor="middle" fontWeight="bold">RAD</text>
-
-              {/* Dire Ancient Base Icon */}
-              <circle cx="84" cy="16" r="4.5" fill="#881337" stroke="#E11D48" strokeWidth="0.8" />
-              <text x="84" y="17.2" fill="#FECDD3" fontSize="2.2" fontFamily="monospace" textAnchor="middle" fontWeight="bold">DIRE</text>
 
               {/* VIEW: Vision Heatmap Circles */}
               {viewMode === "heatmap" && (
                 <g>
                   {activeWards.map((ward) => {
                     const isObs = ward.type === "observer";
-                    const radius = isObs ? 14 : 9;
-                    const fillGrad = ward.type === "sentry"
-                      ? "url(#senVision)"
-                      : ward.isRadiant
-                      ? "url(#obsRadVision)"
-                      : "url(#obsDireVision)";
+                    const radius = isObs ? 13.5 : 8.5;
+                    const fillGrad =
+                      ward.type === "sentry"
+                        ? "url(#senVision)"
+                        : ward.isRadiant
+                        ? "url(#obsRadVision)"
+                        : "url(#obsDireVision)";
 
                     return (
                       <circle
@@ -481,7 +386,7 @@ export function MatchWardMap({ wards, durationSeconds, isParsed }: MatchWardMapP
             </svg>
 
             {/* Ward Pin Markers Layer */}
-            <div className="absolute inset-0">
+            <div className="absolute inset-0 z-20">
               {activeWards.map((ward) => {
                 const isHovered = hoveredWard?.id === ward.id;
                 const isObs = ward.type === "observer";
@@ -490,14 +395,14 @@ export function MatchWardMap({ wards, durationSeconds, isParsed }: MatchWardMapP
                   <div
                     key={ward.id}
                     style={{ left: `${ward.x}%`, top: `${ward.y}%` }}
-                    className="absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer z-10 transition-transform duration-150 hover:scale-125"
+                    className="absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer z-20 transition-transform duration-150 hover:scale-130 drop-shadow-[0_3px_5px_rgba(0,0,0,0.8)]"
                     onMouseEnter={() => setHoveredWard(ward)}
                     onMouseLeave={() => setHoveredWard(null)}
                   >
                     {/* Pulsing vision ring for active observer */}
                     {isObs && viewMode === "pins" && (
                       <div
-                        className={`absolute inset-0 rounded-full animate-ping opacity-30 ${
+                        className={`absolute inset-0 rounded-full animate-ping opacity-35 ${
                           ward.isRadiant ? "bg-emerald-400" : "bg-rose-500"
                         }`}
                         style={{ width: "24px", height: "24px", left: "-6px", top: "-6px" }}
@@ -506,13 +411,13 @@ export function MatchWardMap({ wards, durationSeconds, isParsed }: MatchWardMapP
 
                     {/* Ward Badge */}
                     <div
-                      className={`relative flex items-center justify-center rounded-full border shadow-lg transition-all ${
+                      className={`relative flex items-center justify-center rounded-full border shadow-xl transition-all ${
                         isObs
                           ? ward.isRadiant
-                            ? "h-4 w-4 bg-emerald-950 border-emerald-400 text-emerald-300"
-                            : "h-4 w-4 bg-rose-950 border-rose-400 text-rose-300"
-                          : "h-3.5 w-3.5 bg-sky-950 border-sky-400 text-sky-200"
-                      } ${isHovered ? "ring-2 ring-white ring-offset-1 ring-offset-black scale-125" : ""}`}
+                            ? "h-4.5 w-4.5 bg-emerald-950 border-emerald-400 text-emerald-300 ring-1 ring-black/80"
+                            : "h-4.5 w-4.5 bg-rose-950 border-rose-400 text-rose-300 ring-1 ring-black/80"
+                          : "h-4 w-4 bg-sky-950 border-sky-400 text-sky-200 ring-1 ring-black/80"
+                      } ${isHovered ? "ring-2 ring-white ring-offset-1 ring-offset-black scale-125 z-30" : ""}`}
                     >
                       {isObs ? (
                         <Eye className="h-2.5 w-2.5" />
@@ -522,8 +427,8 @@ export function MatchWardMap({ wards, durationSeconds, isParsed }: MatchWardMapP
 
                       {/* Dewarded Badge if destroyed */}
                       {ward.isDewarded && (
-                        <div className="absolute -bottom-1 -right-1 h-2 w-2 rounded-full bg-red-600 border border-black flex items-center justify-center">
-                          <span className="text-[6px] text-white font-black">×</span>
+                        <div className="absolute -bottom-1 -right-1 h-2.5 w-2.5 rounded-full bg-red-600 border border-black flex items-center justify-center">
+                          <span className="text-[7px] text-white font-black leading-none">×</span>
                         </div>
                       )}
                     </div>
