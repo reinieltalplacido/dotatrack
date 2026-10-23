@@ -2,25 +2,27 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { SteamIdSearch } from "./SteamIdSearch";
 import { MissionControlMockup } from "./landing/MissionControlMockup";
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden pt-14 pb-20 sm:pt-20 sm:pb-28">
-      {/* Aurora beam effects */}
-      <div className="aurora-beam" aria-hidden="true" />
-      <div className="aurora-slash" aria-hidden="true" />
-
-      {/* Dot matrix pattern */}
+    <section className="relative overflow-hidden pt-12 pb-16 sm:pt-18 sm:pb-24">
+      {/* Subtle radial ambient glow focused behind the card */}
       <div
-        className="absolute inset-0 bg-dot-matrix pointer-events-none opacity-40 [mask-image:radial-gradient(ellipse_at_top_right,black_30%,transparent_75%)]"
+        className="absolute top-1/4 right-0 w-[550px] h-[550px] bg-red-600/[0.08] blur-[120px] rounded-full pointer-events-none"
+        aria-hidden="true"
+      />
+
+      {/* Clean subtle dot matrix pattern */}
+      <div
+        className="absolute inset-0 bg-dot-matrix pointer-events-none opacity-20 [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_80%)]"
         aria-hidden="true"
       />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
 
           {/* Left Column: Hero Content & Search */}
           <motion.div
@@ -30,47 +32,49 @@ export function Hero() {
             className="lg:col-span-7 flex flex-col justify-center"
           >
             {/* Headline */}
-            <div className="relative mb-5">
+            <div className="relative mb-4">
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.08] text-white">
-                <span>Tactical Intelligence</span>
-                <span className="block mt-1 sm:mt-2 text-transparent bg-clip-text bg-gradient-to-r from-white via-red-100 to-red-500">
-                  for Dota 2
+                <span>Dota 2 Match Analysis,</span>
+                <span className="block mt-1 sm:mt-2">
+                  Hero Meta &amp; Player Stats
                 </span>
               </h1>
             </div>
 
             {/* Subtitle */}
-            <p className="text-sm sm:text-base lg:text-lg text-zinc-300 leading-relaxed max-w-2xl mb-8 font-sans">
-              Match history, win rates, hero builds, and gold advantage curves from public Dota 2 matchmaking data.
+            <p className="text-sm sm:text-base lg:text-lg text-zinc-300 leading-relaxed max-w-2xl mb-7 font-sans">
+              Inspect match timelines, gold advantage curves, and rank bracket meta divergence from verified public Dota 2 matchmaking data.
             </p>
 
-            {/* Quick CTAs Row */}
-            <div className="flex flex-wrap items-center gap-3 mb-8">
-              <a
-                href="#search-section"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-zinc-950 font-semibold text-xs sm:text-sm hover:bg-zinc-200 transition-all shadow-lg shadow-white/10 hover:scale-[1.02] cursor-pointer"
-              >
-                <span>Track Player Stats</span>
-              </a>
-
+            {/* Quick Explore Pills (Clean navigation, zero sparkles) */}
+            <div className="flex flex-wrap items-center gap-2.5 mb-7">
+              <span className="text-xs text-zinc-400 font-medium mr-1">Quick explore:</span>
               <Link
                 href="/meta-trends"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/[0.04] hover:bg-white/[0.08] text-white border border-white/[0.1] font-medium text-xs sm:text-sm transition-all hover:scale-[1.02]"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.04] hover:bg-white/[0.08] text-zinc-200 hover:text-white border border-white/[0.08] text-xs font-medium transition-all"
               >
-                <span>Explore Meta Trends</span>
-                <ArrowRight className="w-3.5 h-3.5 text-zinc-400" />
+                <span>Meta Trends</span>
+                <ArrowRight className="w-3 h-3 text-zinc-400" />
               </Link>
 
               <Link
-                href="/match-data"
-                className="inline-flex items-center gap-1.5 text-xs font-mono text-zinc-400 hover:text-rose-300 transition-colors ml-1"
+                href="/heroes"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.04] hover:bg-white/[0.08] text-zinc-200 hover:text-white border border-white/[0.08] text-xs font-medium transition-all"
               >
-                <Sparkles className="w-3.5 h-3.5 text-rose-500" />
-                <span>Advantage Curves</span>
+                <span>Hero Compendium</span>
+                <ArrowRight className="w-3 h-3 text-zinc-400" />
+              </Link>
+
+              <Link
+                href="/tournaments"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.04] hover:bg-white/[0.08] text-zinc-200 hover:text-white border border-white/[0.08] text-xs font-medium transition-all"
+              >
+                <span>Tournaments</span>
+                <ArrowRight className="w-3 h-3 text-zinc-400" />
               </Link>
             </div>
 
-            {/* Embedded Steam ID Search Station */}
+            {/* Embedded Steam ID Search Station - Primary Call to Action */}
             <div className="w-full max-w-xl">
               <SteamIdSearch />
             </div>
