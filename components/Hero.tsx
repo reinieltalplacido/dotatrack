@@ -8,12 +8,12 @@ import { MissionControlMockup } from "./landing/MissionControlMockup";
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden pt-12 pb-16 sm:pt-16 sm:pb-24">
-      {/* Parallel-inspired Diagonal Aurora Beam & Lights (Dota Red Theme) */}
+    <section className="relative overflow-hidden pt-14 pb-20 sm:pt-20 sm:pb-28">
+      {/* Aurora beam effects */}
       <div className="aurora-beam" aria-hidden="true" />
       <div className="aurora-slash" aria-hidden="true" />
 
-      {/* Ambient background glow & fine dot matrix */}
+      {/* Dot matrix pattern */}
       <div
         className="absolute inset-0 bg-dot-matrix pointer-events-none opacity-40 [mask-image:radial-gradient(ellipse_at_top_right,black_30%,transparent_75%)]"
         aria-hidden="true"
@@ -21,7 +21,7 @@ export function Hero() {
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-          
+
           {/* Left Column: Hero Content & Search */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -76,12 +76,12 @@ export function Hero() {
             </div>
           </motion.div>
 
-          {/* Right Column: 3D Angled Mission Control Mockup */}
+          {/* Right Column: 3D Card */}
           <motion.div
             initial={{ opacity: 0, x: 24, scale: 0.96 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
             transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-5 relative flex justify-center lg:justify-end"
+            className="lg:col-span-5 relative flex justify-center lg:justify-end [perspective:1200px]"
           >
             <MissionControlMockup />
           </motion.div>
