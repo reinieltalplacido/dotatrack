@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search, Clipboard, Share2, Check, Loader2, AlertCircle } from "lucide-react";
 
 interface MatchSearchHeaderProps {
@@ -13,6 +13,12 @@ export function MatchSearchHeader({ currentMatchId, onSearch, isLoading }: Match
   const [inputValue, setInputValue] = useState(currentMatchId || "");
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    if (currentMatchId) {
+      setInputValue(currentMatchId);
+    }
+  }, [currentMatchId]);
 
   // Extracts numeric Match ID from plain input or Dota 2 match URLs (dotabuff, opendota, stratz, steam)
   const extractMatchId = (raw: string): string | null => {

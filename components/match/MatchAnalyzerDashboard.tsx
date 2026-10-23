@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useCallback, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   Table,
   Swords,
@@ -29,6 +29,7 @@ import { MatchWardMap } from "./MatchWardMap";
 import { MatchSkeleton } from "./MatchSkeleton";
 
 interface MatchAnalyzerDashboardProps {
+  initialId?: string;
   initialMatch?: NormalizedMatchData | null;
   initialError?: string | null;
 }
@@ -44,29 +45,39 @@ type AnalysisTab =
   | "vision"
   | "advanced";
 
-export function MatchAnalyzerDashboard({ initialMatch, initialError }: MatchAnalyzerDashboardProps) {
+export function MatchAnalyzerDashboard({ initialId, initialMatch, initialError }: MatchAnalyzerDashboardProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const urlId = searchParams?.get("id")?.trim() || initialId || "";
+
   const [match, setMatch] = useState<NormalizedMatchData | null>(initialMatch || null);
   const [activeTab, setActiveTab] = useState<AnalysisTab>("scoreboard");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(!initialMatch && Boolean(urlId));
   const [error, setError] = useState<string | null>(initialError || null);
 
   const handleSearch = useCallback(async (matchId: string) => {
+    const cleanId = matchId.trim();
+    if (!cleanId) return;
+
     setIsLoading(true);
     setError(null);
 
     try {
-      const res = await fetch(`/api/matches/${matchId}`);
+      const res = await fetch(`/api/matches/${cleanId}`);
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || `Failed to fetch match ${matchId}`);
+        throw new Error(data.error || `Failed to fetch match ${cleanId}`);
       }
 
       setMatch(data);
       // Update browser URL query param without full reload
       if (typeof window !== "undefined") {
-        window.history.pushState(null, "", `/match-data?id=${matchId}`);
+        const currentUrl = new URL(window.location.href);
+        if (currentUrl.searchParams.get("id") !== cleanId) {
+          currentUrl.searchParams.set("id", cleanId);
+          window.history.pushState(null, "", currentUrl.toString());
+        }
       }
     } catch (err) {
       console.error("[MatchAnalyzer] Fetch failed:", err);
@@ -76,11 +87,75 @@ export function MatchAnalyzerDashboard({ initialMatch, initialError }: MatchAnal
     }
   }, []);
 
+  // Sync initialMatch if updated from server or props
+  useEffect(() => {
+    if (initialMatch) {
+      setMatch(initialMatch);
+      setIsLoading(false);
+      setError(null);
+    }
+  }, [initialMatch]);
+
+  // Sync initialError
+  useEffect(() => {
+    if (initialError && !match) {
+      setError(initialError);
+      setIsLoading(false);
+    }
+  }, [initialError, match]);
+
+  // Automatically fetch match data if an ID is present in URL or props and not yet loaded
+  useEffect(() => {
+    if (!urlId) return;
+
+    // Already loaded
+    if (match?.matchId === urlId) {
+      setIsLoading(false);
+      return;
+    }
+
+    // Server-provided initial match matches
+    if (initialMatch?.matchId === urlId) {
+      setMatch(initialMatch);
+      setIsLoading(false);
+      return;
+    }
+
+    // Trigger auto-fetch
+    let isCancelled = false;
+    setIsLoading(true);
+    setError(null);
+
+    fetch(`/api/matches/${urlId}`)
+      .then(async (res) => {
+        const data = await res.json();
+        if (isCancelled) return;
+        if (!res.ok) {
+          throw new Error(data.error || `Failed to fetch match ${urlId}`);
+        }
+        setMatch(data);
+      })
+      .catch((err) => {
+        if (isCancelled) return;
+        console.error("[MatchAnalyzer] Auto-load failed:", err);
+        setError(err instanceof Error ? err.message : "Failed to load match details");
+      })
+      .finally(() => {
+        if (!isCancelled) {
+          setIsLoading(false);
+        }
+      });
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [urlId, match?.matchId, initialMatch]);
+
   return (
     <div className="max-w-7xl 2xl:max-w-[1560px] 3xl:max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 relative">
       {/* Match Search Input */}
       <MatchSearchHeader
-        currentMatchId={match?.matchId}
+        currentMatchId={match?.matchId || urlId}
         onSearch={handleSearch}
         isLoading={isLoading}
       />

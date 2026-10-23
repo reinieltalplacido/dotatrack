@@ -1,8 +1,9 @@
 import { Metadata } from "next";
-import { connection } from "next/server";
+import { Suspense } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { MatchAnalyzerDashboard } from "@/components/match/MatchAnalyzerDashboard";
+import { MatchSkeleton } from "@/components/match/MatchSkeleton";
 import { getMatchAnalysis } from "@/lib/opendota/match-service";
 import { NormalizedMatchData } from "@/lib/opendota/match-types";
 
@@ -17,8 +18,6 @@ interface MatchDataPageProps {
 }
 
 export default async function MatchDataPage({ searchParams }: MatchDataPageProps) {
-  await connection();
-
   const { id } = await searchParams;
   const targetId = id?.trim();
 
@@ -38,10 +37,19 @@ export default async function MatchDataPage({ searchParams }: MatchDataPageProps
     <div className="min-h-screen bg-[#08090C] text-[#EDEDF0] flex flex-col font-sans">
       <Navbar />
       <main className="flex-1 esports-grid">
-        <MatchAnalyzerDashboard
-          initialMatch={initialMatch}
-          initialError={initialError}
-        />
+        <Suspense
+          fallback={
+            <div className="max-w-7xl 2xl:max-w-[1560px] 3xl:max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 relative">
+              <MatchSkeleton />
+            </div>
+          }
+        >
+          <MatchAnalyzerDashboard
+            initialId={targetId}
+            initialMatch={initialMatch}
+            initialError={initialError}
+          />
+        </Suspense>
       </main>
       <Footer />
     </div>
