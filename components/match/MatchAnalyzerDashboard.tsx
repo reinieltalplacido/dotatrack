@@ -108,7 +108,7 @@ export function MatchAnalyzerDashboard({ initialMatch, initialError }: MatchAnal
           />
 
           {/* Analysis Navigation Tabs */}
-          <div className="flex flex-wrap items-center gap-1.5 mb-8 border-b border-white/[0.08] pb-3 text-xs font-mono">
+          <div className="flex items-center gap-1.5 mb-8 border-b border-white/[0.08] pb-3 text-xs font-mono overflow-x-auto no-scrollbar whitespace-nowrap scroll-smooth">
             <TabButton
               active={activeTab === "scoreboard"}
               onClick={() => setActiveTab("scoreboard")}
@@ -237,7 +237,7 @@ function TabButton({
   return (
     <button
       onClick={onClick}
-      className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-sm border transition-all cursor-pointer ${
+      className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-sm border transition-all cursor-pointer shrink-0 min-h-[40px] text-xs font-mono font-medium ${
         active
           ? "bg-rose-600 text-white font-bold border-rose-500 shadow-md shadow-rose-950/50"
           : "bg-zinc-950/80 text-zinc-400 hover:text-white border-white/[0.06] hover:border-white/[0.15]"

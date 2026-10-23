@@ -122,12 +122,21 @@ export function Navbar() {
           </button>
         </div>
 
-        {/* Mobile menu button */}
-        <div className="flex md:hidden">
+        {/* Mobile quick actions (Search + Hamburger) */}
+        <div className="flex md:hidden items-center gap-1">
+          <button
+            type="button"
+            onClick={() => setSearchModalOpen(true)}
+            className="inline-flex items-center justify-center rounded p-2.5 text-zinc-300 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 min-h-[44px] min-w-[44px] cursor-pointer"
+            aria-label="Open search dialog"
+          >
+            <Search className="h-4 w-4" aria-hidden="true" />
+          </button>
+
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="inline-flex items-center justify-center rounded p-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20"
+            className="inline-flex items-center justify-center rounded p-2.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20 min-h-[44px] min-w-[44px] cursor-pointer"
             style={{ color: "var(--lp-fg)" }}
             aria-expanded={mobileMenuOpen}
             aria-label="Toggle navigation menu"
@@ -141,46 +150,53 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile drawer */}
+      {/* Mobile drawer with backdrop */}
       {mobileMenuOpen && (
-        <div
-          className="md:hidden px-4 pt-3 pb-5 space-y-2"
-          style={{
-            borderBottom: "1px solid var(--lp-border)",
-            backgroundColor: "var(--lp-bg)",
-          }}
-        >
-          {navLinks.map((link) => {
-            const isActive = pathname === link.href || (link.href === "/heroes" && pathname === "/hero");
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className="block rounded px-3 py-2 text-sm transition-opacity"
-                style={{
-                  color: isActive ? "var(--lp-fg-strong)" : "var(--lp-fg)",
-                  opacity: isActive ? 1 : 0.6,
-                  fontWeight: isActive ? 600 : 400,
-                  backgroundColor: isActive ? "rgba(255,255,255,0.04)" : "transparent",
-                }}
+        <>
+          <div
+            className="fixed inset-0 top-14 bg-black/60 backdrop-blur-xs z-40 md:hidden"
+            onClick={() => setMobileMenuOpen(false)}
+            aria-hidden="true"
+          />
+          <div
+            className="relative z-50 md:hidden px-4 pt-3 pb-5 space-y-1"
+            style={{
+              borderBottom: "1px solid var(--lp-border)",
+              backgroundColor: "var(--lp-bg)",
+            }}
+          >
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href || (link.href === "/heroes" && pathname === "/hero");
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center rounded-sm px-3.5 py-2.5 text-sm font-medium transition-all active:scale-[0.99] min-h-[44px]"
+                  style={{
+                    color: isActive ? "var(--lp-fg-strong)" : "var(--lp-fg)",
+                    opacity: isActive ? 1 : 0.75,
+                    fontWeight: isActive ? 600 : 400,
+                    backgroundColor: isActive ? "rgba(255,255,255,0.06)" : "transparent",
+                  }}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+            <div className="pt-2">
+              <button
+                type="button"
+                onClick={handleTrackPlayerClick}
+                className="flex w-full items-center justify-center gap-2 rounded px-4 py-3 text-sm font-medium text-white cursor-pointer min-h-[44px] active:scale-[0.99]"
+                style={{ backgroundColor: "var(--lp-accent)" }}
               >
-                {link.label}
-              </Link>
-            );
-          })}
-          <div className="pt-2">
-            <button
-              type="button"
-              onClick={handleTrackPlayerClick}
-              className="flex w-full items-center justify-center gap-2 rounded px-4 py-2.5 text-sm font-medium text-white cursor-pointer"
-              style={{ backgroundColor: "var(--lp-accent)" }}
-            >
-              <Search className="h-3.5 w-3.5" aria-hidden="true" />
-              <span>Track player</span>
-            </button>
+                <Search className="h-3.5 w-3.5" aria-hidden="true" />
+                <span>Track player</span>
+              </button>
+            </div>
           </div>
-        </div>
+        </>
       )}
 
       <SearchModal

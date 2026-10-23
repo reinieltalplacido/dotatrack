@@ -43,17 +43,17 @@ export function OverviewTab({
       )}
 
       {/* Primary KPI Metrics Strip */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3">
         {/* Total Matches */}
-        <div className="tactical-panel p-4 rounded-sm border border-white/[0.08]">
-          <div className="flex items-center justify-between text-xs font-mono text-zinc-400">
+        <div className="tactical-panel p-3 sm:p-4 rounded-sm border border-white/[0.08]">
+          <div className="flex items-center justify-between text-[11px] sm:text-xs font-mono text-zinc-400">
             <span>TOTAL MATCHES</span>
             <Activity className="h-3.5 w-3.5 text-zinc-500" />
           </div>
-          <div className="mt-2 text-2xl font-mono font-black text-white">
+          <div className="mt-1.5 sm:mt-2 text-xl sm:text-2xl font-mono font-black text-white">
             {lifetime.totalMatches.toLocaleString()}
           </div>
-          <div className="mt-1 flex items-center justify-between text-[11px] font-mono text-zinc-400 border-t border-white/[0.04] pt-1.5">
+          <div className="mt-1 flex items-center justify-between text-[10px] sm:text-[11px] font-mono text-zinc-400 border-t border-white/[0.04] pt-1.5">
             <span className="text-zinc-500">Record:</span>
             <span>
               <strong className="text-emerald-400">{lifetime.wins.toLocaleString()}W</strong> -{" "}
@@ -63,52 +63,52 @@ export function OverviewTab({
         </div>
 
         {/* Lifetime Win Rate */}
-        <div className="tactical-panel p-4 rounded-sm border border-white/[0.08]">
-          <div className="flex items-center justify-between text-xs font-mono text-zinc-400">
+        <div className="tactical-panel p-3 sm:p-4 rounded-sm border border-white/[0.08]">
+          <div className="flex items-center justify-between text-[11px] sm:text-xs font-mono text-zinc-400">
             <span>LIFETIME WIN RATE</span>
             <Award className="h-3.5 w-3.5 text-zinc-500" />
           </div>
           <div
-            className={`mt-2 text-2xl font-mono font-black ${
+            className={`mt-1.5 sm:mt-2 text-xl sm:text-2xl font-mono font-black ${
               lifetime.winRate >= 50 ? "text-emerald-400" : "text-rose-400"
             }`}
           >
             {lifetime.winRate > 0 ? `${lifetime.winRate}%` : "N/A"}
           </div>
-          <div className="mt-1 text-[11px] font-mono text-zinc-500 border-t border-white/[0.04] pt-1.5">
-            Computed from all public matches
+          <div className="mt-1 text-[10px] sm:text-[11px] font-mono text-zinc-500 border-t border-white/[0.04] pt-1.5 truncate">
+            All public matches
           </div>
         </div>
 
         {/* Recent Average KDA */}
-        <div className="tactical-panel p-4 rounded-sm border border-white/[0.08]">
-          <div className="flex items-center justify-between text-xs font-mono text-zinc-400">
+        <div className="tactical-panel p-3 sm:p-4 rounded-sm border border-white/[0.08]">
+          <div className="flex items-center justify-between text-[11px] sm:text-xs font-mono text-zinc-400">
             <span>RECENT AVG KDA</span>
             <Crosshair className="h-3.5 w-3.5 text-zinc-500" />
           </div>
-          <div className="mt-2 text-2xl font-mono font-black text-amber-400">
+          <div className="mt-1.5 sm:mt-2 text-lg sm:text-2xl font-mono font-black text-amber-400 truncate">
             {recentSummary.avgKills} / {recentSummary.avgDeaths} / {recentSummary.avgAssists}
           </div>
-          <div className="mt-1 flex items-center justify-between text-[11px] font-mono text-zinc-400 border-t border-white/[0.04] pt-1.5">
+          <div className="mt-1 flex items-center justify-between text-[10px] sm:text-[11px] font-mono text-zinc-400 border-t border-white/[0.04] pt-1.5">
             <span className="text-zinc-500">Ratio:</span>
             <span className="text-zinc-200 font-bold">{recentSummary.kdaRatio} KDA</span>
-            <span className="text-rose-400 text-[10px]">({sample} matches)</span>
+            <span className="text-rose-400 text-[10px]">({sample}m)</span>
           </div>
         </div>
 
         {/* Recent GPM / XPM */}
-        <div className="tactical-panel p-4 rounded-sm border border-white/[0.08]">
-          <div className="flex items-center justify-between text-xs font-mono text-zinc-400">
+        <div className="tactical-panel p-3 sm:p-4 rounded-sm border border-white/[0.08]">
+          <div className="flex items-center justify-between text-[11px] sm:text-xs font-mono text-zinc-400">
             <span>RECENT GPM / XPM</span>
             <Coins className="h-3.5 w-3.5 text-zinc-500" />
           </div>
-          <div className="mt-2 text-2xl font-mono font-black text-zinc-100">
+          <div className="mt-1.5 sm:mt-2 text-xl sm:text-2xl font-mono font-black text-zinc-100">
             <span className="text-amber-400">{recentSummary.avgGpm}</span>{" "}
-            <span className="text-zinc-600 text-lg">/</span>{" "}
+            <span className="text-zinc-600 text-base sm:text-lg">/</span>{" "}
             <span className="text-blue-400">{recentSummary.avgXpm}</span>
           </div>
-          <div className="mt-1 text-[11px] font-mono text-zinc-500 border-t border-white/[0.04] pt-1.5">
-            Sample window: last {sample} matches
+          <div className="mt-1 text-[10px] sm:text-[11px] font-mono text-zinc-500 border-t border-white/[0.04] pt-1.5 truncate">
+            Last {sample} matches
           </div>
         </div>
       </div>
@@ -331,7 +331,7 @@ export function OverviewTab({
             No hero match records found.
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
             {topHeroes.map((hero) => (
               <div
                 key={hero.heroId}
@@ -467,7 +467,7 @@ export function OverviewTab({
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between sm:justify-end gap-6 text-xs font-mono">
+                <div className="flex items-center justify-between sm:justify-end gap-3 sm:gap-6 text-xs font-mono">
                   <div>
                     <span className="text-zinc-500 text-[10px] block">K / D / A</span>
                     <span className="font-bold text-zinc-200">{match.kda}</span>

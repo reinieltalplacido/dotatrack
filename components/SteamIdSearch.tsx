@@ -218,7 +218,7 @@ export function SteamIdSearch({ onSearchSubmit, autoNavigate = true }: SteamIdSe
             <button
               type="submit"
               disabled={isLoading}
-              className="mt-2 sm:mt-0 flex items-center justify-center gap-2 rounded px-6 py-3 sm:py-2.5 text-sm font-semibold text-white transition-all active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 shrink-0"
+              className="mt-2 sm:mt-0 flex items-center justify-center gap-2 rounded px-6 py-3 sm:py-2.5 text-sm font-semibold text-white transition-all active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 shrink-0 w-full sm:w-auto min-h-[44px]"
               style={{
                 backgroundColor: "var(--lp-accent)",
               }}
@@ -331,7 +331,7 @@ export function SteamIdSearch({ onSearchSubmit, autoNavigate = true }: SteamIdSe
             type="button"
             disabled={isLoading}
             onClick={() => setProModalOpen(true)}
-            className="inline-flex items-center gap-1.5 rounded px-2.5 py-1 text-xs font-medium transition-all cursor-pointer active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="inline-flex items-center gap-1.5 rounded px-3 py-1.5 min-h-[38px] text-xs font-medium transition-all cursor-pointer active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
             style={{
               backgroundColor: "rgba(212, 54, 75, 0.12)",
               border: "1px solid rgba(212, 54, 75, 0.25)",

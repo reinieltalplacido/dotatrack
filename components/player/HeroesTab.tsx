@@ -38,16 +38,16 @@ export function HeroesTab({ heroes }: HeroesTabProps) {
     <div className="space-y-4">
       {/* Control Bar: Search, Attribute Filter, and Sort */}
       <div className="flex flex-wrap items-center justify-between gap-3 tactical-panel p-3.5 rounded-sm border border-white/[0.08]">
-        <div className="flex flex-wrap items-center gap-3 flex-1 min-w-[280px]">
+        <div className="flex flex-wrap items-center gap-3 flex-1 w-full sm:w-auto min-w-0">
           {/* Search Box */}
-          <div className="relative flex-1 max-w-xs">
+          <div className="relative flex-1 w-full sm:max-w-xs min-w-0">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-zinc-500" />
             <input
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Filter by hero name..."
-              className="w-full bg-[#0A0C12] border border-white/[0.1] rounded-sm pl-9 pr-3 py-1.5 text-xs font-mono text-white placeholder-zinc-500 focus:outline-none focus:border-rose-500"
+              className="w-full bg-[#0A0C12] border border-white/[0.1] rounded-sm pl-9 pr-3 py-2 sm:py-1.5 text-xs font-mono text-white placeholder-zinc-500 focus:outline-none focus:border-rose-500 min-h-[38px] sm:min-h-0"
             />
           </div>
 
@@ -56,7 +56,7 @@ export function HeroesTab({ heroes }: HeroesTabProps) {
             <button
               type="button"
               onClick={() => setAttrFilter("all")}
-              className={`rounded-sm px-2.5 py-1 transition-colors ${
+              className={`rounded-sm px-2.5 py-1.5 sm:py-1 min-h-[34px] sm:min-h-0 transition-colors ${
                 attrFilter === "all"
                   ? "bg-rose-600 text-white font-bold"
                   : "bg-zinc-900 text-zinc-400 hover:text-white"
@@ -67,7 +67,7 @@ export function HeroesTab({ heroes }: HeroesTabProps) {
             <button
               type="button"
               onClick={() => setAttrFilter("str")}
-              className={`rounded-sm px-2.5 py-1 transition-colors ${
+              className={`rounded-sm px-2.5 py-1.5 sm:py-1 min-h-[34px] sm:min-h-0 transition-colors ${
                 attrFilter === "str"
                   ? "bg-red-700 text-white font-bold"
                   : "bg-zinc-900 text-red-400 hover:text-white"
@@ -78,7 +78,7 @@ export function HeroesTab({ heroes }: HeroesTabProps) {
             <button
               type="button"
               onClick={() => setAttrFilter("agi")}
-              className={`rounded-sm px-2.5 py-1 transition-colors ${
+              className={`rounded-sm px-2.5 py-1.5 sm:py-1 min-h-[34px] sm:min-h-0 transition-colors ${
                 attrFilter === "agi"
                   ? "bg-emerald-700 text-white font-bold"
                   : "bg-zinc-900 text-emerald-400 hover:text-white"
@@ -89,7 +89,7 @@ export function HeroesTab({ heroes }: HeroesTabProps) {
             <button
               type="button"
               onClick={() => setAttrFilter("int")}
-              className={`rounded-sm px-2.5 py-1 transition-colors ${
+              className={`rounded-sm px-2.5 py-1.5 sm:py-1 min-h-[34px] sm:min-h-0 transition-colors ${
                 attrFilter === "int"
                   ? "bg-blue-700 text-white font-bold"
                   : "bg-zinc-900 text-blue-400 hover:text-white"
@@ -100,7 +100,7 @@ export function HeroesTab({ heroes }: HeroesTabProps) {
             <button
               type="button"
               onClick={() => setAttrFilter("all_attr")}
-              className={`rounded-sm px-2.5 py-1 transition-colors ${
+              className={`rounded-sm px-2.5 py-1.5 sm:py-1 min-h-[34px] sm:min-h-0 transition-colors ${
                 attrFilter === "all_attr"
                   ? "bg-purple-700 text-white font-bold"
                   : "bg-zinc-900 text-purple-400 hover:text-white"
@@ -112,13 +112,13 @@ export function HeroesTab({ heroes }: HeroesTabProps) {
         </div>
 
         {/* Sorting Dropdown/Buttons */}
-        <div className="flex items-center gap-2 text-xs font-mono">
+        <div className="flex items-center gap-1.5 sm:gap-2 text-xs font-mono">
           <ArrowUpDown className="h-3.5 w-3.5 text-zinc-400" />
-          <span className="text-zinc-500 uppercase text-[10px]">Sort by:</span>
+          <span className="text-zinc-500 uppercase text-[10px]">Sort:</span>
           <button
             type="button"
             onClick={() => setSortBy("games")}
-            className={`rounded-sm px-2 py-1 ${
+            className={`rounded-sm px-2 py-1.5 sm:py-1 min-h-[34px] sm:min-h-0 ${
               sortBy === "games"
                 ? "bg-white/[0.1] text-white font-bold border border-white/[0.15]"
                 : "text-zinc-400 hover:text-zinc-200"
@@ -129,7 +129,7 @@ export function HeroesTab({ heroes }: HeroesTabProps) {
           <button
             type="button"
             onClick={() => setSortBy("winRate")}
-            className={`rounded-sm px-2 py-1 ${
+            className={`rounded-sm px-2 py-1.5 sm:py-1 min-h-[34px] sm:min-h-0 ${
               sortBy === "winRate"
                 ? "bg-white/[0.1] text-white font-bold border border-white/[0.15]"
                 : "text-zinc-400 hover:text-zinc-200"
@@ -140,7 +140,7 @@ export function HeroesTab({ heroes }: HeroesTabProps) {
           <button
             type="button"
             onClick={() => setSortBy("win")}
-            className={`rounded-sm px-2 py-1 ${
+            className={`rounded-sm px-2 py-1.5 sm:py-1 min-h-[34px] sm:min-h-0 ${
               sortBy === "win"
                 ? "bg-white/[0.1] text-white font-bold border border-white/[0.15]"
                 : "text-zinc-400 hover:text-zinc-200"

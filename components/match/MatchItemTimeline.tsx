@@ -19,7 +19,7 @@ export function MatchItemTimeline({ players, isParsed }: MatchItemTimelineProps)
   const inGamePurchases = selectedPlayer?.purchaseLog.filter((item) => !item.isStartingItem) || [];
 
   return (
-    <div className="tactical-panel p-6 rounded-sm border border-white/[0.08] mb-8">
+    <div className="tactical-panel p-4 sm:p-6 rounded-sm border border-white/[0.08] mb-8">
       {/* Section Header */}
       <div className="flex flex-wrap items-center justify-between gap-4 mb-6 border-b border-white/[0.06] pb-4">
         <div>
@@ -49,7 +49,7 @@ export function MatchItemTimeline({ players, isParsed }: MatchItemTimelineProps)
       ) : (
         <>
           {/* Player Selector Tabs */}
-          <div className="flex flex-wrap items-center gap-1.5 mb-6 pb-2 border-b border-white/[0.04]">
+          <div className="flex items-center gap-1.5 mb-6 pb-2 border-b border-white/[0.04] overflow-x-auto no-scrollbar whitespace-nowrap">
             {players.map((p) => {
               const isSelected = p.playerSlot === selectedPlayerSlot;
               const teamBorder = p.isRadiant ? "border-emerald-500/40" : "border-rose-500/40";
@@ -59,7 +59,7 @@ export function MatchItemTimeline({ players, isParsed }: MatchItemTimelineProps)
                 <button
                   key={p.playerSlot}
                   onClick={() => setSelectedPlayerSlot(p.playerSlot)}
-                  className={`flex items-center gap-2 px-2.5 py-1.5 rounded-sm border transition-all cursor-pointer ${
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-sm border transition-all cursor-pointer shrink-0 min-h-[38px] ${
                     isSelected
                       ? `${teamActiveBg} ${teamBorder} text-white font-bold`
                       : "bg-zinc-950 border-white/[0.06] text-zinc-400 hover:text-white"

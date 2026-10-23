@@ -124,12 +124,20 @@ export function HeroDetailDrawer({
   const AttrIcon = attrMeta.icon;
 
   return (
-    <div
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="hero-drawer-title"
-      className="fixed inset-y-0 right-0 z-50 w-full max-w-2xl bg-[#090A10]/95 backdrop-blur-xl border-l border-white/[0.12] shadow-2xl flex flex-col transition-all duration-300"
-    >
+    <>
+      {/* Backdrop overlay */}
+      <div
+        className="fixed inset-0 bg-black/70 backdrop-blur-xs z-50 transition-opacity"
+        onClick={onClose}
+        aria-hidden="true"
+      />
+
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="hero-drawer-title"
+        className="fixed inset-y-0 right-0 z-50 w-full max-w-2xl bg-[#090A10]/95 backdrop-blur-xl border-l border-white/[0.12] shadow-2xl flex flex-col transition-all duration-300"
+      >
       {/* Top Action Bar */}
       <div className="flex items-center justify-between px-5 py-3 border-b border-white/[0.08] bg-[#0D0F18]/80">
         <div className="flex items-center gap-2">
@@ -166,7 +174,7 @@ export function HeroDetailDrawer({
       </div>
 
       {/* Scrollable Content Body */}
-      <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-6">
+      <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
         {/* Hero Banner Header */}
         <div className="relative rounded-sm border border-white/[0.1] overflow-hidden bg-gradient-to-b from-[#141724] to-[#0A0C14] p-5">
           <div className="flex flex-col sm:flex-row gap-5 items-start sm:items-center">
@@ -589,5 +597,6 @@ export function HeroDetailDrawer({
         </div>
       </div>
     </div>
+  </>
   );
 }

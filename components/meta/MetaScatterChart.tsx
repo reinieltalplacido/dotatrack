@@ -111,9 +111,9 @@ export function MetaScatterChart({ heroes, totalMatches, onSelectHero }: MetaSca
   };
 
   return (
-    <div className="tactical-panel p-6 rounded-sm border border-white/[0.08] mb-8">
+    <div className="tactical-panel p-4 sm:p-6 rounded-sm border border-white/[0.08] mb-6 sm:mb-8">
       {/* Chart Top Controls */}
-      <div className="flex flex-wrap items-center justify-between gap-4 mb-6 border-b border-white/[0.06] pb-4">
+      <div className="flex flex-wrap items-center justify-between gap-4 mb-5 sm:mb-6 border-b border-white/[0.06] pb-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="text-sm font-mono font-bold text-white tracking-wider uppercase flex items-center gap-2">
@@ -127,37 +127,37 @@ export function MetaScatterChart({ heroes, totalMatches, onSelectHero }: MetaSca
         </div>
 
         {/* View Mode Toggle */}
-        <div className="flex items-center gap-2">
-          <div className="inline-flex rounded-sm bg-zinc-900 border border-white/[0.08] p-0.5">
+        <div className="w-full sm:w-auto">
+          <div className="grid grid-cols-3 sm:inline-flex w-full sm:w-auto rounded-sm bg-zinc-900 border border-white/[0.08] p-0.5">
             <button
               onClick={() => setViewMode("scatter")}
-              className={`px-3 py-1 text-xs font-mono rounded-sm transition-colors cursor-pointer ${
+              className={`px-2.5 sm:px-3 py-1.5 sm:py-1 text-center min-h-[36px] sm:min-h-0 text-xs font-mono rounded-sm transition-colors cursor-pointer ${
                 viewMode === "scatter"
                   ? "bg-rose-600 text-white font-bold"
                   : "text-zinc-400 hover:text-white"
               }`}
             >
-              Scatter Matrix
+              Scatter
             </button>
             <button
               onClick={() => setViewMode("wr_leaders")}
-              className={`px-3 py-1 text-xs font-mono rounded-sm transition-colors cursor-pointer ${
+              className={`px-2.5 sm:px-3 py-1.5 sm:py-1 text-center min-h-[36px] sm:min-h-0 text-xs font-mono rounded-sm transition-colors cursor-pointer ${
                 viewMode === "wr_leaders"
                   ? "bg-rose-600 text-white font-bold"
                   : "text-zinc-400 hover:text-white"
               }`}
             >
-              Top Win Rate
+              Top WR
             </button>
             <button
               onClick={() => setViewMode("pr_leaders")}
-              className={`px-3 py-1 text-xs font-mono rounded-sm transition-colors cursor-pointer ${
+              className={`px-2.5 sm:px-3 py-1.5 sm:py-1 text-center min-h-[36px] sm:min-h-0 text-xs font-mono rounded-sm transition-colors cursor-pointer ${
                 viewMode === "pr_leaders"
                   ? "bg-rose-600 text-white font-bold"
                   : "text-zinc-400 hover:text-white"
               }`}
             >
-              Most Picked
+              Picked
             </button>
           </div>
         </div>
@@ -202,27 +202,27 @@ export function MetaScatterChart({ heroes, totalMatches, onSelectHero }: MetaSca
       {viewMode === "scatter" && (
         <div className="relative w-full overflow-hidden bg-black/40 border border-white/[0.06] rounded-sm p-2 sm:p-4">
           {/* Quadrant Watermarks */}
-          <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 pointer-events-none p-12 text-[10px] font-mono select-none">
+          <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 pointer-events-none p-4 sm:p-12 text-[9px] sm:text-[10px] font-mono select-none">
             {/* Top Left: Hidden Gems */}
-            <div className="flex items-start justify-start p-2 text-emerald-500/25 uppercase font-bold tracking-wider">
-              [ HIDDEN GEMS ] <br /> High Win Rate • Low Pick Rate
+            <div className="flex items-start justify-start p-1.5 sm:p-2 text-emerald-500/25 uppercase font-bold tracking-wider">
+              [ HIDDEN GEMS ] <span className="hidden sm:inline"><br /> High Win Rate • Low Pick Rate</span>
             </div>
             {/* Top Right: Meta Staples */}
-            <div className="flex items-start justify-end p-2 text-rose-500/30 uppercase font-bold tracking-wider text-right">
-              [ META STAPLES ] <br /> High Win Rate • High Pick Rate
+            <div className="flex items-start justify-end p-1.5 sm:p-2 text-rose-500/30 uppercase font-bold tracking-wider text-right">
+              [ META STAPLES ] <span className="hidden sm:inline"><br /> High Win Rate • High Pick Rate</span>
             </div>
             {/* Bottom Left: Niche / Struggling */}
-            <div className="flex items-end justify-start p-2 text-zinc-600/30 uppercase font-bold tracking-wider">
-              [ NICHE / STRUGGLING ] <br /> Low Win Rate • Low Pick Rate
+            <div className="flex items-end justify-start p-1.5 sm:p-2 text-zinc-600/30 uppercase font-bold tracking-wider">
+              [ NICHE / STRUGGLING ] <span className="hidden sm:inline"><br /> Low Win Rate • Low Pick Rate</span>
             </div>
             {/* Bottom Right: Popular Pitfalls */}
-            <div className="flex items-end justify-end p-2 text-amber-500/30 uppercase font-bold tracking-wider text-right">
-              [ POPULAR PITFALLS ] <br /> Low Win Rate • High Pick Rate
+            <div className="flex items-end justify-end p-1.5 sm:p-2 text-amber-500/30 uppercase font-bold tracking-wider text-right">
+              [ POPULAR PITFALLS ] <span className="hidden sm:inline"><br /> Low Win Rate • High Pick Rate</span>
             </div>
           </div>
 
           {/* SVG Canvas */}
-          <div className="relative w-full aspect-[16/9] min-h-[360px] max-h-[500px]">
+          <div className="relative w-full aspect-[16/9] min-h-[300px] sm:min-h-[360px] max-h-[500px]">
             <svg
               viewBox={`0 0 ${svgWidth} ${svgHeight}`}
               className="w-full h-full overflow-visible"

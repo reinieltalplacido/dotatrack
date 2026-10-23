@@ -60,11 +60,11 @@ export function MatchesTab({ matches }: MatchesTabProps) {
           <span className="text-xs font-mono font-bold uppercase text-white tracking-wider">
             Match Filters:
           </span>
-          <div className="flex items-center gap-1">
+          <div className="flex flex-wrap items-center gap-1.5">
             <button
               type="button"
               onClick={() => setFilter("all")}
-              className={`rounded-sm px-2.5 py-1 text-xs font-mono transition-all ${
+              className={`rounded-sm px-2.5 py-1.5 sm:py-1 min-h-[34px] sm:min-h-0 text-xs font-mono transition-all ${
                 filter === "all"
                   ? "bg-rose-600 text-white font-bold"
                   : "bg-zinc-900 text-zinc-400 hover:text-white"
@@ -75,7 +75,7 @@ export function MatchesTab({ matches }: MatchesTabProps) {
             <button
               type="button"
               onClick={() => setFilter("win")}
-              className={`rounded-sm px-2.5 py-1 text-xs font-mono transition-all ${
+              className={`rounded-sm px-2.5 py-1.5 sm:py-1 min-h-[34px] sm:min-h-0 text-xs font-mono transition-all ${
                 filter === "win"
                   ? "bg-emerald-600 text-white font-bold"
                   : "bg-zinc-900 text-zinc-400 hover:text-emerald-400"
@@ -86,7 +86,7 @@ export function MatchesTab({ matches }: MatchesTabProps) {
             <button
               type="button"
               onClick={() => setFilter("loss")}
-              className={`rounded-sm px-2.5 py-1 text-xs font-mono transition-all ${
+              className={`rounded-sm px-2.5 py-1.5 sm:py-1 min-h-[34px] sm:min-h-0 text-xs font-mono transition-all ${
                 filter === "loss"
                   ? "bg-rose-700 text-white font-bold"
                   : "bg-zinc-900 text-zinc-400 hover:text-rose-400"
@@ -244,7 +244,7 @@ export function MatchesTab({ matches }: MatchesTabProps) {
 
                 <Link
                   href={`/match-data?id=${match.matchId}`}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xs text-xs font-mono font-bold text-rose-400 hover:text-white bg-white/[0.04] hover:bg-rose-600 transition-all uppercase whitespace-nowrap"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[38px] sm:min-h-0 rounded-xs text-xs font-mono font-bold text-rose-400 hover:text-white bg-white/[0.04] hover:bg-rose-600 transition-all uppercase whitespace-nowrap"
                 >
                   <span>Match Details</span>
                   <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />

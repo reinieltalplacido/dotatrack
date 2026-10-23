@@ -376,7 +376,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.18, ease: "easeOut" }}
-          className="fixed inset-0 z-[9999] flex items-start justify-center pt-16 sm:pt-24 px-4"
+          className="fixed inset-0 z-[9999] flex items-start justify-center pt-6 sm:pt-20 px-3 sm:px-4"
           style={{
             backgroundColor: "rgba(0, 0, 0, 0.6)",
             backdropFilter: "blur(6px)",
@@ -460,7 +460,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
             )}
 
             {/* Results / Commands Scrollable Area */}
-            <div className="max-h-[60vh] overflow-y-auto p-2 space-y-4 divide-y divide-white/[0.04]">
+            <div className="max-h-[65dvh] sm:max-h-[60vh] overflow-y-auto p-2 space-y-4 divide-y divide-white/[0.04]">
               {flatActionItems.length === 0 ? (
                 <div className="py-12 text-center text-xs font-mono text-zinc-500">
                   No matching commands, heroes, or players found for &quot;{query}&quot;.

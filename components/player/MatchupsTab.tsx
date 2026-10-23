@@ -331,23 +331,26 @@ export function MatchupsTab({ data }: MatchupsTabProps) {
       </div>
 
       {/* 2. Mode Selector Bar (Allies vs Enemies) */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 p-2 rounded-sm bg-[#0A0C14] border border-white/[0.08]">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4 p-2 rounded-sm bg-[#0A0C14] border border-white/[0.08]">
         {/* Toggle Pills */}
-        <div className="flex items-center gap-1.5 p-1 rounded-sm bg-black/40 border border-white/[0.06]">
+        <div className="grid grid-cols-2 w-full sm:w-auto sm:flex items-center gap-1.5 p-1 rounded-sm bg-black/40 border border-white/[0.06]">
           <button
             type="button"
             onClick={() => {
               setMode("allies");
               setSortBy("synergy");
             }}
-            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xs text-xs font-mono font-bold uppercase transition-all ${
+            className={`flex items-center justify-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-2 sm:py-1.5 min-h-[40px] sm:min-h-0 rounded-xs text-xs font-mono font-bold uppercase transition-all ${
               mode === "allies"
                 ? "bg-rose-600 text-white shadow-sm"
                 : "text-zinc-400 hover:text-white hover:bg-white/[0.04]"
             }`}
           >
-            <Users className="h-3.5 w-3.5" />
-            <span>ALLY SYNERGY RADAR</span>
+            <Users className="h-3.5 w-3.5 shrink-0" />
+            <span>
+              <span className="sm:hidden">Allies</span>
+              <span className="hidden sm:inline">Ally Synergy</span>
+            </span>
             <span className="text-[10px] px-1 rounded bg-black/30 font-normal">
               {clientMatchups?.allies.length ?? 0}
             </span>
@@ -359,14 +362,17 @@ export function MatchupsTab({ data }: MatchupsTabProps) {
               setMode("enemies");
               setSortBy("nemesis");
             }}
-            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xs text-xs font-mono font-bold uppercase transition-all ${
+            className={`flex items-center justify-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-2 sm:py-1.5 min-h-[40px] sm:min-h-0 rounded-xs text-xs font-mono font-bold uppercase transition-all ${
               mode === "enemies"
                 ? "bg-rose-600 text-white shadow-sm"
                 : "text-zinc-400 hover:text-white hover:bg-white/[0.04]"
             }`}
           >
-            <Swords className="h-3.5 w-3.5" />
-            <span>NEMESIS COUNTER MATRIX</span>
+            <Swords className="h-3.5 w-3.5 shrink-0" />
+            <span>
+              <span className="sm:hidden">Enemies</span>
+              <span className="hidden sm:inline">Nemesis Matrix</span>
+            </span>
             <span className="text-[10px] px-1 rounded bg-black/30 font-normal">
               {clientMatchups?.enemies.length ?? 0}
             </span>
@@ -385,16 +391,16 @@ export function MatchupsTab({ data }: MatchupsTabProps) {
       </div>
 
       {/* 3. Interactive Filtering & Sorting Toolbar */}
-      <div className="p-4 rounded-sm bg-[#0E1018] border border-white/[0.08] flex flex-wrap items-center justify-between gap-4">
+      <div className="p-3.5 sm:p-4 rounded-sm bg-[#0E1018] border border-white/[0.08] flex flex-wrap items-center justify-between gap-3 sm:gap-4">
         {/* Search Input */}
-        <div className="relative flex-1 min-w-[200px] max-w-xs">
+        <div className="relative flex-1 w-full sm:max-w-xs min-w-0">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-zinc-500" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search hero name..."
-            className="w-full bg-[#08090C] border border-white/[0.1] rounded-sm pl-8 pr-3 py-1.5 text-xs font-mono text-white placeholder-zinc-500 focus:outline-none focus:border-rose-500"
+            className="w-full bg-[#08090C] border border-white/[0.1] rounded-sm pl-8 pr-3 py-2 sm:py-1.5 text-xs font-mono text-white placeholder-zinc-500 focus:outline-none focus:border-rose-500 min-h-[38px] sm:min-h-0"
           />
         </div>
 

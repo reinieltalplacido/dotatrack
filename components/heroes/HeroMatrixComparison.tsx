@@ -154,35 +154,35 @@ export function HeroMatrixComparison({
             {/* Background 4-Quadrant Labels */}
             <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 pointer-events-none opacity-40">
               {/* Top-Left: Specialists */}
-              <div className="border-r border-b border-white/[0.06] p-4 flex flex-col justify-start items-start">
-                <span className="text-[11px] font-mono font-bold uppercase text-emerald-400 tracking-wider">
+              <div className="border-r border-b border-white/[0.06] p-3 sm:p-4 flex flex-col justify-start items-start">
+                <span className="text-[10px] sm:text-[11px] font-mono font-bold uppercase text-emerald-400 tracking-wider">
                   Specialist Niches
                 </span>
-                <span className="text-[9px] font-mono text-zinc-500">High Win Rate • Lower Pick Rate</span>
+                <span className="text-[9px] font-mono text-zinc-500 hidden sm:block">High Win Rate • Lower Pick Rate</span>
               </div>
 
               {/* Top-Right: Meta Kings */}
-              <div className="border-b border-white/[0.06] p-4 flex flex-col justify-start items-end text-right">
-                <span className="text-[11px] font-mono font-bold uppercase text-rose-400 tracking-wider">
+              <div className="border-b border-white/[0.06] p-3 sm:p-4 flex flex-col justify-start items-end text-right">
+                <span className="text-[10px] sm:text-[11px] font-mono font-bold uppercase text-rose-400 tracking-wider">
                   Meta Dominance
                 </span>
-                <span className="text-[9px] font-mono text-zinc-500">High Win Rate • High Pick Rate</span>
+                <span className="text-[9px] font-mono text-zinc-500 hidden sm:block">High Win Rate • High Pick Rate</span>
               </div>
 
               {/* Bottom-Left: Off-Meta */}
-              <div className="border-r border-white/[0.06] p-4 flex flex-col justify-end items-start">
-                <span className="text-[11px] font-mono font-bold uppercase text-zinc-500 tracking-wider">
-                  Off-Meta / Underperforming
+              <div className="border-r border-white/[0.06] p-3 sm:p-4 flex flex-col justify-end items-start">
+                <span className="text-[10px] sm:text-[11px] font-mono font-bold uppercase text-zinc-500 tracking-wider">
+                  Off-Meta
                 </span>
-                <span className="text-[9px] font-mono text-zinc-600">Lower Win Rate • Low Pick Rate</span>
+                <span className="text-[9px] font-mono text-zinc-600 hidden sm:block">Lower Win Rate • Low Pick Rate</span>
               </div>
 
               {/* Bottom-Right: Popular Traps */}
-              <div className="p-4 flex flex-col justify-end items-end text-right">
-                <span className="text-[11px] font-mono font-bold uppercase text-amber-500 tracking-wider">
-                  Comfort / Popular Traps
+              <div className="p-3 sm:p-4 flex flex-col justify-end items-end text-right">
+                <span className="text-[10px] sm:text-[11px] font-mono font-bold uppercase text-amber-500 tracking-wider">
+                  Popular Traps
                 </span>
-                <span className="text-[9px] font-mono text-zinc-500">Sub-50% Win Rate • High Pick Rate</span>
+                <span className="text-[9px] font-mono text-zinc-500 hidden sm:block">Sub-50% Win Rate • High Pick Rate</span>
               </div>
             </div>
 
@@ -369,7 +369,7 @@ export function HeroMatrixComparison({
               <table className="w-full text-left font-mono text-xs border-collapse">
                 <thead>
                   <tr className="border-b border-white/[0.08] text-zinc-400 uppercase text-[10px] tracking-wider">
-                    <th className="py-3 px-4 w-44">Metric</th>
+                    <th className="sticky left-0 bg-[#0E1019] z-20 py-3 px-3 sm:px-4 w-36 sm:w-44 border-r border-white/[0.06] shadow-[2px_0_6px_rgba(0,0,0,0.6)]">Metric</th>
                     {comparedHeroes.map((hero) => (
                       <th key={hero.id} className="py-3 px-4 min-w-[200px]">
                         <div className="flex items-center justify-between">
@@ -410,7 +410,7 @@ export function HeroMatrixComparison({
                 <tbody className="divide-y divide-white/[0.04]">
                   {/* Pub Win Rate */}
                   <tr>
-                    <td className="py-3 px-4 text-zinc-400 font-semibold">Pub Win Rate</td>
+                    <td className="sticky left-0 bg-[#0E1019] z-10 py-3 px-3 sm:px-4 text-zinc-400 font-semibold border-r border-white/[0.06] shadow-[2px_0_6px_rgba(0,0,0,0.6)]">Pub Win Rate</td>
                     {comparedHeroes.map((hero) => {
                       const highestWinRate = Math.max(...comparedHeroes.map((h) => h.winRate));
                       const isBest = hero.winRate === highestWinRate;
@@ -437,7 +437,7 @@ export function HeroMatrixComparison({
 
                   {/* Pub Pick Rate & Matches */}
                   <tr>
-                    <td className="py-3 px-4 text-zinc-400">Pick Rate</td>
+                    <td className="sticky left-0 bg-[#0E1019] z-10 py-3 px-3 sm:px-4 text-zinc-400 border-r border-white/[0.06] shadow-[2px_0_6px_rgba(0,0,0,0.6)]">Pick Rate</td>
                     {comparedHeroes.map((hero) => (
                       <td key={hero.id} className="py-3 px-4">
                         <span className="font-bold text-white">{hero.pickRate.toFixed(1)}%</span>
@@ -450,7 +450,7 @@ export function HeroMatrixComparison({
 
                   {/* Pro Win Rate */}
                   <tr>
-                    <td className="py-3 px-4 text-zinc-400">Pro Win Rate</td>
+                    <td className="sticky left-0 bg-[#0E1019] z-10 py-3 px-3 sm:px-4 text-zinc-400 border-r border-white/[0.06] shadow-[2px_0_6px_rgba(0,0,0,0.6)]">Pro Win Rate</td>
                     {comparedHeroes.map((hero) => (
                       <td key={hero.id} className="py-3 px-4">
                         {hero.pro_pick > 0 ? (
@@ -469,7 +469,7 @@ export function HeroMatrixComparison({
 
                   {/* Base Attributes */}
                   <tr>
-                    <td className="py-3 px-4 text-zinc-400">Attributes &amp; Gain</td>
+                    <td className="sticky left-0 bg-[#0E1019] z-10 py-3 px-3 sm:px-4 text-zinc-400 border-r border-white/[0.06] shadow-[2px_0_6px_rgba(0,0,0,0.6)]">Attributes &amp; Gain</td>
                     {comparedHeroes.map((hero) => (
                       <td key={hero.id} className="py-3 px-4 space-y-0.5 text-[11px]">
                         <div className="text-red-400">
@@ -487,7 +487,7 @@ export function HeroMatrixComparison({
 
                   {/* Health, Mana & Armor */}
                   <tr>
-                    <td className="py-3 px-4 text-zinc-400">HP / Mana / Armor</td>
+                    <td className="sticky left-0 bg-[#0E1019] z-10 py-3 px-3 sm:px-4 text-zinc-400 border-r border-white/[0.06] shadow-[2px_0_6px_rgba(0,0,0,0.6)]">HP / Mana / Armor</td>
                     {comparedHeroes.map((hero) => (
                       <td key={hero.id} className="py-3 px-4 space-y-0.5 text-[11px]">
                         <div>HP: <strong className="text-white">{hero.base_health}</strong></div>
@@ -499,7 +499,7 @@ export function HeroMatrixComparison({
 
                   {/* Damage & Range */}
                   <tr>
-                    <td className="py-3 px-4 text-zinc-400">Damage / Speed / Range</td>
+                    <td className="sticky left-0 bg-[#0E1019] z-10 py-3 px-3 sm:px-4 text-zinc-400 border-r border-white/[0.06] shadow-[2px_0_6px_rgba(0,0,0,0.6)]">Damage / Speed / Range</td>
                     {comparedHeroes.map((hero) => (
                       <td key={hero.id} className="py-3 px-4 space-y-0.5 text-[11px]">
                         <div>Dmg: <strong className="text-white">{hero.base_attack_min}-{hero.base_attack_max}</strong></div>

@@ -67,7 +67,7 @@ export function PlayerDashboard({ initialData }: PlayerDashboardProps) {
       />
 
       {/* Navigation Tabs Bar */}
-      <div className="sticky top-16 z-30 border-b border-white/[0.08] bg-[#0A0C13]/95 backdrop-blur-md">
+      <div className="sticky top-14 z-30 border-b border-white/[0.08] bg-[#0A0C13]/95 backdrop-blur-md">
         <div className="mx-auto max-w-7xl 2xl:max-w-[1520px] px-4 sm:px-6 lg:px-8">
           <nav className="flex space-x-1 sm:space-x-2 overflow-x-auto py-2 no-scrollbar" aria-label="Player Tabs">
             {tabs.map((tab) => {
@@ -79,7 +79,7 @@ export function PlayerDashboard({ initialData }: PlayerDashboardProps) {
                   key={tab.id}
                   type="button"
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-3.5 py-2 text-xs font-mono font-bold uppercase tracking-wider rounded-sm transition-all whitespace-nowrap shrink-0 ${
+                  className={`flex items-center gap-2 px-3.5 py-2 text-xs font-mono font-bold uppercase tracking-wider rounded-sm transition-all whitespace-nowrap shrink-0 min-h-[40px] ${
                     isActive
                       ? "bg-rose-600 text-white shadow-md shadow-rose-950/80"
                       : "text-zinc-400 hover:text-white hover:bg-white/[0.05]"

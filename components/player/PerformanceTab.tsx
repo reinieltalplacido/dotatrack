@@ -25,21 +25,25 @@ export function PerformanceTab({ data }: PerformanceTabProps) {
         </p>
 
         {/* Comparison Table */}
-        <div className="mt-5 overflow-x-auto">
+        <div className="mt-5 overflow-x-auto no-scrollbar">
           <table className="w-full text-left font-mono text-xs">
             <thead>
               <tr className="border-b border-white/[0.08] text-zinc-500 uppercase text-[10px]">
-                <th className="py-2.5 px-3">Metric Category</th>
-                <th className="py-2.5 px-3">Recent Sample ({recentSummary.sampleSize} Games)</th>
-                <th className="py-2.5 px-3">Lifetime Baseline</th>
-                <th className="py-2.5 px-3">Variance</th>
+                <th className="py-2.5 px-3 sticky left-0 bg-[#0E1018] z-10 shadow-[2px_0_6px_-2px_rgba(0,0,0,0.5)]">
+                  Metric Category
+                </th>
+                <th className="py-2.5 px-3 min-w-[140px]">Recent Sample ({recentSummary.sampleSize} Games)</th>
+                <th className="py-2.5 px-3 min-w-[120px]">Lifetime Baseline</th>
+                <th className="py-2.5 px-3 min-w-[90px]">Variance</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/[0.04]">
               <tr>
-                <td className="py-3 px-3 text-white font-medium flex items-center gap-2">
-                  <Swords className="h-3.5 w-3.5 text-rose-400" />
-                  Kills Per Game
+                <td className="py-3 px-3 text-white font-medium sticky left-0 bg-[#0E1018] z-10 shadow-[2px_0_6px_-2px_rgba(0,0,0,0.5)]">
+                  <div className="flex items-center gap-2 whitespace-nowrap">
+                    <Swords className="h-3.5 w-3.5 text-rose-400" />
+                    Kills Per Game
+                  </div>
                 </td>
                 <td className="py-3 px-3 text-amber-400 font-bold">{recentSummary.avgKills}</td>
                 <td className="py-3 px-3 text-zinc-400">
@@ -64,9 +68,11 @@ export function PerformanceTab({ data }: PerformanceTabProps) {
               </tr>
 
               <tr>
-                <td className="py-3 px-3 text-white font-medium flex items-center gap-2">
-                  <Shield className="h-3.5 w-3.5 text-blue-400" />
-                  Deaths Per Game
+                <td className="py-3 px-3 text-white font-medium sticky left-0 bg-[#0E1018] z-10 shadow-[2px_0_6px_-2px_rgba(0,0,0,0.5)]">
+                  <div className="flex items-center gap-2 whitespace-nowrap">
+                    <Shield className="h-3.5 w-3.5 text-blue-400" />
+                    Deaths Per Game
+                  </div>
                 </td>
                 <td className="py-3 px-3 text-amber-400 font-bold">{recentSummary.avgDeaths}</td>
                 <td className="py-3 px-3 text-zinc-400">
@@ -90,9 +96,11 @@ export function PerformanceTab({ data }: PerformanceTabProps) {
               </tr>
 
               <tr>
-                <td className="py-3 px-3 text-white font-medium flex items-center gap-2">
-                  <Zap className="h-3.5 w-3.5 text-emerald-400" />
-                  Assists Per Game
+                <td className="py-3 px-3 text-white font-medium sticky left-0 bg-[#0E1018] z-10 shadow-[2px_0_6px_-2px_rgba(0,0,0,0.5)]">
+                  <div className="flex items-center gap-2 whitespace-nowrap">
+                    <Zap className="h-3.5 w-3.5 text-emerald-400" />
+                    Assists Per Game
+                  </div>
                 </td>
                 <td className="py-3 px-3 text-amber-400 font-bold">{recentSummary.avgAssists}</td>
                 <td className="py-3 px-3 text-zinc-400">
@@ -117,9 +125,11 @@ export function PerformanceTab({ data }: PerformanceTabProps) {
               </tr>
 
               <tr>
-                <td className="py-3 px-3 text-white font-medium flex items-center gap-2">
-                  <Activity className="h-3.5 w-3.5 text-amber-400" />
-                  KDA Ratio
+                <td className="py-3 px-3 text-white font-medium sticky left-0 bg-[#0E1018] z-10 shadow-[2px_0_6px_-2px_rgba(0,0,0,0.5)]">
+                  <div className="flex items-center gap-2 whitespace-nowrap">
+                    <Activity className="h-3.5 w-3.5 text-amber-400" />
+                    KDA Ratio
+                  </div>
                 </td>
                 <td className="py-3 px-3 text-amber-400 font-bold">{recentSummary.kdaRatio}</td>
                 <td className="py-3 px-3 text-zinc-400">
@@ -144,9 +154,11 @@ export function PerformanceTab({ data }: PerformanceTabProps) {
               </tr>
 
               <tr>
-                <td className="py-3 px-3 text-white font-medium flex items-center gap-2">
-                  <Coins className="h-3.5 w-3.5 text-amber-300" />
-                  Gold Per Minute (GPM)
+                <td className="py-3 px-3 text-white font-medium sticky left-0 bg-[#0E1018] z-10 shadow-[2px_0_6px_-2px_rgba(0,0,0,0.5)]">
+                  <div className="flex items-center gap-2 whitespace-nowrap">
+                    <Coins className="h-3.5 w-3.5 text-amber-300" />
+                    Gold Per Minute (GPM)
+                  </div>
                 </td>
                 <td className="py-3 px-3 text-amber-300 font-bold">{recentSummary.avgGpm}</td>
                 <td className="py-3 px-3 text-zinc-400">
@@ -171,9 +183,11 @@ export function PerformanceTab({ data }: PerformanceTabProps) {
               </tr>
 
               <tr>
-                <td className="py-3 px-3 text-white font-medium flex items-center gap-2">
-                  <Sparkles className="h-3.5 w-3.5 text-blue-300" />
-                  XP Per Minute (XPM)
+                <td className="py-3 px-3 text-white font-medium sticky left-0 bg-[#0E1018] z-10 shadow-[2px_0_6px_-2px_rgba(0,0,0,0.5)]">
+                  <div className="flex items-center gap-2 whitespace-nowrap">
+                    <Sparkles className="h-3.5 w-3.5 text-blue-300" />
+                    XP Per Minute (XPM)
+                  </div>
                 </td>
                 <td className="py-3 px-3 text-blue-300 font-bold">{recentSummary.avgXpm}</td>
                 <td className="py-3 px-3 text-zinc-400">

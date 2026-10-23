@@ -214,7 +214,7 @@ export function TournamentDetailView({ detail }: TournamentDetailViewProps) {
       )}
 
       {/* 4. NAVIGATION TABS */}
-      <div className="border-b border-white/[0.1] flex flex-wrap items-center gap-1">
+      <div className="border-b border-white/[0.1] flex items-center gap-1 overflow-x-auto no-scrollbar whitespace-nowrap scroll-smooth">
         {[
           { id: "overview" as const, label: "Overview & Podium", count: null },
           { id: "standings" as const, label: "Event Standings", count: standings.length },
@@ -228,7 +228,7 @@ export function TournamentDetailView({ detail }: TournamentDetailViewProps) {
               key={tab.id}
               type="button"
               onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-2.5 text-xs font-mono transition-all border-b-2 cursor-pointer flex items-center gap-2 ${
+              className={`px-4 py-2.5 text-xs font-mono transition-all border-b-2 cursor-pointer flex items-center gap-2 shrink-0 min-h-[40px] ${
                 isActive
                   ? "border-rose-500 text-white font-bold bg-white/[0.03]"
                   : "border-transparent text-zinc-400 hover:text-zinc-200 hover:border-zinc-700"
@@ -370,7 +370,7 @@ export function TournamentDetailView({ detail }: TournamentDetailViewProps) {
                 {series.slice(0, 5).map((s) => (
                   <div
                     key={s.series_id}
-                    className="tactical-panel p-3.5 rounded-sm border border-white/[0.08] hover:border-white/[0.2] transition-colors flex items-center justify-between gap-4"
+                    className="tactical-panel p-3.5 rounded-sm border border-white/[0.08] hover:border-white/[0.2] transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4"
                   >
                     <div className="flex items-center gap-3">
                       <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded-xs bg-zinc-800 text-zinc-300">

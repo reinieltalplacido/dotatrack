@@ -42,21 +42,23 @@ export function PlayerHeader({ data, onOpenSearch }: PlayerHeaderProps) {
         <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 rounded-sm border border-white/[0.08] bg-zinc-900/60 px-3 py-1.5 text-xs font-mono text-zinc-300 hover:border-rose-500/50 hover:bg-zinc-800 hover:text-white transition-all active:scale-95"
+            className="inline-flex items-center gap-1.5 sm:gap-2 rounded-sm border border-white/[0.08] bg-zinc-900/60 px-2.5 sm:px-3 py-1.5 text-xs font-mono text-zinc-300 hover:border-rose-500/50 hover:bg-zinc-800 hover:text-white transition-all active:scale-95"
           >
             <ArrowLeft className="h-3.5 w-3.5 text-rose-500" />
-            <span>RETURN TO SEARCH</span>
+            <span className="hidden sm:inline">RETURN TO SEARCH</span>
+            <span className="sm:hidden">BACK</span>
           </Link>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             {onOpenSearch && (
               <button
                 type="button"
                 onClick={onOpenSearch}
-                className="inline-flex items-center gap-1.5 rounded-sm border border-rose-500/40 bg-rose-950/40 px-3 py-1.5 text-xs font-mono text-rose-300 hover:bg-rose-900/50 hover:text-white transition-all active:scale-95"
+                className="inline-flex items-center gap-1.5 rounded-sm border border-rose-500/40 bg-rose-950/40 px-2.5 sm:px-3 py-1.5 text-xs font-mono text-rose-300 hover:bg-rose-900/50 hover:text-white transition-all active:scale-95"
               >
                 <Search className="h-3.5 w-3.5 text-rose-400" />
-                <span>SEARCH ANOTHER PLAYER</span>
+                <span className="hidden sm:inline">SEARCH ANOTHER PLAYER</span>
+                <span className="sm:hidden">SEARCH</span>
               </button>
             )}
 

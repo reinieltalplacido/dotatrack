@@ -107,7 +107,10 @@ function TeamScoreboardTable({
           )}
         </div>
 
-        <div className="flex items-center gap-4 text-xs font-mono text-zinc-300">
+        <div className="flex items-center gap-3 sm:gap-4 text-xs font-mono text-zinc-300">
+          <span className="text-[10px] font-mono text-zinc-400 sm:hidden flex items-center gap-1 bg-white/[0.05] px-1.5 py-0.5 rounded border border-white/[0.08]">
+            Scroll &rarr;
+          </span>
           <div>
             Kills: <strong className="text-white">{score}</strong>
           </div>
@@ -122,7 +125,7 @@ function TeamScoreboardTable({
         <table className="w-full text-left border-collapse text-xs font-mono min-w-[1240px]">
           <thead>
             <tr className="border-b border-white/[0.06] bg-black/40 text-[10px] uppercase text-zinc-400 tracking-wider">
-              <th className="py-2.5 px-3 whitespace-nowrap min-w-[210px] max-w-[240px]">Hero / Player</th>
+              <th className="sticky left-0 bg-[#0E1018] z-20 py-2.5 px-3 whitespace-nowrap min-w-[200px] max-w-[240px] shadow-[3px_0_8px_rgba(0,0,0,0.6)] border-r border-white/[0.06]">Hero / Player</th>
               <th className="py-2.5 px-2 text-center whitespace-nowrap min-w-[45px]">LVL</th>
               <th className="py-2.5 px-2 text-center whitespace-nowrap min-w-[115px]">K / D / A</th>
               <th className="py-2.5 px-2 text-center whitespace-nowrap min-w-[55px]">KDA</th>
@@ -138,9 +141,9 @@ function TeamScoreboardTable({
           </thead>
           <tbody className="divide-y divide-white/[0.04]">
             {players.map((player) => (
-              <tr key={player.playerSlot} className="hover:bg-white/[0.02] transition-colors">
+              <tr key={player.playerSlot} className="hover:bg-white/[0.02] transition-colors group">
                 {/* Hero Portrait & Player Name */}
-                <td className="py-2.5 px-3 whitespace-nowrap min-w-[210px] max-w-[240px]">
+                <td className="sticky left-0 bg-[#0E1018] group-hover:bg-[#12141F] transition-colors z-10 py-2.5 px-3 whitespace-nowrap min-w-[200px] max-w-[240px] shadow-[3px_0_8px_rgba(0,0,0,0.6)] border-r border-white/[0.06]">
                   <div className="flex items-center gap-2.5">
                     <div className="relative w-11 h-7 rounded-xs overflow-hidden border border-white/[0.1] bg-zinc-900 shrink-0">
                       <Image
@@ -326,7 +329,7 @@ function TeamScoreboardTable({
           {/* Team Totals Footer Row */}
           <tfoot>
             <tr className="border-t border-white/[0.08] bg-black/60 font-bold text-zinc-300">
-              <td className="py-2.5 px-3 whitespace-nowrap">
+              <td className="sticky left-0 bg-[#0A0C13] z-10 py-2.5 px-3 whitespace-nowrap shadow-[3px_0_8px_rgba(0,0,0,0.6)] border-r border-white/[0.06]">
                 <div className="text-zinc-300 font-bold">TEAM TOTALS</div>
                 {teamLaneOutcome !== "Unavailable" && (
                   <div className="text-[10px] font-mono text-zinc-400 mt-0.5 font-normal">

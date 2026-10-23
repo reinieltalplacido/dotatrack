@@ -368,14 +368,14 @@ export function TeammatesTab({ data, onTeammatesLoaded }: TeammatesTabProps) {
       <div className="tactical-panel p-4 rounded-sm border border-white/[0.08] bg-[#0A0C13]">
         <div className="flex flex-col lg:flex-row gap-4 items-stretch lg:items-center justify-between">
           {/* Search Input */}
-          <div className="relative flex-1 max-w-md">
+          <div className="relative flex-1 w-full lg:max-w-md min-w-0">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
             <input
               type="text"
               placeholder="Search teammate by name or Steam ID..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 bg-black/40 border border-white/[0.1] rounded-sm text-xs font-mono text-white placeholder-zinc-500 focus:outline-none focus:border-rose-500 transition-colors"
+              className="w-full pl-9 pr-3 py-2 bg-black/40 border border-white/[0.1] rounded-sm text-xs font-mono text-white placeholder-zinc-500 focus:outline-none focus:border-rose-500 transition-colors min-h-[38px] sm:min-h-0"
             />
             {searchQuery && (
               <button
@@ -388,16 +388,16 @@ export function TeammatesTab({ data, onTeammatesLoaded }: TeammatesTabProps) {
             )}
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
             {/* Min Matches Filter */}
-            <div className="flex items-center gap-1.5 bg-black/30 p-1 rounded-sm border border-white/[0.06]">
-              <span className="text-[11px] font-mono text-zinc-400 px-2">Min Matches:</span>
+            <div className="flex items-center gap-1.5 bg-black/30 p-1 rounded-sm border border-white/[0.06] overflow-x-auto no-scrollbar max-w-full">
+              <span className="text-[11px] font-mono text-zinc-400 px-2 shrink-0">Min Matches:</span>
               {([1, 3, 5, 10, 25] as MinGamesFilter[]).map((val) => (
                 <button
                   key={val}
                   type="button"
                   onClick={() => setMinGames(val)}
-                  className={`px-2.5 py-1 text-[11px] font-mono font-bold rounded-sm transition-all ${
+                  className={`px-2.5 py-1.5 sm:py-1 min-h-[34px] sm:min-h-0 text-[11px] font-mono font-bold rounded-sm transition-all shrink-0 ${
                     minGames === val
                       ? "bg-rose-600 text-white shadow-sm"
                       : "text-zinc-400 hover:text-white hover:bg-white/[0.05]"
@@ -410,11 +410,11 @@ export function TeammatesTab({ data, onTeammatesLoaded }: TeammatesTabProps) {
 
             {/* Sort Dropdown */}
             <div className="flex items-center gap-1.5 bg-black/30 p-1 rounded-sm border border-white/[0.06]">
-              <span className="text-[11px] font-mono text-zinc-400 px-2">Sort:</span>
+              <span className="text-[11px] font-mono text-zinc-400 px-2 shrink-0">Sort:</span>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as SortOption)}
-                className="bg-transparent text-xs font-mono text-white border-0 focus:outline-none focus:ring-0 cursor-pointer pr-3"
+                className="bg-transparent text-xs font-mono text-white border-0 focus:outline-none focus:ring-0 cursor-pointer pr-3 min-h-[34px] sm:min-h-0"
               >
                 <option value="matches" className="bg-[#0E1017] text-white">
                   Most Matches Together

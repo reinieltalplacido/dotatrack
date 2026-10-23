@@ -139,7 +139,7 @@ export function MatchOverviewBanner({ match, onRefresh, onMatchUpdated }: MatchO
   const isRadiantVictory = match.radiantWin;
 
   return (
-    <div className="tactical-panel p-6 rounded-sm border border-white/[0.08] mb-8 relative overflow-hidden">
+    <div className="tactical-panel p-4 sm:p-6 rounded-sm border border-white/[0.08] mb-8 relative overflow-hidden">
       {/* Team Victory Ambient Background */}
       <div
         className={`absolute inset-0 pointer-events-none opacity-20 transition-all ${
