@@ -25,36 +25,21 @@ interface MatchOverviewBannerProps {
 export function MatchOverviewBanner({ match, onRefresh, onMatchUpdated }: MatchOverviewBannerProps) {
   const [isRequestingParse, setIsRequestingParse] = useState(false);
   const [parseMessage, setParseMessage] = useState<string | null>(null);
-  const [isRequested, setIsRequested] = useState(false);
-  const [isPolling, setIsPolling] = useState(false);
+  const [isRequested, setIsRequested] = useState(() => {
+    if (typeof window === "undefined" || !match.matchId || match.isParsed) return false;
+    return localStorage.getItem(`dotatrack_parse_requested_${match.matchId}`) === "true";
+  });
+  const [isTimedOut, setIsTimedOut] = useState(false);
   const [pollSeconds, setPollSeconds] = useState(0);
   const [parseSuccess, setParseSuccess] = useState(false);
 
-  // Sync isRequested status with localStorage
-  useEffect(() => {
-    if (typeof window === "undefined" || !match.matchId) return;
-
-    if (match.isParsed) {
-      localStorage.removeItem(`dotatrack_parse_requested_${match.matchId}`);
-      setIsRequested(false);
-      setIsPolling(false);
-    } else {
-      const stored = localStorage.getItem(`dotatrack_parse_requested_${match.matchId}`);
-      if (stored === "true") {
-        setIsRequested(true);
-      }
-    }
-  }, [match.matchId, match.isParsed]);
+  const isPolling = isRequested && !match.isParsed && !isTimedOut && !parseSuccess;
 
   // Real-time polling when parse has been requested
   useEffect(() => {
-    if (!isRequested || match.isParsed || !match.matchId) {
-      setIsPolling(false);
+    if (!isPolling || !match.matchId) {
       return;
     }
-
-    setIsPolling(true);
-    setPollSeconds(0);
 
     const startTime = Date.now();
     const MAX_POLL_MS = 300000; // 5 minutes max
@@ -72,7 +57,7 @@ export function MatchOverviewBanner({ match, onRefresh, onMatchUpdated }: MatchO
         clearInterval(pollInterval);
         clearInterval(timerInterval);
         if (!isCancelled) {
-          setIsPolling(false);
+          setIsTimedOut(true);
           setParseMessage("Parsing is taking longer than expected on OpenDota. You can check back again soon.");
         }
         return;
@@ -90,7 +75,6 @@ export function MatchOverviewBanner({ match, onRefresh, onMatchUpdated }: MatchO
           clearInterval(timerInterval);
           if (isCancelled) return;
 
-          setIsPolling(false);
           setIsRequested(false);
           setParseSuccess(true);
           setParseMessage("Replay parsed successfully! Real-time match stats, timelines, and combat metrics are now live.");

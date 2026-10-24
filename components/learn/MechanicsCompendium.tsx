@@ -67,7 +67,7 @@ export function MechanicsCompendium() {
             <AnimatedTabs
               tabs={MECHANICS_CATEGORIES.map((cat) => ({ id: cat.id, label: cat.label }))}
               activeTab={selectedCategory}
-              onChange={(id) => setSelectedCategory(id as any)}
+              onChange={(id) => setSelectedCategory(id)}
               layoutId="mechanicsCategoryPill"
               size="sm"
               variant="segmented"

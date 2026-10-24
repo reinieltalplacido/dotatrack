@@ -5,6 +5,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { DraftSimulator } from "@/components/draft/DraftSimulator";
 import { fetchHeroStatsData } from "@/lib/opendota/hero-stats";
+import { HeroCompendiumPayload } from "@/lib/opendota/hero-types";
 import { AlertCircle, RefreshCw, Loader2 } from "lucide-react";
 import Link from "next/link";
 
@@ -33,12 +34,16 @@ function DraftSkeleton() {
 async function DraftContent() {
   await connection();
 
-  try {
-    const data = await fetchHeroStatsData();
-    return <DraftSimulator allHeroes={data.heroes} />;
-  } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : "Failed to load draft hero database";
+  let data: HeroCompendiumPayload | null = null;
+  let errorMessage: string | null = null;
 
+  try {
+    data = await fetchHeroStatsData();
+  } catch (error: unknown) {
+    errorMessage = error instanceof Error ? error.message : "Failed to load draft hero database";
+  }
+
+  if (errorMessage || !data) {
     return (
       <div className="tactical-panel max-w-lg mx-auto p-8 text-center rounded-sm border border-red-800/60 shadow-2xl">
         <div className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-red-950/60 border border-red-600/40 text-red-400 mb-4">
@@ -54,7 +59,7 @@ async function DraftContent() {
         </h1>
 
         <p className="text-xs font-mono text-zinc-400 leading-relaxed mb-6">
-          {message}
+          {errorMessage}
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-3">
@@ -63,20 +68,22 @@ async function DraftContent() {
             className="inline-flex items-center gap-2 rounded-sm bg-rose-600 px-4 py-2 text-xs font-mono font-bold text-white hover:bg-rose-500 transition-colors"
           >
             <RefreshCw className="h-3.5 w-3.5" />
-            <span>Retry Connection</span>
+            <span>RETRY</span>
           </Link>
         </div>
       </div>
     );
   }
+
+  return <DraftSimulator allHeroes={data.heroes} />;
 }
 
 export default function DraftPage() {
   return (
     <div className="min-h-screen bg-[#08090C] text-[#EDEDF0] flex flex-col font-sans">
       <Navbar />
-      <main className="flex-1 esports-grid py-8">
-        <div className="max-w-7xl 2xl:max-w-[1560px] 3xl:max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8">
+      <main className="flex-1 esports-grid py-6 sm:py-8">
+        <div className="max-w-7xl 2xl:max-w-[1560px] 3xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<DraftSkeleton />}>
             <DraftContent />
           </Suspense>

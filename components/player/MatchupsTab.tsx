@@ -32,24 +32,34 @@ export function MatchupsTab({ data }: MatchupsTabProps) {
   const [minGames, setMinGames] = useState<number>(3);
   const [sortBy, setSortBy] = useState<string>("synergy");
 
+  const hasPropMatchups = Boolean(
+    data.matchups && (data.matchups.allies.length > 0 || data.matchups.enemies.length > 0)
+  );
+
   // Client-side fallback fetch in case matchups weren't present in props (e.g. cached payload)
-  const [clientMatchups, setClientMatchups] = useState<{
+  const [fallbackMatchups, setFallbackMatchups] = useState<{
     allies: PlayerHeroMatchup[];
     enemies: PlayerHeroMatchup[];
-  } | null>(data.matchups || null);
-  const [isLoadingFallback, setIsLoadingFallback] = useState(false);
+  } | null>(null);
+  const [isLoadingFallback, setIsLoadingFallback] = useState(!hasPropMatchups);
   const [fallbackError, setFallbackError] = useState<string | null>(null);
 
+  const clientMatchups = hasPropMatchups ? data.matchups : fallbackMatchups;
+
+  const [prevAccountId, setPrevAccountId] = useState(data.accountId);
+  if (data.accountId !== prevAccountId) {
+    setPrevAccountId(data.accountId);
+    setIsLoadingFallback(!hasPropMatchups);
+    setFallbackError(null);
+  }
+
   useEffect(() => {
-    if (data.matchups && (data.matchups.allies.length > 0 || data.matchups.enemies.length > 0)) {
-      setClientMatchups(data.matchups);
+    if (hasPropMatchups) {
       return;
     }
 
     // Fetch on-demand from dedicated route
     let isCancelled = false;
-    setIsLoadingFallback(true);
-    setFallbackError(null);
 
     fetch(`/api/players/${data.accountId}/matchups`)
       .then((res) => {
@@ -58,7 +68,7 @@ export function MatchupsTab({ data }: MatchupsTabProps) {
       })
       .then((json) => {
         if (!isCancelled) {
-          setClientMatchups({
+          setFallbackMatchups({
             allies: json.allies || [],
             enemies: json.enemies || [],
           });
@@ -76,7 +86,7 @@ export function MatchupsTab({ data }: MatchupsTabProps) {
     return () => {
       isCancelled = true;
     };
-  }, [data.accountId, data.matchups]);
+  }, [data.accountId, hasPropMatchups]);
 
   const lifetimeWinRate = data.lifetime?.winRate ?? 50.0;
 

@@ -113,7 +113,7 @@ export async function fetchOpenDotaPlayerData(accountId: string | number): Promi
     fetchWithTimeout<OpenDotaRecentMatch[]>(`/players/${numericId}/recentMatches`),
     fetchWithTimeout<OpenDotaPlayerHero[]>(`/players/${numericId}/heroes`),
     fetchWithTimeout<OpenDotaTotal[]>(`/players/${numericId}/totals`),
-    fetchWithTimeout<any[]>(`/players/${numericId}/matches?limit=100`),
+    fetchWithTimeout<OpenDotaRecentMatch[]>(`/players/${numericId}/matches?limit=100`),
   ]);
 
   let isPartial = false;
@@ -271,12 +271,12 @@ export async function fetchOpenDotaPlayerData(accountId: string | number): Promi
   }
 
   // 5b. Process Match History and Daily Activity (up to 100 historical matches)
-  const rawHistoryList: any[] =
+  const rawHistoryList: OpenDotaRecentMatch[] =
     historyResult.status === "fulfilled" && Array.isArray(historyResult.value) && historyResult.value.length > 0
       ? historyResult.value
       : rawMatches;
 
-  const matchHistoryItems: PlayerMatchHistoryItem[] = rawHistoryList.map((m: any) => {
+  const matchHistoryItems: PlayerMatchHistoryItem[] = rawHistoryList.map((m: OpenDotaRecentMatch) => {
     const isRadiant = m.player_slot < 128;
     const isWin = isRadiant ? Boolean(m.radiant_win) : !m.radiant_win;
     const hero = getHeroById(m.hero_id);

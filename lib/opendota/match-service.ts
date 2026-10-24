@@ -948,11 +948,19 @@ function extractMatchWards(
     const senLog = Array.isArray(rawP.sen_log) ? rawP.sen_log : [];
     const obsLeftLog = Array.isArray(rawP.obs_left_log) ? rawP.obs_left_log : [];
     const senLeftLog = Array.isArray(rawP.sen_left_log) ? rawP.sen_left_log : [];
+    interface RawWardLogEntry {
+      time?: number;
+      x?: number;
+      y?: number;
+      key?: string | number[];
+      ehandle?: number;
+      attackername?: string;
+    }
 
     const processWardList = (
-      list: any[],
+      list: RawWardLogEntry[],
       type: "observer" | "sentry",
-      leftList: any[]
+      leftList: RawWardLogEntry[]
     ) => {
       const defaultDuration = type === "observer" ? 360 : 420;
 
@@ -1006,9 +1014,15 @@ function extractMatchWards(
         let dewardedBy: MatchWardDewardedBy | undefined = undefined;
 
         const matchingLeft = leftList.find((l) => {
+          if (typeof l.time !== "number") return false;
           if (item.ehandle && l.ehandle && item.ehandle === l.ehandle) return true;
           if (item.key && l.key && item.key === l.key && l.time >= placeTime) return true;
-          if (typeof item.x === "number" && typeof l.x === "number") {
+          if (
+            typeof item.x === "number" &&
+            typeof l.x === "number" &&
+            typeof item.y === "number" &&
+            typeof l.y === "number"
+          ) {
             return Math.abs(item.x - l.x) < 2 && Math.abs(item.y - l.y) < 2 && l.time >= placeTime;
           }
           return l.time >= placeTime && l.time <= placeTime + defaultDuration + 10;

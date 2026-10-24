@@ -4,6 +4,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { MetaTrendsDashboard } from "@/components/meta/MetaTrendsDashboard";
 import { getMetaTrendsData } from "@/lib/opendota/meta-snapshots";
+import { MetaTrendsPayload } from "@/lib/opendota/meta-types";
 import { AlertCircle, RefreshCw, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
@@ -16,21 +17,16 @@ export const metadata: Metadata = {
 export default async function MetaTrendsPage() {
   await connection();
 
+  let data: MetaTrendsPayload | null = null;
+  let errorMessage: string | null = null;
+
   try {
-    const data = await getMetaTrendsData("all");
-
-    return (
-      <div className="min-h-screen bg-[#08090C] text-[#EDEDF0] flex flex-col font-sans">
-        <Navbar />
-        <main className="flex-1 esports-grid">
-          <MetaTrendsDashboard initialData={data} />
-        </main>
-        <Footer />
-      </div>
-    );
+    data = await getMetaTrendsData("all");
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : "Failed to load meta trends data";
+    errorMessage = error instanceof Error ? error.message : "Failed to load meta trends data";
+  }
 
+  if (errorMessage || !data) {
     return (
       <div className="min-h-screen bg-[#08090C] text-[#EDEDF0] flex flex-col font-sans">
         <Navbar />
@@ -49,7 +45,7 @@ export default async function MetaTrendsPage() {
             </h1>
 
             <p className="text-xs font-mono text-zinc-400 leading-relaxed mb-6">
-              {message}
+              {errorMessage}
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-3">
@@ -75,4 +71,14 @@ export default async function MetaTrendsPage() {
       </div>
     );
   }
+
+  return (
+    <div className="min-h-screen bg-[#08090C] text-[#EDEDF0] flex flex-col font-sans">
+      <Navbar />
+      <main className="flex-1 esports-grid">
+        <MetaTrendsDashboard initialData={data} />
+      </main>
+      <Footer />
+    </div>
+  );
 }

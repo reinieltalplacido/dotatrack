@@ -392,7 +392,7 @@ export async function fetchTournamentsList(): Promise<TournamentsCatalogPayload>
   });
 
   // Featured tournament: Highest priority is Live with major prize pool or top active premier
-  let featured =
+  const featured =
     tournaments.find((t) => t.isFeatured && t.status === "live") ||
     tournaments.find((t) => t.status === "live") ||
     tournaments.find((t) => t.isFeatured) ||

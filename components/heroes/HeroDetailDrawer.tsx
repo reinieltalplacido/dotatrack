@@ -71,8 +71,14 @@ export function HeroDetailDrawer({
   isCompared,
 }: HeroDetailDrawerProps) {
   const [deepDive, setDeepDive] = useState<HeroDetailDeepDive | null>(null);
+  const [prevHeroId, setPrevHeroId] = useState<number | null>(hero?.id ?? null);
   const [loadingDeepDive, setLoadingDeepDive] = useState(false);
   const [activeItemTab, setActiveItemTab] = useState<"startGame" | "earlyGame" | "midGame" | "lateGame">("midGame");
+
+  if ((hero?.id ?? null) !== prevHeroId) {
+    setPrevHeroId(hero?.id ?? null);
+    setDeepDive(null);
+  }
 
   // Handle escape key
   useEffect(() => {
@@ -88,7 +94,6 @@ export function HeroDetailDrawer({
   // Fetch secondary matchups & items
   useEffect(() => {
     if (!hero) {
-      setDeepDive(null);
       return;
     }
 

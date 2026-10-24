@@ -17,7 +17,6 @@ import {
   Check,
   UserCheck,
   Zap,
-  Coins,
   Shield,
   Loader2,
   RefreshCw,
@@ -40,21 +39,31 @@ export function TeammatesTab({ data, onTeammatesLoaded }: TeammatesTabProps) {
   const [sortBy, setSortBy] = useState<SortOption>("matches");
   const [copiedId, setCopiedId] = useState<number | null>(null);
 
+  const hasPropPeers = Boolean(data.peers && data.peers.length > 0);
+
   // Client-side fallback fetch in case peers weren't in props (e.g. cached payload)
-  const [peers, setPeers] = useState<EnrichedTeammate[] | null>(data.peers || null);
-  const [isLoadingFallback, setIsLoadingFallback] = useState(false);
+  const [fallbackPeers, setFallbackPeers] = useState<EnrichedTeammate[] | null>(null);
+  const [isLoadingFallback, setIsLoadingFallback] = useState(!hasPropPeers);
   const [fallbackError, setFallbackError] = useState<string | null>(null);
 
+  const peers = hasPropPeers ? (data.peers || null) : fallbackPeers;
+
+  const [prevAccountId, setPrevAccountId] = useState(data.accountId);
+  if (data.accountId !== prevAccountId) {
+    setPrevAccountId(data.accountId);
+    setIsLoadingFallback(!hasPropPeers);
+    setFallbackError(null);
+  }
+
   useEffect(() => {
-    if (data.peers && data.peers.length > 0) {
-      setPeers(data.peers);
-      onTeammatesLoaded?.(data.peers.length);
+    if (hasPropPeers) {
+      if (data.peers) {
+        onTeammatesLoaded?.(data.peers.length);
+      }
       return;
     }
 
     let isCancelled = false;
-    setIsLoadingFallback(true);
-    setFallbackError(null);
 
     fetch(`/api/players/${data.accountId}/peers`)
       .then((res) => {
@@ -64,7 +73,7 @@ export function TeammatesTab({ data, onTeammatesLoaded }: TeammatesTabProps) {
       .then((json) => {
         if (!isCancelled) {
           const list: EnrichedTeammate[] = json.peers || [];
-          setPeers(list);
+          setFallbackPeers(list);
           onTeammatesLoaded?.(list.length);
         }
       })
@@ -80,7 +89,7 @@ export function TeammatesTab({ data, onTeammatesLoaded }: TeammatesTabProps) {
     return () => {
       isCancelled = true;
     };
-  }, [data.accountId, data.peers]);
+  }, [data.accountId, hasPropPeers, data.peers, onTeammatesLoaded]);
 
   const lifetimeWinRate = data.lifetime?.winRate ?? 50.0;
 

@@ -90,68 +90,61 @@ export function MatchAnalyzerDashboard({ initialId, initialMatch, initialError }
   }, []);
 
   // Sync initialMatch if updated from server or props
-  useEffect(() => {
+  const [prevInitialMatch, setPrevInitialMatch] = useState(initialMatch);
+  if (initialMatch !== prevInitialMatch) {
+    setPrevInitialMatch(initialMatch);
     if (initialMatch) {
       setMatch(initialMatch);
       setIsLoading(false);
       setError(null);
     }
-  }, [initialMatch]);
+  }
 
   // Sync initialError
-  useEffect(() => {
+  const [prevInitialError, setPrevInitialError] = useState(initialError);
+  if (initialError !== prevInitialError) {
+    setPrevInitialError(initialError);
     if (initialError && !match) {
       setError(initialError);
       setIsLoading(false);
     }
-  }, [initialError, match]);
+  }
 
   // Automatically fetch match data if an ID is present in URL or props and not yet loaded
   useEffect(() => {
-    if (!urlId) return;
+    if (!urlId || match?.matchId === urlId) return;
 
-    // Already loaded
-    if (match?.matchId === urlId) {
-      setIsLoading(false);
-      return;
-    }
-
-    // Server-provided initial match matches
-    if (initialMatch?.matchId === urlId) {
-      setMatch(initialMatch);
-      setIsLoading(false);
-      return;
-    }
-
-    // Trigger auto-fetch
     let isCancelled = false;
-    setIsLoading(true);
-    setError(null);
 
-    fetch(`/api/matches/${urlId}`)
-      .then(async (res) => {
+    async function autoFetchMatch() {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const res = await fetch(`/api/matches/${urlId}`);
         const data = await res.json();
         if (isCancelled) return;
         if (!res.ok) {
           throw new Error(data.error || `Failed to fetch match ${urlId}`);
         }
         setMatch(data);
-      })
-      .catch((err) => {
+      } catch (err) {
         if (isCancelled) return;
         console.error("[MatchAnalyzer] Auto-load failed:", err);
         setError(err instanceof Error ? err.message : "Failed to load match details");
-      })
-      .finally(() => {
+      } finally {
         if (!isCancelled) {
           setIsLoading(false);
         }
-      });
+      }
+    }
+
+    autoFetchMatch();
 
     return () => {
       isCancelled = true;
     };
-  }, [urlId, match?.matchId, initialMatch]);
+  }, [urlId, match?.matchId]);
 
   return (
     <div className="max-w-7xl 2xl:max-w-[1560px] 3xl:max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 relative">

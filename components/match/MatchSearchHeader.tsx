@@ -11,14 +11,14 @@ interface MatchSearchHeaderProps {
 
 export function MatchSearchHeader({ currentMatchId, onSearch, isLoading }: MatchSearchHeaderProps) {
   const [inputValue, setInputValue] = useState(currentMatchId || "");
+  const [prevMatchId, setPrevMatchId] = useState(currentMatchId);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
-  useEffect(() => {
-    if (currentMatchId) {
-      setInputValue(currentMatchId);
-    }
-  }, [currentMatchId]);
+  if (currentMatchId !== prevMatchId) {
+    setPrevMatchId(currentMatchId);
+    setInputValue(currentMatchId || "");
+  }
 
   // Extracts numeric Match ID from plain input or Dota 2 match URLs (dotabuff, opendota, stratz, steam)
   const extractMatchId = (raw: string): string | null => {

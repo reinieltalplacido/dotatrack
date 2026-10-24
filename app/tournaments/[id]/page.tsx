@@ -8,6 +8,8 @@ import { fetchTournamentDetail, TournamentTelemetryError } from "@/lib/opendota/
 import { AlertCircle, RefreshCw, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
+type TournamentDetail = Awaited<ReturnType<typeof fetchTournamentDetail>>;
+
 interface PageProps {
   params: Promise<{ id: string }>;
 }
@@ -47,26 +49,19 @@ export default async function TournamentDetailPage({ params }: PageProps) {
     notFound();
   }
 
-  try {
-    const detail = await fetchTournamentDetail(numericId);
+  let detail: TournamentDetail | null = null;
+  let errorMessage: string | null = null;
 
-    return (
-      <div className="min-h-screen bg-[#08090C] text-[#EDEDF0] flex flex-col font-sans">
-        <Navbar />
-        <main className="flex-1 esports-grid">
-          <TournamentDetailView detail={detail} />
-        </main>
-        <Footer />
-      </div>
-    );
+  try {
+    detail = await fetchTournamentDetail(numericId);
   } catch (error: unknown) {
     if (error instanceof TournamentTelemetryError && error.statusCode === 404) {
       notFound();
     }
+    errorMessage = error instanceof Error ? error.message : "Failed to load tournament details";
+  }
 
-    const message =
-      error instanceof Error ? error.message : "Failed to load tournament details";
-
+  if (errorMessage || !detail) {
     return (
       <div className="min-h-screen bg-[#08090C] text-[#EDEDF0] flex flex-col font-sans">
         <Navbar />
@@ -84,7 +79,7 @@ export default async function TournamentDetailPage({ params }: PageProps) {
               Tournament Details Unavailable
             </h1>
 
-            <p className="text-xs font-mono text-zinc-400 leading-relaxed mb-6">{message}</p>
+            <p className="text-xs font-mono text-zinc-400 leading-relaxed mb-6">{errorMessage}</p>
 
             <div className="flex flex-wrap items-center justify-center gap-3">
               <Link
@@ -109,4 +104,14 @@ export default async function TournamentDetailPage({ params }: PageProps) {
       </div>
     );
   }
+
+  return (
+    <div className="min-h-screen bg-[#08090C] text-[#EDEDF0] flex flex-col font-sans">
+      <Navbar />
+      <main className="flex-1 esports-grid">
+        <TournamentDetailView detail={detail} />
+      </main>
+      <Footer />
+    </div>
+  );
 }

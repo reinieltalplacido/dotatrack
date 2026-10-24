@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import {
   Loader2,
@@ -36,28 +36,31 @@ export function SteamIdSearch({ onSearchSubmit, autoNavigate = true }: SteamIdSe
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState("Querying...");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [recentSearches, setRecentSearches] = useState<RecentPlayerSearch[]>([]);
-  const [proModalOpen, setProModalOpen] = useState(false);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
+  const [recentSearches, setRecentSearches] = useState<RecentPlayerSearch[]>(() => {
+    if (typeof window === "undefined") return [];
     try {
       const stored = localStorage.getItem(RECENT_SEARCHES_KEY);
       if (stored) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed)) {
-          setRecentSearches(parsed.slice(0, MAX_RECENT_SEARCHES));
+          return parsed.slice(0, MAX_RECENT_SEARCHES);
         }
       }
     } catch {
       // Ignore corrupted localStorage data
     }
-  }, []);
+    return [];
+  });
+  const [proModalOpen, setProModalOpen] = useState(false);
 
-  const saveRecentSearch = (item: RecentPlayerSearch) => {
+  const saveRecentSearch = (item: Omit<RecentPlayerSearch, "timestamp">) => {
+    const fullItem: RecentPlayerSearch = {
+      ...item,
+      timestamp: Date.now(),
+    };
     setRecentSearches((prev) => {
       const filtered = prev.filter((p) => p.id !== item.id);
-      const updated = [item, ...filtered].slice(0, MAX_RECENT_SEARCHES);
+      const updated = [fullItem, ...filtered].slice(0, MAX_RECENT_SEARCHES);
       if (typeof window !== "undefined") {
         try {
           localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(updated));
@@ -96,7 +99,7 @@ export function SteamIdSearch({ onSearchSubmit, autoNavigate = true }: SteamIdSe
     }
   };
 
-  const handleSearch = async (e?: React.FormEvent, directId?: string) => {
+  const handleSearch = useCallback(async (e?: React.FormEvent, directId?: string) => {
     if (e) e.preventDefault();
     if (isLoading) return;
 
@@ -149,7 +152,6 @@ export function SteamIdSearch({ onSearchSubmit, autoNavigate = true }: SteamIdSe
         id: String(accountId),
         name: playerData.proName || playerData.personaname || `Player #${accountId}`,
         avatarUrl: playerData.avatarUrl || undefined,
-        timestamp: Date.now(),
       });
 
       if (autoNavigate) {
@@ -161,7 +163,7 @@ export function SteamIdSearch({ onSearchSubmit, autoNavigate = true }: SteamIdSe
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [autoNavigate, inputValue, isLoading, onSearchSubmit, router]);
 
   const handleSelectPreset = (id: string) => {
     setInputValue(id);

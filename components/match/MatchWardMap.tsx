@@ -284,7 +284,7 @@ export function MatchWardMap({ wards, durationSeconds, isParsed, objectives = []
   const [hoveredStructure, setHoveredStructure] = useState<(MapStructure & { isAlive: boolean; destroyEvent?: MatchObjectiveEvent }) | null>(null);
 
   const animationFrameRef = useRef<number | null>(null);
-  const lastTickRef = useRef<number>(Date.now());
+  const lastTickRef = useRef<number>(0);
 
   // Playback timer loop
   useEffect(() => {

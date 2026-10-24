@@ -67,7 +67,7 @@ export function HeroMetaTierList({ heroes, selectedBracketName }: HeroMetaTierLi
 
   // Filter and sort heroes
   const filteredHeroes = useMemo(() => {
-    let result = heroes.filter((hero) => {
+    const result = heroes.filter((hero) => {
       // Search by hero name
       if (
         searchQuery.trim() &&

@@ -7,6 +7,8 @@ import { fetchTournamentsList } from "@/lib/opendota/tournaments";
 import { AlertCircle, RefreshCw, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
+type TournamentsData = Awaited<ReturnType<typeof fetchTournamentsList>>;
+
 export const metadata: Metadata = {
   title: "Tournaments & Competitive Esports Hub — DotaTrack",
   description:
@@ -16,22 +18,17 @@ export const metadata: Metadata = {
 export default async function TournamentsPage() {
   await connection();
 
+  let data: TournamentsData | null = null;
+  let errorMessage: string | null = null;
+
   try {
-    const data = await fetchTournamentsList();
-
-    return (
-      <div className="min-h-screen bg-[#08090C] text-[#EDEDF0] flex flex-col font-sans">
-        <Navbar />
-        <main className="flex-1 esports-grid">
-          <TournamentsHub initialData={data} />
-        </main>
-        <Footer />
-      </div>
-    );
+    data = await fetchTournamentsList();
   } catch (error: unknown) {
-    const message =
+    errorMessage =
       error instanceof Error ? error.message : "Failed to load tournament data";
+  }
 
+  if (errorMessage || !data) {
     return (
       <div className="min-h-screen bg-[#08090C] text-[#EDEDF0] flex flex-col font-sans">
         <Navbar />
@@ -49,7 +46,7 @@ export default async function TournamentsPage() {
               Tournaments Unavailable
             </h1>
 
-            <p className="text-xs font-mono text-zinc-400 leading-relaxed mb-6">{message}</p>
+            <p className="text-xs font-mono text-zinc-400 leading-relaxed mb-6">{errorMessage}</p>
 
             <div className="flex flex-wrap items-center justify-center gap-3">
               <Link
@@ -74,4 +71,14 @@ export default async function TournamentsPage() {
       </div>
     );
   }
+
+  return (
+    <div className="min-h-screen bg-[#08090C] text-[#EDEDF0] flex flex-col font-sans">
+      <Navbar />
+      <main className="flex-1 esports-grid">
+        <TournamentsHub initialData={data} />
+      </main>
+      <Footer />
+    </div>
+  );
 }

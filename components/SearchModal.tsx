@@ -1,7 +1,9 @@
 "use client";
 
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef, useMemo, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
+
+const emptySubscribe = () => () => {};
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
@@ -104,40 +106,39 @@ interface SearchModalProps {
 export function SearchModal({ isOpen, onClose }: SearchModalProps) {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
   const [query, setQuery] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [recentSearches, setRecentSearches] = useState<RecentPlayerSearch[]>([]);
   const [validationError, setValidationError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Load recent searches from localStorage
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    try {
-      const stored = localStorage.getItem(RECENT_SEARCHES_KEY);
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed)) {
-          setRecentSearches(parsed.slice(0, 4));
+  // Sync state when modal opens
+  const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
+  if (isOpen !== prevIsOpen) {
+    setPrevIsOpen(isOpen);
+    if (isOpen) {
+      setQuery("");
+      setValidationError(null);
+      setSelectedIndex(0);
+      try {
+        const stored = typeof window !== "undefined" ? localStorage.getItem(RECENT_SEARCHES_KEY) : null;
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed)) {
+            setRecentSearches(parsed.slice(0, 4));
+          }
         }
+      } catch {
+        // Ignore localStorage errors
       }
-    } catch {
-      // Ignore localStorage errors
     }
-  }, [isOpen]);
+  }
 
   // Lock scroll and auto-focus when modal opens
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
-      setQuery("");
-      setValidationError(null);
-      setSelectedIndex(0);
       const timer = setTimeout(() => {
         inputRef.current?.focus();
       }, 50);
@@ -326,12 +327,8 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
     return items;
   }, [query, isMatchIdCandidate, matchingHeroes, matchingNav, recentSearches]);
 
-  // Keep selected index in bounds
-  useEffect(() => {
-    if (selectedIndex >= flatActionItems.length) {
-      setSelectedIndex(0);
-    }
-  }, [flatActionItems, selectedIndex]);
+  // Clamped active index to keep in bounds
+  const activeIndex = selectedIndex >= flatActionItems.length ? 0 : selectedIndex;
 
   // Submit / Track Player handler
   const handleTrackPlayer = (inputStr: string) => {
@@ -365,8 +362,8 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
       setSelectedIndex((prev) => (prev - 1 + flatActionItems.length) % Math.max(1, flatActionItems.length));
     } else if (e.key === "Enter") {
       e.preventDefault();
-      if (flatActionItems[selectedIndex]) {
-        flatActionItems[selectedIndex].action();
+      if (flatActionItems[activeIndex]) {
+        flatActionItems[activeIndex].action();
       } else if (query.trim()) {
         handleTrackPlayer(query);
       }
@@ -496,7 +493,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                       <div className="space-y-0.5 mt-1">
                         {items.map((item) => {
                           const itemIndex = runningIndex++;
-                          const isSelected = itemIndex === selectedIndex;
+                          const isSelected = itemIndex === activeIndex;
                           const Icon = item.icon;
 
                           return (

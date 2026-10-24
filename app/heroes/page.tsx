@@ -4,6 +4,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { HeroCompendium } from "@/components/heroes/HeroCompendium";
 import { fetchHeroStatsData } from "@/lib/opendota/hero-stats";
+import { HeroCompendiumPayload } from "@/lib/opendota/hero-types";
 import { AlertCircle, RefreshCw, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
@@ -16,21 +17,16 @@ export const metadata: Metadata = {
 export default async function HeroesPage() {
   await connection();
 
+  let data: HeroCompendiumPayload | null = null;
+  let errorMessage: string | null = null;
+
   try {
-    const data = await fetchHeroStatsData();
-
-    return (
-      <div className="min-h-screen bg-[#08090C] text-[#EDEDF0] flex flex-col font-sans">
-        <Navbar />
-        <main className="flex-1 esports-grid">
-          <HeroCompendium initialData={data} />
-        </main>
-        <Footer />
-      </div>
-    );
+    data = await fetchHeroStatsData();
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : "Failed to load hero statistics";
+    errorMessage = error instanceof Error ? error.message : "Failed to load hero statistics";
+  }
 
+  if (errorMessage || !data) {
     return (
       <div className="min-h-screen bg-[#08090C] text-[#EDEDF0] flex flex-col font-sans">
         <Navbar />
@@ -49,7 +45,7 @@ export default async function HeroesPage() {
             </h1>
 
             <p className="text-xs font-mono text-zinc-400 leading-relaxed mb-6">
-              {message}
+              {errorMessage}
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-3">
@@ -75,4 +71,14 @@ export default async function HeroesPage() {
       </div>
     );
   }
+
+  return (
+    <div className="min-h-screen bg-[#08090C] text-[#EDEDF0] flex flex-col font-sans">
+      <Navbar />
+      <main className="flex-1 esports-grid">
+        <HeroCompendium initialData={data} />
+      </main>
+      <Footer />
+    </div>
+  );
 }
