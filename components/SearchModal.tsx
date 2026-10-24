@@ -113,14 +113,14 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
   const [validationError, setValidationError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Sync state when modal opens
-  const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
-  if (isOpen !== prevIsOpen) {
-    setPrevIsOpen(isOpen);
+  // Lock scroll, reset input, load recents, and auto-focus when modal opens
+  useEffect(() => {
     if (isOpen) {
+      document.body.style.overflow = "hidden";
       setQuery("");
       setValidationError(null);
       setSelectedIndex(0);
+
       try {
         const stored = typeof window !== "undefined" ? localStorage.getItem(RECENT_SEARCHES_KEY) : null;
         if (stored) {
@@ -132,13 +132,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
       } catch {
         // Ignore localStorage errors
       }
-    }
-  }
 
-  // Lock scroll and auto-focus when modal opens
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
       const timer = setTimeout(() => {
         inputRef.current?.focus();
       }, 50);

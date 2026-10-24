@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import {
   Loader2,
@@ -36,22 +36,23 @@ export function SteamIdSearch({ onSearchSubmit, autoNavigate = true }: SteamIdSe
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState("Querying...");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [recentSearches, setRecentSearches] = useState<RecentPlayerSearch[]>(() => {
-    if (typeof window === "undefined") return [];
+  const [recentSearches, setRecentSearches] = useState<RecentPlayerSearch[]>([]);
+  const [proModalOpen, setProModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
     try {
       const stored = localStorage.getItem(RECENT_SEARCHES_KEY);
       if (stored) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed)) {
-          return parsed.slice(0, MAX_RECENT_SEARCHES);
+          setRecentSearches(parsed.slice(0, MAX_RECENT_SEARCHES));
         }
       }
     } catch {
       // Ignore corrupted localStorage data
     }
-    return [];
-  });
-  const [proModalOpen, setProModalOpen] = useState(false);
+  }, []);
 
   const saveRecentSearch = (item: Omit<RecentPlayerSearch, "timestamp">) => {
     const fullItem: RecentPlayerSearch = {
