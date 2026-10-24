@@ -47,6 +47,7 @@ export function Navbar() {
     { label: "Tournaments", href: "/tournaments" },
     { label: "Meta trends", href: "/meta-trends" },
     { label: "Match data", href: "/match-data" },
+    { label: "Learn", href: "/learn" },
   ];
 
   return (

@@ -71,6 +71,14 @@ export function Footer() {
                   Match Analyzer
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/learn"
+                  className="hover:text-white transition-colors"
+                >
+                  Learn & Mechanics
+                </Link>
+              </li>
             </ul>
           </div>
 

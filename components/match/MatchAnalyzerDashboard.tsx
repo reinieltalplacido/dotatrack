@@ -2,6 +2,8 @@
 
 import { useState, useCallback, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import { AnimatedTabs, TabOption } from "@/components/ui/AnimatedTabs";
 import {
   Table,
   Swords,
@@ -186,158 +188,106 @@ export function MatchAnalyzerDashboard({ initialId, initialMatch, initialError }
           />
 
           {/* Analysis Navigation Tabs */}
-          <div className="flex items-center gap-1.5 mb-8 border-b border-white/[0.08] pb-3 text-xs font-mono overflow-x-auto no-scrollbar whitespace-nowrap scroll-smooth">
-            <TabButton
-              active={activeTab === "scoreboard"}
-              onClick={() => setActiveTab("scoreboard")}
-              icon={<Table className="h-3.5 w-3.5" />}
-              label="Scoreboard"
-            />
-            <TabButton
-              active={activeTab === "lanes"}
-              onClick={() => setActiveTab("lanes")}
-              icon={<Swords className="h-3.5 w-3.5" />}
-              label="Lane Analysis"
-            />
-            <TabButton
-              active={activeTab === "items"}
-              onClick={() => setActiveTab("items")}
-              icon={<ShoppingCart className="h-3.5 w-3.5" />}
-              label="Item Timings"
-            />
-            <TabButton
-              active={activeTab === "graphs"}
-              onClick={() => setActiveTab("graphs")}
-              icon={<TrendingUp className="h-3.5 w-3.5" />}
-              label="Gold &amp; XP Graphs"
-            />
-            <TabButton
-              active={activeTab === "combat"}
-              onClick={() => setActiveTab("combat")}
-              icon={<Skull className="h-3.5 w-3.5" />}
-              label="Combat Log"
-            />
-            <TabButton
-              active={activeTab === "networth"}
-              onClick={() => setActiveTab("networth")}
-              icon={<Coins className="h-3.5 w-3.5" />}
-              label="Hero Net Worth"
-            />
-            <TabButton
-              active={activeTab === "objectives"}
-              onClick={() => setActiveTab("objectives")}
-              icon={<Trophy className="h-3.5 w-3.5" />}
-              label="Objectives"
-            />
-            <TabButton
-              active={activeTab === "vision"}
-              onClick={() => setActiveTab("vision")}
-              icon={<Eye className="h-3.5 w-3.5" />}
-              label="Vision &amp; Wards"
-            />
-            <TabButton
-              active={activeTab === "advanced"}
-              onClick={() => setActiveTab("advanced")}
-              icon={<BarChart3 className="h-3.5 w-3.5" />}
-              label="Advanced Metrics"
+          <div className="mb-8 border-b border-white/[0.08] pb-3 overflow-x-auto no-scrollbar">
+            <AnimatedTabs<AnalysisTab>
+              tabs={[
+                { id: "scoreboard", label: "Scoreboard", icon: Table },
+                { id: "lanes", label: "Lane Analysis", icon: Swords },
+                { id: "items", label: "Item Timings", icon: ShoppingCart },
+                { id: "graphs", label: "Gold & XP Graphs", icon: TrendingUp },
+                { id: "combat", label: "Combat Log", icon: Skull },
+                { id: "networth", label: "Hero Net Worth", icon: Coins },
+                { id: "objectives", label: "Objectives", icon: Trophy },
+                { id: "vision", label: "Vision & Wards", icon: Eye },
+                { id: "advanced", label: "Advanced Metrics", icon: BarChart3 },
+              ]}
+              activeTab={activeTab}
+              onChange={(tabId) => setActiveTab(tabId)}
+              layoutId="matchAnalyzerActiveTabPill"
+              variant="segmented"
+              size="md"
             />
           </div>
 
-          {/* Active Tab View */}
-          {activeTab === "scoreboard" && (
-            <MatchScoreboard
-              radiantPlayers={match.radiantPlayers}
-              direPlayers={match.direPlayers}
-              radiantScore={match.radiantScore}
-              direScore={match.direScore}
-              radiantWin={match.radiantWin}
-            />
-          )}
+          {/* Active Tab View with Transitions */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, y: 10, filter: "blur(2px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              exit={{ opacity: 0, y: -10, filter: "blur(2px)" }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+            >
+              {activeTab === "scoreboard" && (
+                <MatchScoreboard
+                  radiantPlayers={match.radiantPlayers}
+                  direPlayers={match.direPlayers}
+                  radiantScore={match.radiantScore}
+                  direScore={match.direScore}
+                  radiantWin={match.radiantWin}
+                />
+              )}
 
-          {activeTab === "lanes" && (
-            <MatchLaneAnalysis
-              lanePairings={match.lanePairings}
-              isParsed={match.isParsed}
-            />
-          )}
+              {activeTab === "lanes" && (
+                <MatchLaneAnalysis
+                  lanePairings={match.lanePairings}
+                  isParsed={match.isParsed}
+                />
+              )}
 
-          {activeTab === "items" && (
-            <MatchItemTimeline
-              players={match.allPlayers}
-              isParsed={match.isParsed}
-            />
-          )}
+              {activeTab === "items" && (
+                <MatchItemTimeline
+                  players={match.allPlayers}
+                  isParsed={match.isParsed}
+                />
+              )}
 
-          {activeTab === "graphs" && (
-            <MatchAdvantageChart
-              goldTimeline={match.goldAdvantageTimeline}
-              xpTimeline={match.xpAdvantageTimeline}
-              isParsed={match.isParsed}
-            />
-          )}
+              {activeTab === "graphs" && (
+                <MatchAdvantageChart
+                  goldTimeline={match.goldAdvantageTimeline}
+                  xpTimeline={match.xpAdvantageTimeline}
+                  isParsed={match.isParsed}
+                />
+              )}
 
-          {activeTab === "combat" && (
-            <MatchCombatTimeline
-              killEvents={match.killEvents}
-              isParsed={match.isParsed}
-            />
-          )}
+              {activeTab === "combat" && (
+                <MatchCombatTimeline
+                  killEvents={match.killEvents}
+                  isParsed={match.isParsed}
+                />
+              )}
 
-          {activeTab === "networth" && (
-            <MatchHeroNetWorthChart
-              players={match.allPlayers}
-              durationSeconds={match.durationSeconds}
-              isParsed={match.isParsed}
-            />
-          )}
+              {activeTab === "networth" && (
+                <MatchHeroNetWorthChart
+                  players={match.allPlayers}
+                  durationSeconds={match.durationSeconds}
+                  isParsed={match.isParsed}
+                />
+              )}
 
-          {activeTab === "objectives" && (
-            <MatchObjectivesTimeline
-              objectives={match.objectives}
-              isParsed={match.isParsed}
-            />
-          )}
+              {activeTab === "objectives" && (
+                <MatchObjectivesTimeline
+                  objectives={match.objectives}
+                  isParsed={match.isParsed}
+                />
+              )}
 
-          {activeTab === "vision" && (
-            <MatchWardMap
-              wards={match.wards || []}
-              durationSeconds={match.durationSeconds}
-              isParsed={match.isParsed}
-              objectives={match.objectives}
-            />
-          )}
+              {activeTab === "vision" && (
+                <MatchWardMap
+                  wards={match.wards || []}
+                  durationSeconds={match.durationSeconds}
+                  isParsed={match.isParsed}
+                  objectives={match.objectives}
+                />
+              )}
 
-          {activeTab === "advanced" && (
-            <MatchAdvancedStats players={match.allPlayers} />
-          )}
+              {activeTab === "advanced" && (
+                <MatchAdvancedStats players={match.allPlayers} />
+              )}
+            </motion.div>
+          </AnimatePresence>
         </>
       ) : null}
     </div>
-  );
-}
-
-function TabButton({
-  active,
-  onClick,
-  icon,
-  label,
-}: {
-  active: boolean;
-  onClick: () => void;
-  icon: React.ReactNode;
-  label: string;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-sm border transition-all cursor-pointer shrink-0 min-h-[40px] text-xs font-mono font-medium ${
-        active
-          ? "bg-rose-600 text-white font-bold border-rose-500 shadow-md shadow-rose-950/50"
-          : "bg-zinc-950/80 text-zinc-400 hover:text-white border-white/[0.06] hover:border-white/[0.15]"
-      }`}
-    >
-      {icon}
-      <span>{label}</span>
-    </button>
   );
 }

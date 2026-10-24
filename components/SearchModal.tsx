@@ -20,6 +20,7 @@ import {
   CornerDownLeft,
   AlertCircle,
   Loader2,
+  GraduationCap,
 } from "lucide-react";
 import { validateSteamId } from "@/lib/validation";
 import heroesData from "@/lib/opendota/heroes-data.json";
@@ -78,6 +79,13 @@ const NAVIGATION_ITEMS = [
     subtitle: "Scoreboard breakdown, combat timeline & economy swings",
     href: "/match-data",
     icon: Swords,
+  },
+  {
+    id: "nav-learn",
+    title: "Go to Learn Academy",
+    subtitle: "Attributes guide, item counter matrix & dispel mechanics",
+    href: "/learn",
+    icon: GraduationCap,
   },
   {
     id: "nav-home",

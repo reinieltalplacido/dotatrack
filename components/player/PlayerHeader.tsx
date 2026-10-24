@@ -209,7 +209,7 @@ export function PlayerHeader({ data, onOpenSearch }: PlayerHeaderProps) {
               <div className="flex items-center gap-1 text-[10px] font-mono text-zinc-500 uppercase">
                 <span>RECENT KDA</span>
               </div>
-              <div className="text-lg font-mono font-black text-amber-400 mt-0.5">
+              <div className="text-lg font-mono font-black text-white mt-0.5">
                 {data.recentSummary.kdaRatio > 0 ? data.recentSummary.kdaRatio : "N/A"}
               </div>
               <div className="text-[10px] font-mono text-zinc-400">

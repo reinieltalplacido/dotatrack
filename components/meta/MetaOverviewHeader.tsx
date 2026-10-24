@@ -12,6 +12,7 @@ import {
   Info,
 } from "lucide-react";
 import { MetaRankBracket, RankBracketDefinition, PatchInfo } from "@/lib/opendota/meta-types";
+import { AnimatedTabs } from "@/components/ui/AnimatedTabs";
 
 interface MetaOverviewHeaderProps {
   currentPatch: PatchInfo;
@@ -140,29 +141,19 @@ export function MetaOverviewHeader({
         </div>
 
         {/* Bracket Tabs */}
-        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-          {availableBrackets.map((bracket) => {
-            const isSelected = selectedBracket === bracket.id;
-            return (
-              <button
-                key={bracket.id}
-                onClick={() => onSelectBracket(bracket.id)}
-                className={`relative px-3 py-1.5 text-xs font-mono rounded-sm transition-all cursor-pointer ${
-                  isSelected
-                    ? "bg-rose-600 text-white font-bold shadow-md shadow-rose-950/50 border border-rose-500"
-                    : "bg-zinc-900/90 text-zinc-400 hover:text-white border border-white/[0.08] hover:border-white/[0.2]"
-                }`}
-                title={bracket.description}
-              >
-                <span>{bracket.name}</span>
-                {bracket.id === "7" && (
-                  <span className="ml-1 text-[9px] opacity-75 font-normal">
-                    (4.6k+)
-                  </span>
-                )}
-              </button>
-            );
-          })}
+        <div className="overflow-x-auto no-scrollbar">
+          <AnimatedTabs
+            tabs={availableBrackets.map((bracket) => ({
+              id: bracket.id,
+              label: bracket.name,
+              badge: bracket.id === "7" ? "4.6k+" : undefined,
+            }))}
+            activeTab={selectedBracket}
+            onChange={(id) => onSelectBracket(id as MetaRankBracket)}
+            layoutId="metaBracketActiveTabPill"
+            variant="segmented"
+            size="sm"
+          />
         </div>
 
         {/* Notice for Bracket 7 (Divine / Immortal) */}

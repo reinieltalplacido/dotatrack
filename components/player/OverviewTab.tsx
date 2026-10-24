@@ -86,7 +86,7 @@ export function OverviewTab({
             <span>RECENT AVG KDA</span>
             <Crosshair className="h-3.5 w-3.5 text-zinc-500" />
           </div>
-          <div className="mt-1.5 sm:mt-2 text-lg sm:text-2xl font-mono font-black text-amber-400 truncate">
+          <div className="mt-1.5 sm:mt-2 text-lg sm:text-2xl font-mono font-black text-white truncate">
             {recentSummary.avgKills} / {recentSummary.avgDeaths} / {recentSummary.avgAssists}
           </div>
           <div className="mt-1 flex items-center justify-between text-[10px] sm:text-[11px] font-mono text-zinc-400 border-t border-white/[0.04] pt-1.5">
@@ -166,7 +166,7 @@ export function OverviewTab({
                       </div>
                       <div className="text-[10px] font-mono space-y-0.5 text-zinc-300">
                         <div>Outcome: <strong className={m.isWin ? "text-emerald-400" : "text-rose-400"}>{m.isWin ? "VICTORY" : "DEFEAT"}</strong></div>
-                        <div>KDA: <strong className="text-amber-400">{m.kda}</strong></div>
+                        <div>KDA: <strong className="text-white">{m.kda}</strong></div>
                         <div>Duration: <span className="text-zinc-400">{m.durationFormatted}</span></div>
                         <div>Played: <span className="text-zinc-400">{m.timeAgo}</span></div>
                       </div>
@@ -206,7 +206,7 @@ export function OverviewTab({
                 </div>
                 <div className="bg-zinc-900/60 p-2 rounded border border-white/[0.04]">
                   <span className="text-zinc-500 text-[10px] block">LIFETIME RATIO</span>
-                  <span className="text-amber-400 font-bold">{lifetimeTotals.kdaRatio}</span>
+                  <span className="text-white font-bold">{lifetimeTotals.kdaRatio}</span>
                 </div>
                 <div className="bg-zinc-900/60 p-2 rounded border border-white/[0.04]">
                   <span className="text-zinc-500 text-[10px] block">LIFETIME GPM</span>
@@ -470,7 +470,7 @@ export function OverviewTab({
                 <div className="flex items-center justify-between sm:justify-end gap-3 sm:gap-6 text-xs font-mono">
                   <div>
                     <span className="text-zinc-500 text-[10px] block">K / D / A</span>
-                    <span className="font-bold text-zinc-200">{match.kda}</span>
+                    <span className="font-bold text-white">{match.kda}</span>
                   </div>
                   <div>
                     <span className="text-zinc-500 text-[10px] block">DURATION</span>

@@ -45,7 +45,7 @@ export function PerformanceTab({ data }: PerformanceTabProps) {
                     Kills Per Game
                   </div>
                 </td>
-                <td className="py-3 px-3 text-amber-400 font-bold">{recentSummary.avgKills}</td>
+                <td className="py-3 px-3 text-white font-bold">{recentSummary.avgKills}</td>
                 <td className="py-3 px-3 text-zinc-400">
                   {lifetimeTotals?.killsAvg ?? "N/A"}
                 </td>
@@ -74,7 +74,7 @@ export function PerformanceTab({ data }: PerformanceTabProps) {
                     Deaths Per Game
                   </div>
                 </td>
-                <td className="py-3 px-3 text-amber-400 font-bold">{recentSummary.avgDeaths}</td>
+                <td className="py-3 px-3 text-white font-bold">{recentSummary.avgDeaths}</td>
                 <td className="py-3 px-3 text-zinc-400">
                   {lifetimeTotals?.deathsAvg ?? "N/A"}
                 </td>
@@ -102,7 +102,7 @@ export function PerformanceTab({ data }: PerformanceTabProps) {
                     Assists Per Game
                   </div>
                 </td>
-                <td className="py-3 px-3 text-amber-400 font-bold">{recentSummary.avgAssists}</td>
+                <td className="py-3 px-3 text-white font-bold">{recentSummary.avgAssists}</td>
                 <td className="py-3 px-3 text-zinc-400">
                   {lifetimeTotals?.assistsAvg ?? "N/A"}
                 </td>
@@ -131,7 +131,7 @@ export function PerformanceTab({ data }: PerformanceTabProps) {
                     KDA Ratio
                   </div>
                 </td>
-                <td className="py-3 px-3 text-amber-400 font-bold">{recentSummary.kdaRatio}</td>
+                <td className="py-3 px-3 text-white font-bold">{recentSummary.kdaRatio}</td>
                 <td className="py-3 px-3 text-zinc-400">
                   {lifetimeTotals?.kdaRatio ?? "N/A"}
                 </td>

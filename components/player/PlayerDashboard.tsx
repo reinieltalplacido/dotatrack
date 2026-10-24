@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutDashboard,
   Swords,
@@ -13,6 +14,7 @@ import {
 } from "lucide-react";
 import { PlayerDashboardData } from "@/lib/opendota/types";
 import { PlayerHeader } from "./PlayerHeader";
+import { PlayerTabs, PlayerTabType, TabItem } from "./PlayerTabs";
 import { OverviewTab } from "./OverviewTab";
 import { MatchesTab } from "./MatchesTab";
 import { HeroesTab } from "./HeroesTab";
@@ -25,16 +27,14 @@ interface PlayerDashboardProps {
   initialData: PlayerDashboardData;
 }
 
-type TabType = "overview" | "matches" | "heroes" | "performance" | "matchups" | "teammates";
-
 export function PlayerDashboard({ initialData }: PlayerDashboardProps) {
-  const [activeTab, setActiveTab] = useState<TabType>("overview");
+  const [activeTab, setActiveTab] = useState<PlayerTabType>("overview");
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const [teammatesCount, setTeammatesCount] = useState<number | undefined>(
     initialData.peers && initialData.peers.length > 0 ? initialData.peers.length : undefined
   );
 
-  const tabs: { id: TabType; label: string; icon: typeof LayoutDashboard; count?: number }[] = [
+  const tabs: TabItem[] = [
     { id: "overview", label: "Overview", icon: LayoutDashboard },
     {
       id: "matches",
@@ -66,77 +66,55 @@ export function PlayerDashboard({ initialData }: PlayerDashboardProps) {
         onOpenSearch={() => setSearchModalOpen(true)}
       />
 
-      {/* Navigation Tabs Bar */}
-      <div className="sticky top-14 z-30 border-b border-white/[0.08] bg-[#0A0C13]/95 backdrop-blur-md">
-        <div className="mx-auto max-w-7xl 2xl:max-w-[1520px] px-4 sm:px-6 lg:px-8">
-          <nav className="flex space-x-1 sm:space-x-2 overflow-x-auto py-2 no-scrollbar" aria-label="Player Tabs">
-            {tabs.map((tab) => {
-              const Icon = tab.icon;
-              const isActive = activeTab === tab.id;
+      {/* Navigation Tabs Bar with Sliding Indicator */}
+      <PlayerTabs
+        tabs={tabs}
+        activeTab={activeTab}
+        onTabChange={(tabId) => setActiveTab(tabId)}
+      />
 
-              return (
-                <button
-                  key={tab.id}
-                  type="button"
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-3.5 py-2 text-xs font-mono font-bold uppercase tracking-wider rounded-sm transition-all whitespace-nowrap shrink-0 min-h-[40px] ${
-                    isActive
-                      ? "bg-rose-600 text-white shadow-md shadow-rose-950/80"
-                      : "text-zinc-400 hover:text-white hover:bg-white/[0.05]"
-                  }`}
-                >
-                  <Icon className="h-3.5 w-3.5" />
-                  <span>{tab.label}</span>
-                  {typeof tab.count === "number" && (
-                    <span
-                      className={`rounded px-1.5 py-0.2 text-[10px] font-mono ${
-                        isActive
-                          ? "bg-black/30 text-rose-100"
-                          : "bg-white/[0.06] text-zinc-400"
-                      }`}
-                    >
-                      {tab.count}
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-          </nav>
-        </div>
-      </div>
-
-      {/* Main Tab Content Viewport */}
+      {/* Main Tab Content Viewport with Motion */}
       <main className="flex-1 mx-auto max-w-7xl 2xl:max-w-[1560px] 3xl:max-w-[1680px] w-full px-4 sm:px-6 lg:px-8 py-8">
-        {activeTab === "overview" && (
-          <OverviewTab
-            data={initialData}
-            onNavigateToMatches={() => setActiveTab("matches")}
-            onNavigateToHeroes={() => setActiveTab("heroes")}
-          />
-        )}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+          >
+            {activeTab === "overview" && (
+              <OverviewTab
+                data={initialData}
+                onNavigateToMatches={() => setActiveTab("matches")}
+                onNavigateToHeroes={() => setActiveTab("heroes")}
+              />
+            )}
 
-        {activeTab === "matches" && (
-          <MatchesTab matches={initialData.recentMatches} />
-        )}
+            {activeTab === "matches" && (
+              <MatchesTab matches={initialData.recentMatches} />
+            )}
 
-        {activeTab === "heroes" && (
-          <HeroesTab heroes={initialData.allHeroes} />
-        )}
+            {activeTab === "heroes" && (
+              <HeroesTab heroes={initialData.allHeroes} />
+            )}
 
-        {activeTab === "performance" && (
-          <PerformanceTab data={initialData} />
-        )}
+            {activeTab === "performance" && (
+              <PerformanceTab data={initialData} />
+            )}
 
-        {activeTab === "matchups" && (
-          <MatchupsTab data={initialData} />
-        )}
+            {activeTab === "matchups" && (
+              <MatchupsTab data={initialData} />
+            )}
 
-        {activeTab === "teammates" && (
-          <TeammatesTab
-            data={initialData}
-            onTeammatesLoaded={(count) => setTeammatesCount(count)}
-          />
-        )}
+            {activeTab === "teammates" && (
+              <TeammatesTab
+                data={initialData}
+                onTeammatesLoaded={(count) => setTeammatesCount(count)}
+              />
+            )}
+          </motion.div>
+        </AnimatePresence>
       </main>
 
       {/* Quick Search Another Player Modal */}

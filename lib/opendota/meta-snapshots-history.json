@@ -5388,5 +5388,775 @@
         "pickRate": 1.7
       }
     }
+  },
+  {
+    "snapshotId": "snap_2026-10-24T04-09-18-178Z",
+    "timestamp": "2026-10-24T04:09:18.178Z",
+    "patchVersion": "7.41",
+    "totalPubMatches": 3776873,
+    "heroMetrics": {
+      "1": {
+        "picks": 616670,
+        "wins": 315377,
+        "winRate": 51.14,
+        "pickRate": 16.33
+      },
+      "2": {
+        "picks": 624483,
+        "wins": 315703,
+        "winRate": 50.55,
+        "pickRate": 16.53
+      },
+      "3": {
+        "picks": 107749,
+        "wins": 52108,
+        "winRate": 48.36,
+        "pickRate": 2.85
+      },
+      "4": {
+        "picks": 159631,
+        "wins": 82908,
+        "winRate": 51.94,
+        "pickRate": 4.23
+      },
+      "5": {
+        "picks": 536581,
+        "wins": 278092,
+        "winRate": 51.83,
+        "pickRate": 14.21
+      },
+      "6": {
+        "picks": 613194,
+        "wins": 284650,
+        "winRate": 46.42,
+        "pickRate": 16.24
+      },
+      "7": {
+        "picks": 592562,
+        "wins": 299727,
+        "winRate": 50.58,
+        "pickRate": 15.69
+      },
+      "8": {
+        "picks": 679478,
+        "wins": 356824,
+        "winRate": 52.51,
+        "pickRate": 17.99
+      },
+      "9": {
+        "picks": 402890,
+        "wins": 207535,
+        "winRate": 51.51,
+        "pickRate": 10.67
+      },
+      "10": {
+        "picks": 143823,
+        "wins": 68830,
+        "winRate": 47.86,
+        "pickRate": 3.81
+      },
+      "11": {
+        "picks": 348362,
+        "wins": 152041,
+        "winRate": 43.64,
+        "pickRate": 9.22
+      },
+      "12": {
+        "picks": 450330,
+        "wins": 237718,
+        "winRate": 52.79,
+        "pickRate": 11.92
+      },
+      "13": {
+        "picks": 119017,
+        "wins": 55620,
+        "winRate": 46.73,
+        "pickRate": 3.15
+      },
+      "14": {
+        "picks": 1028310,
+        "wins": 528759,
+        "winRate": 51.42,
+        "pickRate": 27.23
+      },
+      "15": {
+        "picks": 249484,
+        "wins": 125457,
+        "winRate": 50.29,
+        "pickRate": 6.61
+      },
+      "16": {
+        "picks": 152218,
+        "wins": 75176,
+        "winRate": 49.39,
+        "pickRate": 4.03
+      },
+      "17": {
+        "picks": 205860,
+        "wins": 96342,
+        "winRate": 46.8,
+        "pickRate": 5.45
+      },
+      "18": {
+        "picks": 399598,
+        "wins": 206534,
+        "winRate": 51.69,
+        "pickRate": 10.58
+      },
+      "19": {
+        "picks": 192413,
+        "wins": 86231,
+        "winRate": 44.82,
+        "pickRate": 5.09
+      },
+      "20": {
+        "picks": 355579,
+        "wins": 186370,
+        "winRate": 52.41,
+        "pickRate": 9.41
+      },
+      "21": {
+        "picks": 650876,
+        "wins": 315672,
+        "winRate": 48.5,
+        "pickRate": 17.23
+      },
+      "22": {
+        "picks": 490698,
+        "wins": 246205,
+        "winRate": 50.17,
+        "pickRate": 12.99
+      },
+      "23": {
+        "picks": 185522,
+        "wins": 91345,
+        "winRate": 49.24,
+        "pickRate": 4.91
+      },
+      "25": {
+        "picks": 550669,
+        "wins": 260151,
+        "winRate": 47.24,
+        "pickRate": 14.58
+      },
+      "26": {
+        "picks": 925680,
+        "wins": 451574,
+        "winRate": 48.78,
+        "pickRate": 24.51
+      },
+      "27": {
+        "picks": 600354,
+        "wins": 310017,
+        "winRate": 51.64,
+        "pickRate": 15.9
+      },
+      "28": {
+        "picks": 249772,
+        "wins": 122970,
+        "winRate": 49.23,
+        "pickRate": 6.61
+      },
+      "29": {
+        "picks": 472035,
+        "wins": 232733,
+        "winRate": 49.3,
+        "pickRate": 12.5
+      },
+      "30": {
+        "picks": 625232,
+        "wins": 325603,
+        "winRate": 52.08,
+        "pickRate": 16.55
+      },
+      "31": {
+        "picks": 406959,
+        "wins": 213375,
+        "winRate": 52.43,
+        "pickRate": 10.78
+      },
+      "32": {
+        "picks": 229797,
+        "wins": 121519,
+        "winRate": 52.88,
+        "pickRate": 6.08
+      },
+      "33": {
+        "picks": 160802,
+        "wins": 81788,
+        "winRate": 50.86,
+        "pickRate": 4.26
+      },
+      "34": {
+        "picks": 188713,
+        "wins": 89118,
+        "winRate": 47.22,
+        "pickRate": 5
+      },
+      "35": {
+        "picks": 754316,
+        "wins": 376560,
+        "winRate": 49.92,
+        "pickRate": 19.97
+      },
+      "36": {
+        "picks": 571510,
+        "wins": 291172,
+        "winRate": 50.95,
+        "pickRate": 15.13
+      },
+      "37": {
+        "picks": 213587,
+        "wins": 107012,
+        "winRate": 50.1,
+        "pickRate": 5.66
+      },
+      "38": {
+        "picks": 81300,
+        "wins": 37462,
+        "winRate": 46.08,
+        "pickRate": 2.15
+      },
+      "39": {
+        "picks": 333299,
+        "wins": 158707,
+        "winRate": 47.62,
+        "pickRate": 8.82
+      },
+      "40": {
+        "picks": 269712,
+        "wins": 131007,
+        "winRate": 48.57,
+        "pickRate": 7.14
+      },
+      "41": {
+        "picks": 297844,
+        "wins": 144599,
+        "winRate": 48.55,
+        "pickRate": 7.89
+      },
+      "42": {
+        "picks": 485530,
+        "wins": 267163,
+        "winRate": 55.03,
+        "pickRate": 12.86
+      },
+      "43": {
+        "picks": 199160,
+        "wins": 96807,
+        "winRate": 48.61,
+        "pickRate": 5.27
+      },
+      "44": {
+        "picks": 520324,
+        "wins": 267467,
+        "winRate": 51.4,
+        "pickRate": 13.78
+      },
+      "45": {
+        "picks": 167518,
+        "wins": 83790,
+        "winRate": 50.02,
+        "pickRate": 4.44
+      },
+      "46": {
+        "picks": 182927,
+        "wins": 83717,
+        "winRate": 45.77,
+        "pickRate": 4.84
+      },
+      "47": {
+        "picks": 321766,
+        "wins": 156720,
+        "winRate": 48.71,
+        "pickRate": 8.52
+      },
+      "48": {
+        "picks": 433336,
+        "wins": 220825,
+        "winRate": 50.96,
+        "pickRate": 11.47
+      },
+      "49": {
+        "picks": 513102,
+        "wins": 270274,
+        "winRate": 52.67,
+        "pickRate": 13.59
+      },
+      "50": {
+        "picks": 203311,
+        "wins": 103225,
+        "winRate": 50.77,
+        "pickRate": 5.38
+      },
+      "51": {
+        "picks": 99141,
+        "wins": 47293,
+        "winRate": 47.7,
+        "pickRate": 2.62
+      },
+      "52": {
+        "picks": 91135,
+        "wins": 46731,
+        "winRate": 51.28,
+        "pickRate": 2.41
+      },
+      "53": {
+        "picks": 346573,
+        "wins": 150951,
+        "winRate": 43.56,
+        "pickRate": 9.18
+      },
+      "54": {
+        "picks": 510161,
+        "wins": 261896,
+        "winRate": 51.34,
+        "pickRate": 13.51
+      },
+      "55": {
+        "picks": 163787,
+        "wins": 80432,
+        "winRate": 49.11,
+        "pickRate": 4.34
+      },
+      "56": {
+        "picks": 181488,
+        "wins": 90236,
+        "winRate": 49.72,
+        "pickRate": 4.81
+      },
+      "57": {
+        "picks": 90062,
+        "wins": 45529,
+        "winRate": 50.55,
+        "pickRate": 2.38
+      },
+      "58": {
+        "picks": 105174,
+        "wins": 49997,
+        "winRate": 47.54,
+        "pickRate": 2.78
+      },
+      "59": {
+        "picks": 180726,
+        "wins": 83216,
+        "winRate": 46.05,
+        "pickRate": 4.79
+      },
+      "60": {
+        "picks": 270941,
+        "wins": 140141,
+        "winRate": 51.72,
+        "pickRate": 7.17
+      },
+      "61": {
+        "picks": 87200,
+        "wins": 43349,
+        "winRate": 49.71,
+        "pickRate": 2.31
+      },
+      "62": {
+        "picks": 255070,
+        "wins": 132425,
+        "winRate": 51.92,
+        "pickRate": 6.75
+      },
+      "63": {
+        "picks": 204292,
+        "wins": 97513,
+        "winRate": 47.73,
+        "pickRate": 5.41
+      },
+      "64": {
+        "picks": 299579,
+        "wins": 146268,
+        "winRate": 48.82,
+        "pickRate": 7.93
+      },
+      "65": {
+        "picks": 44057,
+        "wins": 19587,
+        "winRate": 44.46,
+        "pickRate": 1.17
+      },
+      "66": {
+        "picks": 17015,
+        "wins": 7848,
+        "winRate": 46.12,
+        "pickRate": 0.45
+      },
+      "67": {
+        "picks": 370293,
+        "wins": 197046,
+        "winRate": 53.21,
+        "pickRate": 9.8
+      },
+      "68": {
+        "picks": 295662,
+        "wins": 151720,
+        "winRate": 51.32,
+        "pickRate": 7.83
+      },
+      "69": {
+        "picks": 216664,
+        "wins": 104335,
+        "winRate": 48.16,
+        "pickRate": 5.74
+      },
+      "70": {
+        "picks": 279518,
+        "wins": 136313,
+        "winRate": 48.77,
+        "pickRate": 7.4
+      },
+      "71": {
+        "picks": 642594,
+        "wins": 335080,
+        "winRate": 52.14,
+        "pickRate": 17.01
+      },
+      "72": {
+        "picks": 153622,
+        "wins": 72574,
+        "winRate": 47.24,
+        "pickRate": 4.07
+      },
+      "73": {
+        "picks": 115257,
+        "wins": 54707,
+        "winRate": 47.47,
+        "pickRate": 3.05
+      },
+      "74": {
+        "picks": 671671,
+        "wins": 339611,
+        "winRate": 50.56,
+        "pickRate": 17.78
+      },
+      "75": {
+        "picks": 377511,
+        "wins": 190875,
+        "winRate": 50.56,
+        "pickRate": 10
+      },
+      "76": {
+        "picks": 453240,
+        "wins": 240340,
+        "winRate": 53.03,
+        "pickRate": 12
+      },
+      "77": {
+        "picks": 56409,
+        "wins": 27469,
+        "winRate": 48.7,
+        "pickRate": 1.49
+      },
+      "78": {
+        "picks": 85092,
+        "wins": 42666,
+        "winRate": 50.14,
+        "pickRate": 2.25
+      },
+      "79": {
+        "picks": 77634,
+        "wins": 34422,
+        "winRate": 44.34,
+        "pickRate": 2.06
+      },
+      "80": {
+        "picks": 103632,
+        "wins": 51000,
+        "winRate": 49.21,
+        "pickRate": 2.74
+      },
+      "81": {
+        "picks": 171366,
+        "wins": 88129,
+        "winRate": 51.43,
+        "pickRate": 4.54
+      },
+      "82": {
+        "picks": 77891,
+        "wins": 40944,
+        "winRate": 52.57,
+        "pickRate": 2.06
+      },
+      "83": {
+        "picks": 87291,
+        "wins": 39937,
+        "winRate": 45.75,
+        "pickRate": 2.31
+      },
+      "84": {
+        "picks": 639108,
+        "wins": 322598,
+        "winRate": 50.48,
+        "pickRate": 16.92
+      },
+      "85": {
+        "picks": 445991,
+        "wins": 222028,
+        "winRate": 49.78,
+        "pickRate": 11.81
+      },
+      "86": {
+        "picks": 730382,
+        "wins": 362520,
+        "winRate": 49.63,
+        "pickRate": 19.34
+      },
+      "87": {
+        "picks": 306324,
+        "wins": 154567,
+        "winRate": 50.46,
+        "pickRate": 8.11
+      },
+      "88": {
+        "picks": 383474,
+        "wins": 201653,
+        "winRate": 52.59,
+        "pickRate": 10.15
+      },
+      "89": {
+        "picks": 63910,
+        "wins": 31440,
+        "winRate": 49.19,
+        "pickRate": 1.69
+      },
+      "90": {
+        "picks": 170560,
+        "wins": 83350,
+        "winRate": 48.87,
+        "pickRate": 4.52
+      },
+      "91": {
+        "picks": 162018,
+        "wins": 80557,
+        "winRate": 49.72,
+        "pickRate": 4.29
+      },
+      "92": {
+        "picks": 61264,
+        "wins": 31972,
+        "winRate": 52.19,
+        "pickRate": 1.62
+      },
+      "93": {
+        "picks": 529777,
+        "wins": 265135,
+        "winRate": 50.05,
+        "pickRate": 14.03
+      },
+      "94": {
+        "picks": 104678,
+        "wins": 51113,
+        "winRate": 48.83,
+        "pickRate": 2.77
+      },
+      "95": {
+        "picks": 117336,
+        "wins": 60912,
+        "winRate": 51.91,
+        "pickRate": 3.11
+      },
+      "96": {
+        "picks": 200311,
+        "wins": 99163,
+        "winRate": 49.5,
+        "pickRate": 5.3
+      },
+      "97": {
+        "picks": 372252,
+        "wins": 183468,
+        "winRate": 49.29,
+        "pickRate": 9.86
+      },
+      "98": {
+        "picks": 192672,
+        "wins": 87794,
+        "winRate": 45.57,
+        "pickRate": 5.1
+      },
+      "99": {
+        "picks": 256808,
+        "wins": 126331,
+        "winRate": 49.19,
+        "pickRate": 6.8
+      },
+      "100": {
+        "picks": 184388,
+        "wins": 88305,
+        "winRate": 47.89,
+        "pickRate": 4.88
+      },
+      "101": {
+        "picks": 452343,
+        "wins": 225519,
+        "winRate": 49.86,
+        "pickRate": 11.98
+      },
+      "102": {
+        "picks": 123420,
+        "wins": 63002,
+        "winRate": 51.05,
+        "pickRate": 3.27
+      },
+      "103": {
+        "picks": 43573,
+        "wins": 21597,
+        "winRate": 49.57,
+        "pickRate": 1.15
+      },
+      "104": {
+        "picks": 598779,
+        "wins": 315666,
+        "winRate": 52.72,
+        "pickRate": 15.85
+      },
+      "105": {
+        "picks": 528223,
+        "wins": 269186,
+        "winRate": 50.96,
+        "pickRate": 13.99
+      },
+      "106": {
+        "picks": 253438,
+        "wins": 123005,
+        "winRate": 48.53,
+        "pickRate": 6.71
+      },
+      "107": {
+        "picks": 152420,
+        "wins": 75062,
+        "winRate": 49.25,
+        "pickRate": 4.04
+      },
+      "108": {
+        "picks": 198157,
+        "wins": 95697,
+        "winRate": 48.29,
+        "pickRate": 5.25
+      },
+      "109": {
+        "picks": 174234,
+        "wins": 78877,
+        "winRate": 45.27,
+        "pickRate": 4.61
+      },
+      "110": {
+        "picks": 188463,
+        "wins": 96995,
+        "winRate": 51.47,
+        "pickRate": 4.99
+      },
+      "111": {
+        "picks": 161593,
+        "wins": 80010,
+        "winRate": 49.51,
+        "pickRate": 4.28
+      },
+      "112": {
+        "picks": 234959,
+        "wins": 116557,
+        "winRate": 49.61,
+        "pickRate": 6.22
+      },
+      "113": {
+        "picks": 178534,
+        "wins": 92087,
+        "winRate": 51.58,
+        "pickRate": 4.73
+      },
+      "114": {
+        "picks": 208435,
+        "wins": 95918,
+        "winRate": 46.02,
+        "pickRate": 5.52
+      },
+      "119": {
+        "picks": 277741,
+        "wins": 135789,
+        "winRate": 48.89,
+        "pickRate": 7.35
+      },
+      "120": {
+        "picks": 120701,
+        "wins": 55844,
+        "winRate": 46.27,
+        "pickRate": 3.2
+      },
+      "121": {
+        "picks": 255118,
+        "wins": 132509,
+        "winRate": 51.94,
+        "pickRate": 6.75
+      },
+      "123": {
+        "picks": 412030,
+        "wins": 193841,
+        "winRate": 47.05,
+        "pickRate": 10.91
+      },
+      "126": {
+        "picks": 157861,
+        "wins": 77572,
+        "winRate": 49.14,
+        "pickRate": 4.18
+      },
+      "128": {
+        "picks": 343915,
+        "wins": 169442,
+        "winRate": 49.27,
+        "pickRate": 9.11
+      },
+      "129": {
+        "picks": 143568,
+        "wins": 68511,
+        "winRate": 47.72,
+        "pickRate": 3.8
+      },
+      "131": {
+        "picks": 178263,
+        "wins": 86361,
+        "winRate": 48.45,
+        "pickRate": 4.72
+      },
+      "135": {
+        "picks": 328975,
+        "wins": 171934,
+        "winRate": 52.26,
+        "pickRate": 8.71
+      },
+      "136": {
+        "picks": 212077,
+        "wins": 104348,
+        "winRate": 49.2,
+        "pickRate": 5.62
+      },
+      "137": {
+        "picks": 152152,
+        "wins": 74264,
+        "winRate": 48.81,
+        "pickRate": 4.03
+      },
+      "138": {
+        "picks": 103960,
+        "wins": 49945,
+        "winRate": 48.04,
+        "pickRate": 2.75
+      },
+      "145": {
+        "picks": 154627,
+        "wins": 70031,
+        "winRate": 45.29,
+        "pickRate": 4.09
+      },
+      "155": {
+        "picks": 64287,
+        "wins": 30731,
+        "winRate": 47.8,
+        "pickRate": 1.7
+      }
+    }
   }
 ]

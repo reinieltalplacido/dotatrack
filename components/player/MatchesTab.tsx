@@ -179,7 +179,7 @@ export function MatchesTab({ matches }: MatchesTabProps) {
                     <Swords className="h-3 w-3 text-zinc-400 shrink-0" />
                     <span>K / D / A</span>
                   </div>
-                  <div className="text-sm font-mono font-bold text-amber-400 mt-0.5 truncate whitespace-nowrap">
+                  <div className="text-sm font-mono font-bold text-white mt-0.5 truncate whitespace-nowrap">
                     {match.kda}
                   </div>
                 </div>

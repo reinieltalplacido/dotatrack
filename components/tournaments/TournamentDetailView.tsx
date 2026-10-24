@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import NextImage from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
+import { AnimatedTabs, TabOption } from "@/components/ui/AnimatedTabs";
 import {
   TournamentDetail,
   TournamentMatch,
@@ -214,39 +216,21 @@ export function TournamentDetailView({ detail }: TournamentDetailViewProps) {
       )}
 
       {/* 4. NAVIGATION TABS */}
-      <div className="border-b border-white/[0.1] flex items-center gap-1 overflow-x-auto no-scrollbar whitespace-nowrap scroll-smooth">
-        {[
-          { id: "overview" as const, label: "Overview & Podium", count: null },
-          { id: "standings" as const, label: "Event Standings", count: standings.length },
-          { id: "series" as const, label: "Series Results", count: series.length },
-          { id: "matches" as const, label: "Match Log", count: matches.length },
-          { id: "teams" as const, label: "Teams & Rosters", count: teams.length },
-        ].map((tab) => {
-          const isActive = activeTab === tab.id;
-          return (
-            <button
-              key={tab.id}
-              type="button"
-              onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-2.5 text-xs font-mono transition-all border-b-2 cursor-pointer flex items-center gap-2 shrink-0 min-h-[40px] ${
-                isActive
-                  ? "border-rose-500 text-white font-bold bg-white/[0.03]"
-                  : "border-transparent text-zinc-400 hover:text-zinc-200 hover:border-zinc-700"
-              }`}
-            >
-              <span>{tab.label}</span>
-              {tab.count !== null && (
-                <span
-                  className={`text-[10px] px-1.5 py-0.2 rounded-full ${
-                    isActive ? "bg-rose-500/20 text-rose-300" : "bg-white/[0.05] text-zinc-500"
-                  }`}
-                >
-                  {tab.count}
-                </span>
-              )}
-            </button>
-          );
-        })}
+      <div className="border-b border-white/[0.1] pb-2 overflow-x-auto no-scrollbar">
+        <AnimatedTabs<DossierTab>
+          tabs={[
+            { id: "overview", label: "Overview & Podium" },
+            { id: "standings", label: "Event Standings", count: standings.length },
+            { id: "series", label: "Series Results", count: series.length },
+            { id: "matches", label: "Match Log", count: matches.length },
+            { id: "teams", label: "Teams & Rosters", count: teams.length },
+          ]}
+          activeTab={activeTab}
+          onChange={(tabId) => setActiveTab(tabId)}
+          layoutId="tournamentDossierActiveTabPill"
+          variant="segmented"
+          size="md"
+        />
       </div>
 
       {/* 5. TAB CONTENT */}
