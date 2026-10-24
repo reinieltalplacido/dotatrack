@@ -110,7 +110,7 @@ export function FeatureHighlights() {
                   <h4 className="text-xs font-semibold text-zinc-200 font-sans mb-1">
                     {pillar.title}
                   </h4>
-                  <p className="text-[11px] text-zinc-400 leading-relaxed font-sans">
+                  <p className="text-xs sm:text-[13px] text-zinc-400 leading-relaxed font-sans text-pretty">
                     {pillar.description}
                   </p>
                 </div>

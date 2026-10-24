@@ -132,10 +132,62 @@ export interface HeroItemPopularityPhased {
   lateGame: PopularItemDetail[];
 }
 
+export interface HeroAbilityAttribute {
+  key: string;
+  header: string;
+  value: string | string[];
+  generated?: boolean;
+}
+
+export interface HeroAbilityDetail {
+  id?: number;
+  name: string;
+  dname: string;
+  behavior?: string | string[];
+  dmg_type?: string;
+  bkbpierce?: string;
+  dispellable?: string;
+  desc: string;
+  attrib?: HeroAbilityAttribute[];
+  lore?: string;
+  mc?: string | string[];
+  cd?: string | string[];
+  img: string;
+}
+
+export interface HeroTalentBranch {
+  name: string;
+  dname: string;
+}
+
+export interface HeroTalentTier {
+  level: number;
+  left: HeroTalentBranch;
+  right: HeroTalentBranch;
+}
+
+export interface HeroAghsUpgrade {
+  hero_id: number;
+  hero_name: string;
+  has_scepter: boolean;
+  scepter_desc: string;
+  scepter_skill_name: string;
+  scepter_new_skill: boolean;
+  has_shard: boolean;
+  shard_desc: string;
+  shard_skill_name: string;
+  shard_new_skill: boolean;
+}
+
 export interface HeroDetailDeepDive {
   hero: EnrichedHeroSummary;
+  abilities: HeroAbilityDetail[];
+  talents: HeroTalentTier[];
+  aghs?: HeroAghsUpgrade | null;
   bestMatchups: HeroMatchup[];
   worstMatchups: HeroMatchup[];
   itemPopularity: HeroItemPopularityPhased | null;
   fetchedAt: string;
 }
+
+

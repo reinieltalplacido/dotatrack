@@ -126,15 +126,15 @@ export function MissionControlMockup() {
 
               <div>
                 <div className="flex items-center gap-2">
-                  <h3 className="text-[15px] font-bold text-white tracking-tight">
+                  <div className="text-[15px] font-bold text-white tracking-tight">
                     {player.name}
-                  </h3>
-                  <span className="inline-flex items-center gap-1 px-1.5 py-px rounded-md bg-amber-500/10 border border-amber-500/20 text-[10px] font-semibold text-amber-400/90 font-mono">
-                    <Trophy className="w-2.5 h-2.5" />
+                  </div>
+                  <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-amber-500/10 border border-amber-500/20 text-[11px] font-semibold text-amber-300 font-mono">
+                    <Trophy className="w-3 h-3" />
                     {player.rank}
                   </span>
                 </div>
-                <p className="text-[11px] text-zinc-500 mt-0.5">
+                <p className="text-[11px] text-zinc-400 mt-0.5">
                   {player.team} · {player.role}
                 </p>
               </div>
@@ -151,13 +151,13 @@ export function MissionControlMockup() {
               { label: "GPM", value: player.gpm, sub: `${player.xpm} XPM`, color: "text-amber-400" },
             ].map((stat) => (
               <div key={stat.label} className="px-3 py-2.5 text-center">
-                <span className="text-[9px] font-medium text-zinc-500 uppercase tracking-wider block">
+                <span className="text-[11px] font-medium text-zinc-400 uppercase tracking-wider block font-mono">
                   {stat.label}
                 </span>
                 <span className={`text-base font-bold font-mono block mt-0.5 tabular-nums ${stat.color}`}>
                   {stat.value}
                 </span>
-                <span className="text-[9px] text-zinc-600 font-mono tabular-nums block">
+                <span className="text-[11px] text-zinc-400 font-mono tabular-nums block">
                   {stat.sub}
                 </span>
               </div>
@@ -179,7 +179,7 @@ export function MissionControlMockup() {
               className={`flex-1 py-1.5 text-[11px] font-medium rounded-md transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 ${
                 activeTab === key
                   ? "bg-white/[0.06] text-white shadow-sm"
-                  : "text-zinc-500 hover:text-zinc-300"
+                  : "text-zinc-400 hover:text-white"
               }`}
             >
               <Icon className="w-3 h-3" />
@@ -203,8 +203,8 @@ export function MissionControlMockup() {
                 {/* Win/Loss streak */}
                 <div className="rounded-xl bg-white/[0.02] border border-white/[0.05] p-3">
                   <div className="flex items-center justify-between mb-2.5">
-                    <span className="text-[10px] text-zinc-500 font-medium">Last 10 Games</span>
-                    <span className="text-[10px] text-emerald-400 font-semibold font-mono tabular-nums">
+                    <span className="text-[11px] text-zinc-400 font-medium font-mono">Last 10 Games</span>
+                    <span className="text-[11px] text-emerald-400 font-semibold font-mono tabular-nums">
                       {player.formSummary}
                     </span>
                   </div>
@@ -212,7 +212,7 @@ export function MissionControlMockup() {
                     {player.recentForm.map((res, i) => (
                       <span
                         key={i}
-                        className={`flex-1 h-[22px] rounded-md flex items-center justify-center text-[9px] font-bold font-mono transition-colors ${
+                        className={`flex-1 h-[22px] rounded-md flex items-center justify-center text-[11px] font-bold font-mono transition-colors ${
                           res === "W"
                             ? "bg-emerald-500/12 text-emerald-400 border border-emerald-500/15"
                             : "bg-rose-500/12 text-rose-400 border border-rose-500/15"
@@ -227,13 +227,13 @@ export function MissionControlMockup() {
                 {/* Metrics pair */}
                 <div className="grid grid-cols-2 gap-2">
                   <div className="rounded-xl bg-white/[0.02] border border-white/[0.05] px-3 py-2.5">
-                    <span className="text-[9px] text-zinc-500 font-medium block">Lane Impact</span>
+                    <span className="text-[11px] text-zinc-400 font-medium block font-mono">Lane Impact</span>
                     <span className="text-[13px] text-white font-semibold font-mono block mt-0.5 tabular-nums">
                       {player.laneEfficiency}
                     </span>
                   </div>
                   <div className="rounded-xl bg-white/[0.02] border border-white/[0.05] px-3 py-2.5">
-                    <span className="text-[9px] text-zinc-500 font-medium block">Net Adv. @20m</span>
+                    <span className="text-[11px] text-zinc-400 font-medium block font-mono">Net Adv. @20m</span>
                     <span className="text-[13px] text-rose-400 font-semibold font-mono block mt-0.5 tabular-nums">
                       +4,850 Gold
                     </span>
@@ -257,12 +257,12 @@ export function MissionControlMockup() {
                     className="flex items-center justify-between rounded-xl bg-white/[0.02] border border-white/[0.05] px-3 py-2.5"
                   >
                     <div className="flex items-center gap-2.5">
-                      <span className="text-[10px] font-mono text-zinc-600 w-3 tabular-nums">
+                      <span className="text-[11px] font-mono text-zinc-500 w-3.5 tabular-nums">
                         {i + 1}
                       </span>
                       <div>
                         <span className="text-[12px] font-semibold text-white block">{hero.name}</span>
-                        <span className="text-[10px] text-zinc-500 font-mono tabular-nums">
+                        <span className="text-[11px] text-zinc-400 font-mono tabular-nums">
                           {hero.games} games · {hero.kda}
                         </span>
                       </div>
@@ -271,7 +271,7 @@ export function MissionControlMockup() {
                       <span className="text-[12px] font-bold text-emerald-400 font-mono block tabular-nums">
                         {hero.winrate}
                       </span>
-                      <span className="text-[10px] text-zinc-500 font-mono tabular-nums">
+                      <span className="text-[11px] text-zinc-400 font-mono tabular-nums">
                         {hero.gpm} GPM
                       </span>
                     </div>
@@ -296,7 +296,7 @@ export function MissionControlMockup() {
                   >
                     <div className="flex items-center gap-2.5">
                       <span
-                        className={`w-9 py-0.5 rounded-md text-center text-[9px] font-bold font-mono ${
+                        className={`w-9 py-0.5 rounded-md text-center text-[11px] font-bold font-mono ${
                           m.result === "WON"
                             ? "bg-emerald-500/12 text-emerald-400"
                             : "bg-rose-500/12 text-rose-400"
@@ -306,7 +306,7 @@ export function MissionControlMockup() {
                       </span>
                       <div>
                         <span className="text-[12px] font-semibold text-white">{m.hero}</span>
-                        <span className="text-[10px] text-zinc-600 font-mono ml-1.5 tabular-nums">
+                        <span className="text-[11px] text-zinc-400 font-mono ml-1.5 tabular-nums">
                           {m.duration}
                         </span>
                       </div>
@@ -315,7 +315,7 @@ export function MissionControlMockup() {
                       <span className="text-[11px] font-semibold text-zinc-300 font-mono block tabular-nums">
                         {m.kda}
                       </span>
-                      <span className="text-[9px] text-zinc-600 font-mono">{m.time}</span>
+                      <span className="text-[11px] text-zinc-400 font-mono">{m.time}</span>
                     </div>
                   </div>
                 ))}

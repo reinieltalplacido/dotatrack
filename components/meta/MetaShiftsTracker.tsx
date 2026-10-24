@@ -126,7 +126,7 @@ export function MetaShiftsTracker({
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Top Rising Win Rates */}
-          <div className="p-4 rounded-sm bg-black/40 border border-emerald-950/60 border-t-2 border-t-emerald-500">
+          <div className="p-4 rounded-sm bg-[#0E1018] border border-emerald-500/20 hover:border-emerald-500/40 transition-colors">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 <TrendingUp className="h-4 w-4 text-emerald-400" />
@@ -151,7 +151,7 @@ export function MetaShiftsTracker({
           </div>
 
           {/* Top Falling Win Rates */}
-          <div className="p-4 rounded-sm bg-black/40 border border-rose-950/60 border-t-2 border-t-rose-500">
+          <div className="p-4 rounded-sm bg-[#0E1018] border border-rose-500/20 hover:border-rose-500/40 transition-colors">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 <TrendingDown className="h-4 w-4 text-rose-400" />
@@ -176,7 +176,7 @@ export function MetaShiftsTracker({
           </div>
 
           {/* Top Pick Rate / Popularity Gainers */}
-          <div className="p-4 rounded-sm bg-black/40 border border-amber-950/60 border-t-2 border-t-amber-500 md:col-span-2 lg:col-span-1">
+          <div className="p-4 rounded-sm bg-[#0E1018] border border-amber-500/20 hover:border-amber-500/40 transition-colors md:col-span-2 lg:col-span-1">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 <Sparkles className="h-4 w-4 text-amber-400" />

@@ -24,6 +24,9 @@ import {
   PrimaryAttrType,
 } from "@/lib/opendota/hero-types";
 import { getHeroLoreById } from "@/lib/opendota/hero-lore-names";
+import { HeroAbilitiesView } from "./HeroAbilitiesView";
+import { HeroTalentTree } from "./HeroTalentTree";
+import { HeroAghsView } from "./HeroAghsView";
 
 interface HeroDetailDrawerProps {
   hero: EnrichedHeroSummary | null;
@@ -368,6 +371,25 @@ export function HeroDetailDrawer({
             </div>
           </div>
         </div>
+
+        {/* Hero Abilities & Active Skills */}
+        <HeroAbilitiesView
+          abilities={deepDive?.abilities ?? []}
+          aghs={deepDive?.aghs}
+          loading={loadingDeepDive}
+        />
+
+        {/* Aghanim's Scepter & Shard Upgrades */}
+        <HeroAghsView
+          aghs={deepDive?.aghs}
+          loading={loadingDeepDive}
+        />
+
+        {/* Hero Talent Tree */}
+        <HeroTalentTree
+          talents={deepDive?.talents ?? []}
+          loading={loadingDeepDive}
+        />
 
         {/* Rank Bracket Performance Matrix */}
         <div className="tactical-panel p-4 rounded-sm border border-white/[0.08]">

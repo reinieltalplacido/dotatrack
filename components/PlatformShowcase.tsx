@@ -65,22 +65,22 @@ export function PlatformShowcase() {
                 Understand how matches play out. Pinpoint pivotal swings, Aegis takes, buyback commitments, and lane control margins.
               </p>
 
-              {/* Realistic Match Preview Card */}
-              <div className="rounded-lg bg-[#07090E] border border-white/[0.07] p-4 text-xs mb-6">
-                <div className="flex items-center justify-between text-[11px] text-zinc-400 pb-3 border-b border-white/[0.06]">
+              {/* Match Advantage Telemetry Block */}
+              <div className="py-4 border-y border-white/[0.08] text-xs mb-6 space-y-4">
+                <div className="flex items-center justify-between text-[11px] text-zinc-400">
                   <span className="flex items-center gap-2">
                     <span className="h-2 w-2 rounded-full bg-emerald-400" />
                     <span className="font-semibold text-zinc-200">Radiant +14,250 Lead</span>
                   </span>
-                  <span className="flex items-center gap-1.5 text-zinc-400 font-mono">
+                  <span className="flex items-center gap-1.5 text-zinc-300 font-mono">
                     <Clock className="h-3 w-3 text-amber-400" />
                     <span>36:40 Game Time</span>
                   </span>
                 </div>
 
                 {/* Simulated Momentum Swing Bar */}
-                <div className="my-3 space-y-1">
-                  <div className="flex justify-between text-[11px] text-zinc-400 font-medium">
+                <div className="space-y-1.5">
+                  <div className="flex justify-between text-[11px] text-zinc-400 font-medium font-mono">
                     <span className="text-emerald-400">Radiant Advantage</span>
                     <span className="text-rose-400">Dire Swing Potential</span>
                   </div>
@@ -90,19 +90,19 @@ export function PlatformShowcase() {
                   </div>
                 </div>
 
-                {/* Key Combat Markers */}
-                <div className="grid grid-cols-3 gap-2 pt-2 text-[11px] text-zinc-400">
-                  <div className="p-2 rounded-md bg-white/[0.02] border border-white/[0.04]">
-                    <span className="text-zinc-500 block text-[10px]">Roshan Pit</span>
-                    <span className="text-amber-400 font-medium">Aegis @ 31:14</span>
+                {/* Key Combat Markers - Flattened 3-col split */}
+                <div className="grid grid-cols-3 divide-x divide-white/[0.08] pt-1 text-[11px]">
+                  <div className="pr-2">
+                    <span className="text-zinc-400 block text-[11px] font-mono">Roshan Pit</span>
+                    <span className="text-amber-400 font-medium font-mono">Aegis @ 31:14</span>
                   </div>
-                  <div className="p-2 rounded-md bg-white/[0.02] border border-white/[0.04]">
-                    <span className="text-zinc-500 block text-[10px]">Key Engagement</span>
-                    <span className="text-emerald-400 font-medium">4-for-1 River Fight</span>
+                  <div className="px-2">
+                    <span className="text-zinc-400 block text-[11px] font-mono">Key Engagement</span>
+                    <span className="text-emerald-400 font-medium font-mono">4-for-1 River Fight</span>
                   </div>
-                  <div className="p-2 rounded-md bg-white/[0.02] border border-white/[0.04]">
-                    <span className="text-zinc-500 block text-[10px]">Buybacks</span>
-                    <span className="text-zinc-200 font-medium">2 Radiant / 0 Dire</span>
+                  <div className="pl-2">
+                    <span className="text-zinc-400 block text-[11px] font-mono">Buybacks</span>
+                    <span className="text-zinc-200 font-medium font-mono">2 Radiant / 0 Dire</span>
                   </div>
                 </div>
               </div>

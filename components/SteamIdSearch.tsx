@@ -201,7 +201,7 @@ export function SteamIdSearch({ onSearchSubmit, autoNavigate = true }: SteamIdSe
                 }}
                 disabled={isLoading}
                 placeholder="Steam ID, Account ID, or profile URL"
-                className="w-full bg-transparent text-sm sm:text-base text-white placeholder-zinc-500 focus:outline-none disabled:opacity-50"
+                className="w-full bg-transparent text-sm sm:text-base text-white placeholder:text-zinc-400 focus:outline-none disabled:opacity-50"
                 style={{ fontFamily: "var(--font-sans)" }}
                 aria-describedby="search-hint search-error"
                 autoComplete="off"
@@ -239,7 +239,7 @@ export function SteamIdSearch({ onSearchSubmit, autoNavigate = true }: SteamIdSe
         </div>
 
         {/* Format hint */}
-        <p id="search-hint" className="text-xs" style={{ color: "var(--lp-fg)", opacity: 0.5 }}>
+        <p id="search-hint" className="text-xs" style={{ color: "var(--lp-fg)", opacity: 0.75 }}>
           Supports 32-bit Dota 2 ID, 64-bit Steam ID, or custom Steam profile URL.
         </p>
 
@@ -262,7 +262,7 @@ export function SteamIdSearch({ onSearchSubmit, autoNavigate = true }: SteamIdSe
             className="flex flex-wrap items-center gap-1.5 pt-3"
             style={{ borderTop: "1px solid var(--lp-border)" }}
           >
-            <span className="text-xs mr-1 flex items-center gap-1" style={{ color: "var(--lp-fg)", opacity: 0.5 }}>
+            <span className="text-xs mr-1 flex items-center gap-1" style={{ color: "var(--lp-fg)", opacity: 0.75 }}>
               <History className="h-3 w-3" />
               <span>Recent</span>
             </span>
@@ -325,7 +325,7 @@ export function SteamIdSearch({ onSearchSubmit, autoNavigate = true }: SteamIdSe
           className="flex flex-wrap items-center gap-2 pt-3"
           style={{ borderTop: "1px solid var(--lp-border)" }}
         >
-          <span className="text-xs flex items-center gap-1.5 shrink-0" style={{ color: "var(--lp-fg)", opacity: 0.5 }}>
+          <span className="text-xs flex items-center gap-1.5 shrink-0" style={{ color: "var(--lp-fg)", opacity: 0.75 }}>
             <Trophy className="w-3.5 h-3.5" />
             <span>Pro profiles</span>
           </span>

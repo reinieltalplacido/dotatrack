@@ -333,7 +333,7 @@ const ATTR_BANNER_CONFIG = {
   str: {
     title: "STRENGTH",
     subtitle: "HEROES",
-    gradientText: "from-[#FFF6E5] via-[#FBBF24] to-[#D97706]",
+    textColor: "text-amber-300",
     borderColor: "border-amber-500/40",
     glowColor: "shadow-[0_0_20px_rgba(245,158,11,0.25)]",
     lineGradientLeft: "from-transparent to-amber-500/60",
@@ -347,7 +347,7 @@ const ATTR_BANNER_CONFIG = {
   agi: {
     title: "AGILITY",
     subtitle: "HEROES",
-    gradientText: "from-[#ECFDF5] via-[#34D399] to-[#059669]",
+    textColor: "text-emerald-300",
     borderColor: "border-emerald-500/40",
     glowColor: "shadow-[0_0_20px_rgba(16,185,129,0.25)]",
     lineGradientLeft: "from-transparent to-emerald-500/60",
@@ -361,7 +361,7 @@ const ATTR_BANNER_CONFIG = {
   int: {
     title: "INTELLIGENCE",
     subtitle: "HEROES",
-    gradientText: "from-[#F0F9FF] via-[#38BDF8] to-[#0284C7]",
+    textColor: "text-sky-300",
     borderColor: "border-sky-500/40",
     glowColor: "shadow-[0_0_20px_rgba(56,189,248,0.25)]",
     lineGradientLeft: "from-transparent to-sky-500/60",
@@ -375,7 +375,7 @@ const ATTR_BANNER_CONFIG = {
   all: {
     title: "UNIVERSAL",
     subtitle: "HEROES",
-    gradientText: "from-[#FAF5FF] via-[#C084FC] to-[#7C3AED]",
+    textColor: "text-purple-300",
     borderColor: "border-purple-500/40",
     glowColor: "shadow-[0_0_20px_rgba(168,85,247,0.25)]",
     lineGradientLeft: "from-transparent to-purple-500/60",
@@ -417,7 +417,7 @@ function AttributeSectionBanner({
         className={`relative z-10 mx-3 sm:mx-5 px-5 sm:px-8 py-2 rounded-full bg-[#0A0C14]/90 backdrop-blur-md border ${cfg.borderColor} ${cfg.glowColor} flex items-center gap-3.5`}
       >
         <span
-          className={`text-sm sm:text-base font-serif tracking-[0.24em] uppercase font-black bg-gradient-to-b ${cfg.gradientText} bg-clip-text text-transparent drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]`}
+          className={`text-sm sm:text-base font-mono tracking-[0.2em] uppercase font-bold ${cfg.textColor}`}
         >
           {cfg.title}
         </span>
@@ -434,7 +434,7 @@ function AttributeSectionBanner({
         </div>
 
         <span
-          className={`text-sm sm:text-base font-serif tracking-[0.24em] uppercase font-black bg-gradient-to-b ${cfg.gradientText} bg-clip-text text-transparent drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]`}
+          className={`text-sm sm:text-base font-mono tracking-[0.2em] uppercase font-bold ${cfg.textColor}`}
         >
           {cfg.subtitle}
         </span>

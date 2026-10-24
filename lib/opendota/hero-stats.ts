@@ -1,9 +1,12 @@
 import {
   EnrichedHeroSummary,
+  HeroAbilityDetail,
+  HeroAghsUpgrade,
   HeroCompendiumPayload,
   HeroDetailDeepDive,
   HeroMatchup,
   HeroOverviewMetrics,
+  HeroTalentTier,
   PopularItemDetail,
   PrimaryAttrType,
   RankBracketStat,
@@ -11,6 +14,9 @@ import {
 import { getHeroById } from "./heroes";
 import fallbackSnapshot from "./hero-stats-snapshot.json";
 import itemsSnapshot from "./items-snapshot.json";
+import heroAbilitiesSnapshot from "./hero-abilities-snapshot.json";
+import abilityDetailsSnapshot from "./ability-details-snapshot.json";
+import aghsDescSnapshot from "./aghs-desc-snapshot.json";
 
 const OPENDOTA_BASE_URL = "https://api.opendota.com/api";
 const STEAM_CDN_BASE = "https://cdn.cloudflare.steamstatic.com";
@@ -351,8 +357,123 @@ function mapItemPopularity(
     .slice(0, limit);
 }
 
+interface RawAbilityAttribute {
+  key: string;
+  header: string;
+  value: string | string[];
+  generated?: boolean;
+}
+
+interface RawAbilityDetail {
+  dname?: string;
+  behavior?: string | string[];
+  dmg_type?: string;
+  bkbpierce?: string;
+  dispellable?: string;
+  desc?: string;
+  attrib?: RawAbilityAttribute[];
+  lore?: string;
+  mc?: string | string[];
+  cd?: string | string[];
+  img?: string;
+}
+
+const heroAbilitiesMap = heroAbilitiesSnapshot as unknown as Record<
+  string,
+  { abilities?: string[]; talents?: { name: string; level: number }[] }
+>;
+const abilityDetailsMap = abilityDetailsSnapshot as unknown as Record<string, RawAbilityDetail>;
+
 /**
- * Fetches deep-dive hero details including matchups and item build popularity.
+ * Extracts abilities and talent tree branches for a hero.
+ */
+export function getHeroAbilitiesAndTalents(heroName: string): {
+  abilities: HeroAbilityDetail[];
+  talents: HeroTalentTier[];
+} {
+  const heroEntry = heroAbilitiesMap[heroName];
+  if (!heroEntry) {
+    return { abilities: [], talents: [] };
+  }
+
+  const abilities: HeroAbilityDetail[] = [];
+  if (Array.isArray(heroEntry.abilities)) {
+    for (const abName of heroEntry.abilities) {
+      if (abName === "generic_hidden") continue;
+      const detail = abilityDetailsMap[abName];
+      if (!detail || !detail.dname) continue;
+
+      const imgPath = detail.img || `/apps/dota2/images/dota_react/abilities/${abName}.png`;
+      abilities.push({
+        name: abName,
+        dname: detail.dname,
+        behavior: detail.behavior,
+        dmg_type: detail.dmg_type,
+        bkbpierce: detail.bkbpierce,
+        dispellable: detail.dispellable,
+        desc: detail.desc || "No description available.",
+        attrib: Array.isArray(detail.attrib)
+          ? detail.attrib.filter(
+              (at) =>
+                at.header &&
+                at.header.trim().length > 0 &&
+                at.value !== undefined &&
+                at.value !== "0" &&
+                at.value !== "00" &&
+                !at.key.includes("abilitycastpoint") &&
+                !at.key.includes("vector_target")
+            )
+          : undefined,
+        lore: detail.lore,
+        mc: detail.mc,
+        cd: detail.cd,
+        img: normalizeCdnUrl(imgPath),
+      });
+    }
+  }
+
+  const talents: HeroTalentTier[] = [];
+  if (Array.isArray(heroEntry.talents) && heroEntry.talents.length >= 8) {
+    // 4 Tiers: Level 25 (top) down to Level 10 (bottom)
+    const tiers = [
+      { level: 25, leftIdx: 6, rightIdx: 7 },
+      { level: 20, leftIdx: 4, rightIdx: 5 },
+      { level: 15, leftIdx: 2, rightIdx: 3 },
+      { level: 10, leftIdx: 0, rightIdx: 1 },
+    ];
+
+    for (const tier of tiers) {
+      const leftTalent = heroEntry.talents[tier.leftIdx];
+      const rightTalent = heroEntry.talents[tier.rightIdx];
+
+      talents.push({
+        level: tier.level,
+        left: {
+          name: leftTalent.name,
+          dname: abilityDetailsMap[leftTalent.name]?.dname || leftTalent.name,
+        },
+        right: {
+          name: rightTalent.name,
+          dname: abilityDetailsMap[rightTalent.name]?.dname || rightTalent.name,
+        },
+      });
+    }
+  }
+
+  return { abilities, talents };
+}
+
+const aghsMap = (aghsDescSnapshot as unknown as HeroAghsUpgrade[]).reduce((acc, curr) => {
+  acc[curr.hero_id] = curr;
+  return acc;
+}, {} as Record<number, HeroAghsUpgrade>);
+
+export function getHeroAghsUpgrade(heroId: number): HeroAghsUpgrade | null {
+  return aghsMap[heroId] || null;
+}
+
+/**
+ * Fetches deep-dive hero details including skills, talents, matchups, and item build popularity.
  */
 export async function fetchHeroDetailData(heroId: number): Promise<HeroDetailDeepDive> {
   const compendium = await fetchHeroStatsData();
@@ -361,6 +482,9 @@ export async function fetchHeroDetailData(heroId: number): Promise<HeroDetailDee
   if (!hero) {
     throw new HeroTelemetryError(`Hero with ID ${heroId} not found in database.`, 404);
   }
+
+  const { abilities, talents } = getHeroAbilitiesAndTalents(hero.name);
+  const aghs = getHeroAghsUpgrade(heroId);
 
   let bestMatchups: HeroMatchup[] = [];
   let worstMatchups: HeroMatchup[] = [];
@@ -407,6 +531,9 @@ export async function fetchHeroDetailData(heroId: number): Promise<HeroDetailDee
 
   return {
     hero,
+    abilities,
+    talents,
+    aghs,
     bestMatchups,
     worstMatchups,
     itemPopularity: itemPopularityResult,

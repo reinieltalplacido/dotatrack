@@ -1,0 +1,10 @@
+{
+  "detector": {
+    "ignoreRules": [
+      "overused-font"
+    ],
+    "designSystem": {
+      "enabled": true
+    }
+  }
+}
