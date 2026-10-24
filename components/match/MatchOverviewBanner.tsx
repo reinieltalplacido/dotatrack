@@ -7,7 +7,6 @@ import {
   Calendar,
   Globe,
   Layers,
-  Sparkles,
   FileCheck2,
   FileQuestion,
   RefreshCw,
@@ -269,15 +268,15 @@ export function MatchOverviewBanner({ match, onRefresh, onMatchUpdated }: MatchO
       {/* Main Scoreboard Banner */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center text-center md:text-left relative z-10 mb-6">
         {/* Radiant Side */}
-        <div className={`p-4 rounded-sm border ${isRadiantVictory ? "border-emerald-500/40 bg-emerald-950/30 shadow-lg shadow-emerald-950/30" : "border-white/[0.06] bg-black/30"}`}>
+        <div className={`p-4 rounded-sm border transition-all ${isRadiantVictory ? "border-emerald-500/40 bg-emerald-950/30 shadow-lg shadow-emerald-950/30" : "border-white/[0.06] bg-black/30"}`}>
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-mono font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
               <span>THE RADIANT</span>
               {isRadiantVictory && <Trophy className="h-4 w-4 text-emerald-400" />}
             </span>
             {isRadiantVictory && (
-              <span className="text-[10px] font-mono font-black bg-emerald-500 text-black px-2 py-0.5 rounded-xs uppercase tracking-wider">
-                WINNER
+              <span className="text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded-xs uppercase tracking-wider shadow-[0_0_8px_rgba(16,185,129,0.3)]">
+                RADIANT VICTORY
               </span>
             )}
           </div>
@@ -290,15 +289,16 @@ export function MatchOverviewBanner({ match, onRefresh, onMatchUpdated }: MatchO
         </div>
 
         {/* Center Versus / Match Type */}
-        <div className="text-center space-y-2">
-          <div className="text-xs font-mono font-bold uppercase tracking-widest text-zinc-500">
-            FINAL OUTCOME
-          </div>
-          <div className="text-xl sm:text-2xl font-mono font-black text-white">
+        <div className="text-center space-y-1.5">
+          <div className="text-xl sm:text-2xl font-serif font-black tracking-widest uppercase">
             {isRadiantVictory ? (
-              <span className="text-emerald-400">RADIANT VICTORY</span>
+              <span className="text-emerald-400 drop-shadow-[0_0_14px_rgba(52,211,153,0.55)]">
+                RADIANT VICTORY
+              </span>
             ) : (
-              <span className="text-rose-400">DIRE VICTORY</span>
+              <span className="text-rose-500 drop-shadow-[0_0_14px_rgba(244,63,94,0.55)]">
+                DIRE VICTORY
+              </span>
             )}
           </div>
           <div className="text-xs font-mono text-zinc-400">
@@ -307,11 +307,11 @@ export function MatchOverviewBanner({ match, onRefresh, onMatchUpdated }: MatchO
         </div>
 
         {/* Dire Side */}
-        <div className={`p-4 rounded-sm border ${!isRadiantVictory ? "border-rose-500/40 bg-rose-950/30 shadow-lg shadow-rose-950/30" : "border-white/[0.06] bg-black/30"} text-center md:text-right`}>
+        <div className={`p-4 rounded-sm border transition-all ${!isRadiantVictory ? "border-rose-500/40 bg-rose-950/30 shadow-lg shadow-rose-950/30" : "border-white/[0.06] bg-black/30"} text-center md:text-right`}>
           <div className="flex items-center justify-between md:justify-end gap-2 mb-2">
             {!isRadiantVictory && (
-              <span className="text-[10px] font-mono font-black bg-rose-500 text-white px-2 py-0.5 rounded-xs uppercase tracking-wider">
-                WINNER
+              <span className="text-[10px] font-mono font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40 px-2 py-0.5 rounded-xs uppercase tracking-wider shadow-[0_0_8px_rgba(244,63,94,0.3)]">
+                DIRE VICTORY
               </span>
             )}
             <span className="text-xs font-mono font-bold text-rose-400 uppercase tracking-wider flex items-center gap-1.5">
@@ -329,18 +329,14 @@ export function MatchOverviewBanner({ match, onRefresh, onMatchUpdated }: MatchO
       </div>
 
       {/* Match Meta Footer Badges */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-4 border-t border-white/[0.06] text-xs font-mono text-zinc-400">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-white/[0.06] text-xs font-mono text-zinc-400">
         <div className="flex items-center gap-2">
           <Globe className="h-3.5 w-3.5 text-zinc-500" />
           <span>Region: <strong className="text-zinc-200">{match.region}</strong></span>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 sm:justify-center">
           <Layers className="h-3.5 w-3.5 text-zinc-500" />
           <span>Skill: <strong className="text-zinc-200">{match.skillBracket}</strong></span>
-        </div>
-        <div className="flex items-center gap-2">
-          <Sparkles className="h-3.5 w-3.5 text-amber-400" />
-          <span>Version: <strong className="text-zinc-200">{match.patch}</strong></span>
         </div>
         <div className="flex items-center gap-2 sm:justify-end">
           {match.replayUrl && (

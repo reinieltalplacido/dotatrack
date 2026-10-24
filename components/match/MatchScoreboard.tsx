@@ -99,10 +99,12 @@ function TeamScoreboardTable({
           {isWinner && (
             <span
               className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-xs uppercase ${
-                isRadiant ? "bg-emerald-500 text-black" : "bg-rose-500 text-white"
+                isRadiant
+                  ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-[0_0_8px_rgba(16,185,129,0.25)]"
+                  : "bg-rose-500/20 text-rose-300 border border-rose-500/40 shadow-[0_0_8px_rgba(244,63,94,0.25)]"
               }`}
             >
-              VICTORIOUS
+              {isRadiant ? "RADIANT VICTORY" : "DIRE VICTORY"}
             </span>
           )}
         </div>
@@ -122,21 +124,21 @@ function TeamScoreboardTable({
 
       {/* Responsive Horizontal Scroll Table */}
       <div className="overflow-x-auto">
-        <table className="w-full text-left border-collapse text-xs font-mono min-w-[1240px]">
+        <table className="w-full text-left border-collapse text-xs font-mono">
           <thead>
             <tr className="border-b border-white/[0.06] bg-black/40 text-[10px] uppercase text-zinc-400 tracking-wider">
-              <th className="sticky left-0 bg-[#0E1018] z-20 py-2.5 px-3 whitespace-nowrap min-w-[200px] max-w-[240px] shadow-[3px_0_8px_rgba(0,0,0,0.6)] border-r border-white/[0.06]">Hero / Player</th>
-              <th className="py-2.5 px-2 text-center whitespace-nowrap min-w-[45px]">LVL</th>
-              <th className="py-2.5 px-2 text-center whitespace-nowrap min-w-[115px]">K / D / A</th>
-              <th className="py-2.5 px-2 text-center whitespace-nowrap min-w-[55px]">KDA</th>
-              <th className="py-2.5 px-2 text-right whitespace-nowrap min-w-[95px]">NET WORTH</th>
-              <th className="py-2.5 px-2 text-center whitespace-nowrap min-w-[95px]">LH / DN</th>
-              <th className="py-2.5 px-2 text-center whitespace-nowrap min-w-[110px]">GPM / XPM</th>
-              <th className="py-2.5 px-2 text-right whitespace-nowrap min-w-[100px]">HERO DMG</th>
-              <th className="py-2.5 px-2 text-right whitespace-nowrap min-w-[85px]">BLDG DMG</th>
-              <th className="py-2.5 px-2 text-right whitespace-nowrap min-w-[70px]">HEAL</th>
-              <th className="py-2.5 px-2 text-center whitespace-nowrap min-w-[85px]">WARDS</th>
-              <th className="py-2.5 px-3 text-center whitespace-nowrap min-w-[280px]">ITEMS &amp; BACKPACK</th>
+              <th className="sticky left-0 bg-[#0E1018] z-20 py-2.5 px-3 whitespace-nowrap min-w-[180px] shadow-[3px_0_8px_rgba(0,0,0,0.6)] border-r border-white/[0.06]">Hero / Player</th>
+              <th className="py-2.5 px-1.5 text-center whitespace-nowrap">LVL</th>
+              <th className="py-2.5 px-2 text-center whitespace-nowrap">K / D / A</th>
+              <th className="py-2.5 px-1.5 text-center whitespace-nowrap">KDA</th>
+              <th className="py-2.5 px-2 text-right whitespace-nowrap">NET WORTH</th>
+              <th className="py-2.5 px-2 text-center whitespace-nowrap">LH / DN</th>
+              <th className="py-2.5 px-2 text-center whitespace-nowrap">GPM / XPM</th>
+              <th className="py-2.5 px-2 text-right whitespace-nowrap">HERO DMG</th>
+              <th className="py-2.5 px-2 text-right whitespace-nowrap">BLDG DMG</th>
+              <th className="py-2.5 px-1.5 text-right whitespace-nowrap">HEAL</th>
+              <th className="py-2.5 px-1.5 text-center whitespace-nowrap">WARDS</th>
+              <th className="py-2.5 px-2 text-center whitespace-nowrap">ITEMS &amp; BACKPACK</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-white/[0.04]">
@@ -256,67 +258,71 @@ function TeamScoreboardTable({
                 </td>
 
                 {/* Items & Backpack */}
-                <td className="py-2.5 px-3 whitespace-nowrap">
+                <td className="py-2 px-2 whitespace-nowrap">
                   <div className="flex items-center gap-1.5 justify-center">
                     {/* 6 Main Items */}
-                    <div className="grid grid-cols-6 gap-0.5 bg-black/60 p-0.5 rounded-xs border border-white/[0.06]">
+                    <div className="grid grid-cols-6 gap-0.5 bg-black/70 p-0.5 rounded-xs border border-white/[0.08] shadow-inner">
                       {player.items.map((item, idx) => (
                         <div
                           key={`item-${idx}`}
-                          className="relative w-6 h-5 bg-zinc-950 rounded-xs overflow-hidden border border-white/[0.04]"
-                          title={item?.name || "Empty"}
+                          className="relative w-10 h-7 bg-zinc-950 rounded-xs overflow-hidden border border-white/[0.08] shadow-xs"
+                          title={item?.name || "Empty Item Slot"}
                         >
                           {item ? (
-                            <Image src={item.img} alt={item.name} fill sizes="24px" className="object-cover" />
+                            <Image src={item.img} alt={item.name} fill sizes="40px" className="object-cover hover:scale-105 transition-transform" />
                           ) : null}
                         </div>
                       ))}
                     </div>
 
                     {/* Backpack 3 Items */}
-                    <div className="grid grid-cols-3 gap-0.5 bg-zinc-900/60 p-0.5 rounded-xs border border-white/[0.04]">
+                    <div className="grid grid-cols-3 gap-0.5 bg-zinc-950/80 p-0.5 rounded-xs border border-white/[0.06]" title="Backpack">
                       {player.backpack.map((item, idx) => (
                         <div
                           key={`bp-${idx}`}
-                          className="relative w-5 h-4 bg-zinc-950 rounded-xs overflow-hidden border border-white/[0.04] opacity-75"
-                          title={`Backpack: ${item?.name || "Empty"}`}
+                          className="relative w-7 h-5 bg-zinc-900/90 rounded-xs overflow-hidden border border-white/[0.06] opacity-75"
+                          title={`Backpack: ${item?.name || "Empty Slot"}`}
                         >
                           {item ? (
-                            <Image src={item.img} alt={item.name} fill sizes="20px" className="object-cover" />
+                            <Image src={item.img} alt={item.name} fill sizes="28px" className="object-cover" />
                           ) : null}
                         </div>
                       ))}
                     </div>
 
-                    {/* Neutral Item */}
+                    {/* Neutral Item - Circular style like Dota 2 / Dotabuff */}
                     <div
-                      className="relative w-6 h-5 rounded-xs overflow-hidden border border-amber-500/40 bg-zinc-950"
-                      title={`Neutral: ${player.neutralItem?.name || "None"}`}
+                      className={`relative w-7 h-7 rounded-full overflow-hidden shrink-0 ${
+                        player.neutralItem
+                          ? "border border-amber-400/60 bg-zinc-950 shadow-[0_0_8px_rgba(251,191,36,0.25)]"
+                          : "border border-dashed border-white/10 bg-zinc-950/60"
+                      }`}
+                      title={`Neutral Item: ${player.neutralItem?.name || "None"}`}
                     >
                       {player.neutralItem ? (
-                        <Image src={player.neutralItem.img} alt={player.neutralItem.name} fill sizes="24px" className="object-cover" />
+                        <Image src={player.neutralItem.img} alt={player.neutralItem.name} fill sizes="28px" className="object-cover" />
                       ) : null}
                     </div>
 
                     {/* Aghanim's Scepter / Shard Badges */}
-                    <div className="flex flex-col gap-0.5">
+                    <div className="flex flex-col gap-1 justify-center shrink-0">
                       <span
-                        className={`text-[8px] px-1 py-0.2 rounded-xs font-bold leading-tight ${
+                        className={`text-[9px] px-1.5 py-0.5 rounded-xs font-bold leading-none tracking-tight text-center ${
                           player.hasAghsScepter
-                            ? "bg-blue-900/80 text-blue-200 border border-blue-600/50"
-                            : "opacity-20 bg-zinc-900 text-zinc-600"
+                            ? "bg-blue-950 text-blue-300 border border-blue-500/60 shadow-[0_0_6px_rgba(59,130,246,0.35)]"
+                            : "opacity-25 bg-zinc-900 text-zinc-500 border border-white/[0.04]"
                         }`}
-                        title="Aghanim's Scepter"
+                        title={player.hasAghsScepter ? "Aghanim's Scepter Acquired" : "No Aghanim's Scepter"}
                       >
                         AGH
                       </span>
                       <span
-                        className={`text-[8px] px-1 py-0.2 rounded-xs font-bold leading-tight ${
+                        className={`text-[9px] px-1.5 py-0.5 rounded-xs font-bold leading-none tracking-tight text-center ${
                           player.hasAghsShard
-                            ? "bg-cyan-900/80 text-cyan-200 border border-cyan-600/50"
-                            : "opacity-20 bg-zinc-900 text-zinc-600"
+                            ? "bg-cyan-950 text-cyan-300 border border-cyan-500/60 shadow-[0_0_6px_rgba(6,182,212,0.35)]"
+                            : "opacity-25 bg-zinc-900 text-zinc-500 border border-white/[0.04]"
                         }`}
-                        title="Aghanim's Shard"
+                        title={player.hasAghsShard ? "Aghanim's Shard Acquired" : "No Aghanim's Shard"}
                       >
                         SHARD
                       </span>

@@ -13,6 +13,7 @@ import {
 } from "./match-types";
 import { getHeroById, formatGameMode, formatLobbyType, formatDuration } from "./heroes";
 import itemsSnapshot from "./items-snapshot.json";
+import abilitiesSnapshot from "./abilities-snapshot.json";
 
 const OPENDOTA_BASE_URL = "https://api.opendota.com/api";
 const STEAM_CDN_BASE = "https://cdn.cloudflare.steamstatic.com";
@@ -25,7 +26,55 @@ interface ItemSnapshotEntry {
   cost?: number | null;
 }
 
+interface AbilitySnapshotEntry {
+  name: string;
+  dname: string;
+  isTalent: boolean;
+}
+
 const itemsDict: Record<string, ItemSnapshotEntry> = itemsSnapshot as unknown as Record<string, ItemSnapshotEntry>;
+const abilitiesDict: Record<string, AbilitySnapshotEntry> = abilitiesSnapshot as unknown as Record<string, AbilitySnapshotEntry>;
+
+/**
+ * Resolves ability ID to normalized Dota 2 ability metadata and Steam CDN image.
+ */
+export function resolveAbilityById(abilityId: number): {
+  abilityId: number;
+  abilityName: string;
+  img: string;
+  isTalent: boolean;
+} {
+  const entry = abilitiesDict[String(abilityId)];
+  if (!entry) {
+    return {
+      abilityId,
+      abilityName: `Ability #${abilityId}`,
+      img: `${STEAM_CDN_BASE}/apps/dota2/images/dota_react/abilities/dota_base_ability.png`,
+      isTalent: false,
+    };
+  }
+
+  if (entry.isTalent) {
+    let cleanDname = entry.dname || "Talent";
+    cleanDname = cleanDname.replace(/\{s:[^}]+\}/g, "").replace(/\+\s*\+/, "+").trim();
+    if (!cleanDname || cleanDname === "+") {
+      cleanDname = "Special Talent";
+    }
+    return {
+      abilityId,
+      abilityName: cleanDname,
+      img: `${STEAM_CDN_BASE}/apps/dota2/images/dota_react/icons/talents.svg`,
+      isTalent: true,
+    };
+  }
+
+  return {
+    abilityId,
+    abilityName: entry.dname || entry.name.replace(/_/g, " "),
+    img: `${STEAM_CDN_BASE}/apps/dota2/images/dota_react/abilities/${entry.name}.png`,
+    isTalent: false,
+  };
+}
 
 /**
  * Resolves item ID to normalized item metadata.
@@ -528,12 +577,13 @@ function normalizeMatch(raw: RawMatchResponse): NormalizedMatchData {
     // Ability upgrades
     const rawAbilities = Array.isArray(p.ability_upgrades_arr) ? p.ability_upgrades_arr : [];
     const abilityUpgrades: MatchPlayerAbilityUpgrade[] = rawAbilities.map((abId, idx) => {
+      const resolved = resolveAbilityById(abId);
       return {
         level: idx + 1,
         abilityId: abId,
-        abilityName: `Ability #${abId}`,
-        img: `${STEAM_CDN_BASE}/apps/dota2/images/dota_react/abilities/dota_base_ability.png`,
-        isTalent: false,
+        abilityName: resolved.abilityName,
+        img: resolved.img,
+        isTalent: resolved.isTalent,
       };
     });
 

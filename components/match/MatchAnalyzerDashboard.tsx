@@ -147,7 +147,7 @@ export function MatchAnalyzerDashboard({ initialId, initialMatch, initialError }
   }, [urlId, match?.matchId]);
 
   return (
-    <div className="max-w-7xl 2xl:max-w-[1560px] 3xl:max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 relative">
+    <div className="max-w-[1720px] w-full mx-auto px-3 sm:px-6 lg:px-8 py-8 relative">
       {/* Match Search Input */}
       <MatchSearchHeader
         currentMatchId={match?.matchId || urlId}
@@ -186,7 +186,7 @@ export function MatchAnalyzerDashboard({ initialId, initialMatch, initialError }
               tabs={[
                 { id: "scoreboard", label: "Scoreboard", icon: Table },
                 { id: "lanes", label: "Lane Analysis", icon: Swords },
-                { id: "items", label: "Item Timings", icon: ShoppingCart },
+                { id: "items", label: "Item & Skill Builds", icon: ShoppingCart },
                 { id: "graphs", label: "Gold & XP Graphs", icon: TrendingUp },
                 { id: "combat", label: "Combat Log", icon: Skull },
                 { id: "networth", label: "Hero Net Worth", icon: Coins },
