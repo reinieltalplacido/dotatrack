@@ -13,6 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://dotatrack-gg.vercel.app"),
   title: "DotaTrack — Dota 2 Player Analytics & Match Tracker",
   description:
     "Track your Dota 2 match history, win rates, KDA, hero performance, and progression trends with high-precision analytics.",

@@ -1,7 +1,7 @@
 import { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://dotatrack.gg";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://dotatrack-gg.vercel.app";
   const now = new Date();
 
   const coreRoutes = [
